@@ -106,6 +106,15 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 user.Role = await _roleManager.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.User.ToString()));
             }
 
+            if (!await _userManager.CreateUserAsync(user))
+            {
+                return new AuthorizeResult()
+                {
+                    Success = false,
+                    Errors = new[] {"An error occured while adding to the database"}
+                };
+            }
+
             var tokenResult = await _tokenService.GenerateTokens(_mapper.Map<TokenUserModel>(user));
             if (!tokenResult.Success)
             {
@@ -118,13 +127,12 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             user.RefreshTokens.ToList().Add(tokenResult.RefreshToken);
 
-            var result = await _userManager.CreateUserAsync(user);
-            if (!result)
+            if (!await _userManager.UpdateUserAsync(user))
             {
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[] {"An error occured while adding to the database"}
+                    Errors = new[] {"An error occured while updating to the database"}
                 };
             }
 
