@@ -1,22 +1,24 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Threading.Tasks;
-using CinemaTicketReservationSystem.WebApi.Jwt;
+using AutoMapper;
+using CinemaTicketReservationSystem.BLL.Abstract;
+using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
+using CinemaTicketReservationSystem.BLL.Services;
+using CinemaTicketReservationSystem.DAL.Abstract;
+using CinemaTicketReservationSystem.DAL.Context;
+using CinemaTicketReservationSystem.DAL.Entity;
+using CinemaTicketReservationSystem.DAL.Identity;
+using CinemaTicketReservationSystem.DAL.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CinemaTicketReservationSystem.WebApi
@@ -33,34 +35,77 @@ namespace CinemaTicketReservationSystem.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            
+
+
+            var sqlConnectionString = Configuration.GetConnectionString("DataAccessMSSqlProvider");
+
+
+            // DAL
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(sqlConnectionString)
+            );
+
+            services.AddScoped<IRepository>(provider =>
+                new GenericRepository(provider.GetService<ApplicationDbContext>(),
+                    provider.GetService<ILogger<GenericRepository>>()));
+
+            services.AddScoped<IRoleManager<Role>>(provider =>
+                new RoleManager(provider.GetService<IRepository>()));
+
+            services.AddScoped<IUserManager<User>>(provider =>
+                new UserManager(provider.GetService<IRepository>()));
+
+            services.AddScoped<IAuthorizeService, AuthorizeService>();
+
+            // Other
+            // TODO: add mapper config
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
+            // BLL
             services.AddOptions();
             services.Configure<JwtOptions>(Configuration.GetSection("JwtOptions"));
-            services.Configure<CinemaTicketReservationSystem.WebApi.Cookie.CookieOptions>(Configuration.GetSection("CookieOptions"));
-            services.AddScoped<JwtService>();
-            services.AddScoped<IdentityService>();
-            
+            services.Configure<RefreshTokenOptions>(Configuration.GetSection("RefreshTokenOptions"));
+
+            services.AddScoped<IJwtService>(provider => new JwtService(provider.GetService<IOptions<JwtOptions>>()));
+
+            services.AddScoped<IRefreshTokenService>(provider =>
+                new RefreshTokenService(provider.GetService<IOptions<RefreshTokenOptions>>()));
+
+            services.AddScoped<ITokenService>(provider => new TokenService(provider.GetService<IJwtService>(),
+                provider.GetService<IRefreshTokenService>(), provider.GetService<IRepository>()));
+
+            services.AddScoped<IAuthorizeService>(provider =>
+                new AuthorizeService(provider.GetService<IUserManager<User>>(),
+                    provider.GetService<IRoleManager<Role>>(), provider.GetService<ITokenService>(),
+                    provider.GetService<IMapper>()));
+
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateLifetime = true,
+                IssuerSigningKey =
+                    new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtOptions:AccessTokenSecret"])),
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidIssuer = Configuration["JwtOptions:Issuer"]
+            };
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = false;
                     options.SaveToken = true;
                     options.Audience = Configuration["JwtOptions:Audience"];
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateLifetime = true,
-                        IssuerSigningKey =
-                            new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtOptions:Key"])),
-                        ValidateIssuerSigningKey = true,
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ValidIssuer = Configuration["JwtOptions:Issuer"]
-                    };
+                    options.TokenValidationParameters = tokenValidationParameters;
                 });
             services.AddAuthorization();
+
             services.AddSwaggerGen(swagger =>
             {
-                swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "CinemaTicketReservationSystem.WebApi", Version = "v1" });
+                swagger.SwaggerDoc("v1",
+                    new OpenApiInfo {Title = "CinemaTicketReservationSystem.WebApi", Version = "v1"});
                 swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
@@ -96,26 +141,20 @@ namespace CinemaTicketReservationSystem.WebApi
                 app.UseSwaggerUI(c =>
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "CinemaTicketReservationSystem.WebApi v1"));
             }
+
+            using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope())
+            {
+                if (scope != null)
+                {
+                    var services = scope.ServiceProvider;
+                    var dbContext = services.GetRequiredService<ApplicationDbContext>();
+                    dbContext.Database.Migrate();
+                }
+            }
+
             app.UseDeveloperExceptionPage();
             app.UseHttpsRedirection();
             app.UseRouting();
-            
-            // TODO: move to middleware
-            app.Use(async (context, next) =>
-            {
-                var token = context.Request.Cookies[Configuration["CookieOptions:Name"]];
-                if (!string.IsNullOrEmpty(token))
-                    context.Request.Headers.Add("Authorization", "Bearer " + token);
-
-                await next();
-            });
-            
-            app.UseCookiePolicy(new CookiePolicyOptions
-            {
-                MinimumSameSitePolicy = SameSiteMode.Strict,
-                HttpOnly = HttpOnlyPolicy.Always,
-                Secure = CookieSecurePolicy.Always
-            });
 
             app.UseAuthentication();
             app.UseAuthorization();
