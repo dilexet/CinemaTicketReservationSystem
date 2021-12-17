@@ -14,27 +14,27 @@ namespace CinemaTicketReservationSystem.BLL.Services
 {
     public class AuthorizeService : IAuthorizeService
     {
-        private readonly IUserManager<User> _userManager;
-        private readonly IRoleManager<Role> _roleManager;
+        private readonly IUserRepository _userRepository;
+        private readonly IRoleRepository _roleRepository;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
 
-        public AuthorizeService(IUserManager<User> userManager, IRoleManager<Role> roleManager,
+        public AuthorizeService(IUserRepository userRepository, IRoleRepository roleRepository,
             ITokenService tokenService, IMapper mapper)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
+            _userRepository = userRepository;
+            _roleRepository = roleRepository;
             _tokenService = tokenService;
             _mapper = mapper;
         }
 
         public async Task<AuthorizeResult> LoginAsync(LoginModel loginModel)
         {
-            var userExisting = await _userManager.SingleOrDefaultAsync(x =>
+            var userExisting = await _userRepository.SingleOrDefaultAsync(x =>
                 x.Email.Equals(loginModel.Name) || x.Name.Equals(loginModel.Name));
 
             if (userExisting == null ||
-                !_userManager.CheckPassword(userExisting.PasswordHash, loginModel.Password))
+                !_userRepository.CheckPassword(userExisting.PasswordHash, loginModel.Password))
             {
                 return new AuthorizeResult()
                 {
@@ -54,7 +54,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             }
 
             userExisting.RefreshTokens.ToList().Add(tokenResult.RefreshToken);
-            if (!await _userManager.UpdateUserAsync(userExisting))
+            if (!await _userRepository.Update(userExisting))
             {
                 return new AuthorizeResult()
                 {
@@ -73,7 +73,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<AuthorizeResult> RegisterAsync(RegisterModel registerModel)
         {
-            var userExisting = await _userManager.SingleOrDefaultAsync(x =>
+            var userExisting = await _userRepository.SingleOrDefaultAsync(x =>
                 x.Email.Equals(registerModel.Email) || x.Name.Equals(registerModel.Name));
             if (userExisting != null)
             {
@@ -85,7 +85,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             }
 
             User user = _mapper.Map<User>(registerModel);
-            user.PasswordHash = _userManager.HasPasswordAsync(registerModel.Password);
+            user.PasswordHash = _userRepository.HasPasswordAsync(registerModel.Password);
 
             var resultCreating = await CreateRolesIfNotExist();
             if (!resultCreating)
@@ -97,16 +97,16 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            if (await _userManager.SingleOrDefaultAsync() == null)
+            if (await _userRepository.SingleOrDefaultAsync() == null)
             {
-                user.Role = await _roleManager.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.Admin.ToString()));
+                user.Role = await _roleRepository.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.Admin.ToString()));
             }
             else
             {
-                user.Role = await _roleManager.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.User.ToString()));
+                user.Role = await _roleRepository.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.User.ToString()));
             }
 
-            if (!await _userManager.CreateUserAsync(user))
+            if (!await _userRepository.CreateAsync(user))
             {
                 return new AuthorizeResult()
                 {
@@ -127,7 +127,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             user.RefreshTokens.ToList().Add(tokenResult.RefreshToken);
 
-            if (!await _userManager.UpdateUserAsync(user))
+            if (!await _userRepository.Update(user))
             {
                 return new AuthorizeResult()
                 {
@@ -146,7 +146,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<AuthorizeResult> RefreshTokenAsync(String username, String refreshToken)
         {
-            var userExisting = await _userManager.SingleOrDefaultAsync(x =>
+            var userExisting = await _userRepository.SingleOrDefaultAsync(x =>
                 x.Email.Equals(username) || x.Name.Equals(username));
             if (userExisting == null)
             {
@@ -191,19 +191,19 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             try
             {
-                if (await _roleManager.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.Admin.ToString())) == null)
+                if (await _roleRepository.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.Admin.ToString())) == null)
                 {
-                    await _roleManager.CreateRoleAsync(new Role() {Name = RoleTypes.Admin.ToString()});
+                    await _roleRepository.CreateAsync(new Role() {Name = RoleTypes.Admin.ToString()});
                 }
 
-                if (await _roleManager.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.Manager.ToString())) == null)
+                if (await _roleRepository.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.Manager.ToString())) == null)
                 {
-                    await _roleManager.CreateRoleAsync(new Role() {Name = RoleTypes.Manager.ToString()});
+                    await _roleRepository.CreateAsync(new Role() {Name = RoleTypes.Manager.ToString()});
                 }
 
-                if (await _roleManager.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.User.ToString())) == null)
+                if (await _roleRepository.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.User.ToString())) == null)
                 {
-                    await _roleManager.CreateRoleAsync(new Role() {Name = RoleTypes.User.ToString()});
+                    await _roleRepository.CreateAsync(new Role() {Name = RoleTypes.User.ToString()});
                 }
 
                 return true;

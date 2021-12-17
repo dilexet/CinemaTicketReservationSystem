@@ -13,10 +13,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
     {
         private readonly IJwtService _jwtService;
         private readonly IRefreshTokenService _refreshTokenService;
-        private readonly IRepository _repository;
+        private readonly IRefreshTokenRepository _repository;
 
         public TokenService(IJwtService jwtService, IRefreshTokenService refreshTokenService,
-            IRepository repository)
+            IRefreshTokenRepository repository)
         {
             _jwtService = jwtService;
             _refreshTokenService = refreshTokenService;
@@ -51,15 +51,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            if (!await _repository.SaveAsync())
-            {
-                return new TokenResult()
-                {
-                    Success = false,
-                    Error = "An error occured while saving to the database"
-                };
-            }
-
             return new TokenResult()
             {
                 JwtToken = jwtToken,
@@ -72,6 +63,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             if (!_refreshTokenService.Validate(refreshToken))
             {
+                await _repository.Remove(refreshToken);
                 return new TokenResult()
                 {
                     Success = false,
@@ -96,21 +88,12 @@ namespace CinemaTicketReservationSystem.BLL.Services
             refreshToken.JwtId = token.Id;
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-            if (!_repository.Update(refreshToken))
+            if (!await _repository.Update(refreshToken))
             {
                 return new TokenResult()
                 {
                     Success = false,
                     Error = "An error occured while updating to the database"
-                };
-            }
-
-            if (!await _repository.SaveAsync())
-            {
-                return new TokenResult()
-                {
-                    Success = false,
-                    Error = "An error occured while saving to the database"
                 };
             }
 

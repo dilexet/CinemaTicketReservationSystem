@@ -44,7 +44,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var claimsIdentity = CreateClaimsIdentity(user.Id, user.Name, user.Role);
 
             var payload = new JwtPayload(issuer, audience, claimsIdentity.Claims, now,
-                now.Add(TimeSpan.FromSeconds(lifeTime)));
+                now.AddSeconds(lifeTime));
 
             var token = new JwtSecurityToken(header, payload);
 

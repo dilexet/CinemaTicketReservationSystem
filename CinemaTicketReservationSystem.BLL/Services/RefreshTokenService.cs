@@ -35,13 +35,14 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 throw new Exception("Token options is null or empty: " + nameof(_options.Value.RefreshTokenSecret));
             }
 
+            var now = DateTime.Now;
             var refreshToken = new RefreshToken()
             {
                 JwtId = tokenId,
                 IsUsed = false,
                 UserId = userId,
-                AddedDate = DateTime.UtcNow,
-                ExpiryDate = DateTime.UtcNow.AddMinutes(lifeTime),
+                AddedDate = now,
+                ExpiryDate = now.AddMinutes(lifeTime),
                 IsRevoked = false,
                 Token = RandomString(25) + Guid.NewGuid()
             };
@@ -51,7 +52,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
         // TODO: added validation checks
         public bool Validate(RefreshToken refreshToken)
         {
-            if (refreshToken.ExpiryDate >= DateTime.UtcNow)
+            if (DateTime.Compare(refreshToken.ExpiryDate, DateTime.Now) <= 0)
             {
                 return false;
             }
