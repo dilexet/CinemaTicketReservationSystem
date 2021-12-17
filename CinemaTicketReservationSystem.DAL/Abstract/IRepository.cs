@@ -5,17 +5,16 @@ using System.Threading.Tasks;
 
 namespace CinemaTicketReservationSystem.DAL.Abstract
 {
-    public interface IRepository
+    public interface IRepository<TEntity> where TEntity : class
     {
-        Task<bool> CreateAsync<TEntity>(TEntity entity) where TEntity : class;
-        Task<TEntity> FindByIdAsync<TEntity>(Guid? id) where TEntity : class;
+        Task<bool> CreateAsync(TEntity entity);
+        Task<TEntity> FindByIdAsync(Guid? id);
 
-        IQueryable<TEntity> GetBy<TEntity>(Expression<Func<TEntity, bool>> predicate = null)
-            where TEntity : class;
+        IQueryable<TEntity> GetBy(Expression<Func<TEntity, bool>> predicate = null);
 
-        Task<TEntity> SingleOrDefaultAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class;
-        bool Update<TEntity>(TEntity entity) where TEntity : class;
-        bool Remove<TEntity>(TEntity entity) where TEntity : class;
+        Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate = null);
+        Task<bool> Update(TEntity entity);
+        Task<bool> Remove(TEntity entity);
         Task<bool> SaveAsync();
     }
 }
