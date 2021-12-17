@@ -6,5 +6,6 @@ namespace CinemaTicketReservationSystem.DAL.Entity
     {
         public Guid Id { get; set; }
         public String Name { get; set; }
+        public User User { get; set; }
     }
 }
