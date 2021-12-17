@@ -86,17 +86,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             User user = _mapper.Map<User>(registerModel);
             user.PasswordHash = _userRepository.HasPasswordAsync(registerModel.Password);
-
-            var resultCreating = await CreateRolesIfNotExist();
-            if (!resultCreating)
-            {
-                return new AuthorizeResult()
-                {
-                    Success = false,
-                    Errors = new[] {"Unable to add new role"}
-                };
-            }
-
+            
             if (await _userRepository.SingleOrDefaultAsync() == null)
             {
                 user.Role = await _roleRepository.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.Admin.ToString()));
@@ -185,33 +175,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 JwtToken = refreshTokenResult.JwtToken,
                 RefreshToken = refreshTokenResult.RefreshToken.Token
             };
-        }
-
-        private async Task<bool> CreateRolesIfNotExist()
-        {
-            try
-            {
-                if (await _roleRepository.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.Admin.ToString())) == null)
-                {
-                    await _roleRepository.CreateAsync(new Role() {Name = RoleTypes.Admin.ToString()});
-                }
-
-                if (await _roleRepository.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.Manager.ToString())) == null)
-                {
-                    await _roleRepository.CreateAsync(new Role() {Name = RoleTypes.Manager.ToString()});
-                }
-
-                if (await _roleRepository.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.User.ToString())) == null)
-                {
-                    await _roleRepository.CreateAsync(new Role() {Name = RoleTypes.User.ToString()});
-                }
-
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
         }
     }
 }

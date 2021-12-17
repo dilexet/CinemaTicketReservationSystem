@@ -12,6 +12,7 @@ using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Services;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Context;
+using CinemaTicketReservationSystem.DAL.Initializers;
 using CinemaTicketReservationSystem.DAL.Repository.Authorize;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -83,20 +84,21 @@ namespace CinemaTicketReservationSystem.WebApi
 
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateLifetime = true,
+                ValidIssuer = Configuration["JwtOptions:Issuer"],
+                ValidAudience = Configuration["JwtOptions:Audience"],
                 IssuerSigningKey =
                     new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtOptions:AccessTokenSecret"])),
+                ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidIssuer = Configuration["JwtOptions:Issuer"]
+                ValidateIssuer = true,
+                ValidateAudience = true
             };
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
+                    options.SaveToken = false;
                     options.Audience = Configuration["JwtOptions:Audience"];
                     options.TokenValidationParameters = tokenValidationParameters;
                 });
@@ -132,7 +134,7 @@ namespace CinemaTicketReservationSystem.WebApi
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -147,8 +149,11 @@ namespace CinemaTicketReservationSystem.WebApi
                 if (scope != null)
                 {
                     var services = scope.ServiceProvider;
-                    var dbContext = services.GetRequiredService<ApplicationDbContext>();
-                    dbContext.Database.Migrate();
+                    using (var dbContext = services.GetRequiredService<ApplicationDbContext>())
+                    {
+                        await dbContext.Database.MigrateAsync();
+                        await RoleInitialize.Seed(dbContext);
+                    }
                 }
             }
 

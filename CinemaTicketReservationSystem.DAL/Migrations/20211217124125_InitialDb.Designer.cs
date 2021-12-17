@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaTicketReservationSystem.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211217081052_InitDatabase")]
-    partial class InitDatabase
+    [Migration("20211217124125_InitialDb")]
+    partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,6 +67,23 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("015fe27f-f64f-4f36-8119-15c1fac7aa23"),
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("d94183eb-4329-497f-a780-19a5fcbbbf4c"),
+                            Name = "Manager"
+                        },
+                        new
+                        {
+                            Id = new Guid("1841e2d8-d255-4b10-a2bb-8fa910a46a2e"),
+                            Name = "User"
+                        });
                 });
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.User", b =>
