@@ -9,7 +9,7 @@ namespace CinemaTicketReservationSystem.DAL.Initializers
 {
     public static class RoleInitialize
     {
-        public static async Task Seed(ApplicationDbContext context)
+        public static void Seed(ApplicationDbContext context)
         {
             if (!context.Roles.Any())
             {
@@ -28,26 +28,26 @@ namespace CinemaTicketReservationSystem.DAL.Initializers
                     }
                 );
 
-                await context.SaveChangesAsync();
+                context.SaveChanges();
             }
             else
             {
-                if (await context.Roles.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.Admin.ToString())) == null)
+                if (context.Roles.SingleOrDefault(x => x.Name.Equals(RoleTypes.Admin.ToString())) == null)
                 {
-                    await context.Roles.AddAsync(new Role() {Name = RoleTypes.Admin.ToString()});
+                    context.Roles.Add(new Role() {Name = RoleTypes.Admin.ToString()});
                 }
 
-                if (await context.Roles.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.Manager.ToString())) == null)
+                if (context.Roles.SingleOrDefault(x => x.Name.Equals(RoleTypes.Manager.ToString())) == null)
                 {
-                    await context.Roles.AddAsync(new Role() {Name = RoleTypes.Manager.ToString()});
+                    context.Roles.Add(new Role() {Name = RoleTypes.Manager.ToString()});
                 }
 
-                if (await context.Roles.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.User.ToString())) == null)
+                if (context.Roles.SingleOrDefault(x => x.Name.Equals(RoleTypes.User.ToString())) == null)
                 {
-                    await context.Roles.AddAsync(new Role() {Name = RoleTypes.User.ToString()});
+                    context.Roles.Add(new Role() {Name = RoleTypes.User.ToString()});
                 }
 
-                await context.SaveChangesAsync();
+                context.SaveChanges();
             }
         }
     }

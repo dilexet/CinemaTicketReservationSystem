@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
@@ -134,7 +135,7 @@ namespace CinemaTicketReservationSystem.WebApi
             });
         }
 
-        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -151,8 +152,8 @@ namespace CinemaTicketReservationSystem.WebApi
                     var services = scope.ServiceProvider;
                     using (var dbContext = services.GetRequiredService<ApplicationDbContext>())
                     {
-                        await dbContext.Database.MigrateAsync();
-                        await RoleInitialize.Seed(dbContext);
+                         dbContext.Database.Migrate();
+                         RoleInitialize.Seed(dbContext);
                     }
                 }
             }
