@@ -17,5 +17,10 @@ namespace CinemaTicketReservationSystem.DAL.Context
         public ApplicationDbContext()
         {
         }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        }
     }
 }
