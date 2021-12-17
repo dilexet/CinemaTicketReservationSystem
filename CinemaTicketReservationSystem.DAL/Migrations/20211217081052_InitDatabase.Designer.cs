@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaTicketReservationSystem.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211216135711_InitDatabase")]
+    [Migration("20211217081052_InitDatabase")]
     partial class InitDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.12")
+                .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.RefreshToken", b =>
@@ -84,12 +84,13 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("RoleId")
+                    b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("RoleId")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -108,10 +109,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.User", b =>
                 {
                     b.HasOne("CinemaTicketReservationSystem.DAL.Entity.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId");
+                        .WithOne("User")
+                        .HasForeignKey("CinemaTicketReservationSystem.DAL.Entity.User", "RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.Role", b =>
+                {
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.User", b =>

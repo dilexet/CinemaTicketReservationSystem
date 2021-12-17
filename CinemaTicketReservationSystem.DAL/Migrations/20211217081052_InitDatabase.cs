@@ -27,7 +27,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -37,7 +37,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,7 +72,8 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 table: "Users",
-                column: "RoleId");
+                column: "RoleId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
