@@ -12,9 +12,7 @@ using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Services;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Context;
-using CinemaTicketReservationSystem.DAL.Entity;
-using CinemaTicketReservationSystem.DAL.Identity;
-using CinemaTicketReservationSystem.DAL.Repository;
+using CinemaTicketReservationSystem.DAL.Repository.Authorize;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -45,15 +43,17 @@ namespace CinemaTicketReservationSystem.WebApi
                 options.UseSqlServer(sqlConnectionString)
             );
 
-            services.AddScoped<IRepository>(provider =>
-                new GenericRepository(provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<GenericRepository>>()));
+            services.AddScoped<IUserRepository>(provider =>
+                new UserRepository(provider.GetService<ApplicationDbContext>(),
+                    provider.GetService<ILogger<UserRepository>>()));
 
-            services.AddScoped<IRoleManager<Role>>(provider =>
-                new RoleManager(provider.GetService<IRepository>()));
+            services.AddScoped<IRoleRepository>(provider =>
+                new RoleRepository(provider.GetService<ApplicationDbContext>(),
+                    provider.GetService<ILogger<RoleRepository>>()));
 
-            services.AddScoped<IUserManager<User>>(provider =>
-                new UserManager(provider.GetService<IRepository>()));
+            services.AddScoped<IRefreshTokenRepository>(provider =>
+                new RefreshTokenRepository(provider.GetService<ApplicationDbContext>(),
+                    provider.GetService<ILogger<RefreshTokenRepository>>()));
 
             services.AddScoped<IAuthorizeService, AuthorizeService>();
 
@@ -73,11 +73,11 @@ namespace CinemaTicketReservationSystem.WebApi
                 new RefreshTokenService(provider.GetService<IOptions<RefreshTokenOptions>>()));
 
             services.AddScoped<ITokenService>(provider => new TokenService(provider.GetService<IJwtService>(),
-                provider.GetService<IRefreshTokenService>(), provider.GetService<IRepository>()));
+                provider.GetService<IRefreshTokenService>(), provider.GetService<IRefreshTokenRepository>()));
 
             services.AddScoped<IAuthorizeService>(provider =>
-                new AuthorizeService(provider.GetService<IUserManager<User>>(),
-                    provider.GetService<IRoleManager<Role>>(), provider.GetService<ITokenService>(),
+                new AuthorizeService(provider.GetService<IUserRepository>(),
+                    provider.GetService<IRoleRepository>(), provider.GetService<ITokenService>(),
                     provider.GetService<IMapper>()));
 
 
