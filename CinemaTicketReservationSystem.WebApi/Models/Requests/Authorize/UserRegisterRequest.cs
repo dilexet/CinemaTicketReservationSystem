@@ -1,13 +1,13 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-
 namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize
 {
     public class UserRegisterRequest
     {
-        public String Name { get; set; }
-        public String Email { get; set; }
-        public String Password { get; set; }
-        public String ConfirmPassword { get; set; }
+        public string Name { get; set; }
+
+        public string Email { get; set; }
+
+        public string Password { get; set; }
+
+        public string ConfirmPassword { get; set; }
     }
 }

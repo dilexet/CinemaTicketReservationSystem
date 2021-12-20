@@ -1,4 +1,3 @@
-using System;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
 using FluentValidation;
 
@@ -17,7 +16,7 @@ namespace CinemaTicketReservationSystem.WebApi.Validators
 
             RuleFor(x => x.Password).NotEmpty().WithMessage("Please enter the password");
             RuleFor(x => x.Password).Length(4, 25).WithMessage("Password must be between 4 and 25 characters");
-          
+
             RuleFor(x => x.ConfirmPassword).NotEmpty().WithMessage("Please enter the confirmation password");
             RuleFor(x => x.ConfirmPassword).Equal(x => x.Password).WithMessage("The password and confirmation password do not match");
         }

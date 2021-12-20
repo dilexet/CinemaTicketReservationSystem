@@ -32,7 +32,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var audience = _options.Value.Audience;
             var lifeTime = _options.Value.AccessTokenExpirationMinutes;
 
-            if (String.IsNullOrEmpty(issuer) || String.IsNullOrEmpty(audience) || lifeTime == 0)
+            if (string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience) || lifeTime == 0)
             {
                 throw new Exception("Token options is null or empty");
             }
@@ -43,8 +43,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var header = new JwtHeader(credentials);
             var claimsIdentity = CreateClaimsIdentity(user.Id, user.Name, user.Role);
 
-            var payload = new JwtPayload(issuer, audience, claimsIdentity.Claims, now,
-                now.AddMinutes(lifeTime));
+            var payload = new JwtPayload(issuer, audience, claimsIdentity.Claims, now, now.AddMinutes(lifeTime));
 
             var token = new JwtSecurityToken(header, payload);
 
@@ -55,14 +54,13 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             var claims = new List<Claim>
             {
-                new("UserId", id.ToString()),
-                new(ClaimsIdentity.DefaultNameClaimType, name),
-                new(ClaimsIdentity.DefaultRoleClaimType, role),
-                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new ("UserId", id.ToString()),
+                new (ClaimsIdentity.DefaultNameClaimType, name),
+                new (ClaimsIdentity.DefaultRoleClaimType, role),
+                new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             ClaimsIdentity claimsIdentity =
-                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
-                    ClaimsIdentity.DefaultRoleClaimType);
+                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
 
             return claimsIdentity;
         }

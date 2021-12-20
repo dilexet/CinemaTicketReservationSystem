@@ -12,7 +12,8 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
     {
         public MapperProfile()
         {
-            CreateMap<User, TokenUserModel>().ForMember(dest => dest.Role,
+            CreateMap<User, TokenUserModel>().ForMember(
+                dest => dest.Role,
                 source => source.MapFrom(res => res.Role.Name));
             CreateMap<RegisterModel, User>();
 

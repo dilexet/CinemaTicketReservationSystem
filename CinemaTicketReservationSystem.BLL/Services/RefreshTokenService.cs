@@ -16,9 +16,9 @@ namespace CinemaTicketReservationSystem.BLL.Services
             _options = options;
         }
 
-        public RefreshToken Generate(String tokenId, Guid userId)
+        public RefreshToken Generate(string tokenId, Guid userId)
         {
-            if (String.IsNullOrEmpty(tokenId))
+            if (string.IsNullOrEmpty(tokenId))
             {
                 throw new ArgumentNullException(nameof(tokenId));
             }
@@ -65,7 +65,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var random = new Random();
             var chars = _options.Value.RefreshTokenSecret;
 
-            if (String.IsNullOrEmpty(chars))
+            if (string.IsNullOrEmpty(chars))
             {
                 throw new Exception(
                     "Refresh token options is null or empty: " + nameof(_options.Value.RefreshTokenSecret));

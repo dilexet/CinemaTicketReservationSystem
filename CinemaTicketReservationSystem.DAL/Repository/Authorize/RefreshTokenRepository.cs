@@ -8,8 +8,8 @@ using CinemaTicketReservationSystem.DAL.Entity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-// ReSharper disable TemplateIsNotCompileTimeConstantProblem
 
+// ReSharper disable TemplateIsNotCompileTimeConstantProblem
 namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
 {
     public class RefreshTokenRepository : IRefreshTokenRepository
@@ -22,7 +22,6 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             _context = context;
             _log = log;
         }
-
 
         public async Task<bool> CreateAsync(RefreshToken refreshToken)
         {

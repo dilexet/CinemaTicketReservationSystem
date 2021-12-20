@@ -1,10 +1,4 @@
 using System;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using System.Text;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract;
@@ -20,10 +14,16 @@ using CinemaTicketReservationSystem.WebApi.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace CinemaTicketReservationSystem.WebApi
 {
@@ -41,25 +41,25 @@ namespace CinemaTicketReservationSystem.WebApi
             services.AddControllers();
             services.AddMvc().AddFluentValidation();
 
-
             var sqlConnectionString = Configuration.GetConnectionString("DataAccessMSSqlProvider");
-
 
             // DAL
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(sqlConnectionString)
-            );
+                options.UseSqlServer(sqlConnectionString));
 
             services.AddScoped<IUserRepository>(provider =>
-                new UserRepository(provider.GetService<ApplicationDbContext>(),
+                new UserRepository(
+                    provider.GetService<ApplicationDbContext>(),
                     provider.GetService<ILogger<UserRepository>>()));
 
             services.AddScoped<IRoleRepository>(provider =>
-                new RoleRepository(provider.GetService<ApplicationDbContext>(),
+                new RoleRepository(
+                    provider.GetService<ApplicationDbContext>(),
                     provider.GetService<ILogger<RoleRepository>>()));
 
             services.AddScoped<IRefreshTokenRepository>(provider =>
-                new RefreshTokenRepository(provider.GetService<ApplicationDbContext>(),
+                new RefreshTokenRepository(
+                    provider.GetService<ApplicationDbContext>(),
                     provider.GetService<ILogger<RefreshTokenRepository>>()));
 
             services.AddScoped<IAuthorizeService, AuthorizeService>();
@@ -82,14 +82,17 @@ namespace CinemaTicketReservationSystem.WebApi
             services.AddScoped<IRefreshTokenService>(provider =>
                 new RefreshTokenService(provider.GetService<IOptions<RefreshTokenOptions>>()));
 
-            services.AddScoped<ITokenService>(provider => new TokenService(provider.GetService<IJwtService>(),
-                provider.GetService<IRefreshTokenService>(), provider.GetService<IRefreshTokenRepository>()));
+            services.AddScoped<ITokenService>(provider => new TokenService(
+                provider.GetService<IJwtService>(),
+                provider.GetService<IRefreshTokenService>(),
+                provider.GetService<IRefreshTokenRepository>()));
 
             services.AddScoped<IAuthorizeService>(provider =>
-                new AuthorizeService(provider.GetService<IUserRepository>(),
-                    provider.GetService<IRoleRepository>(), provider.GetService<ITokenService>(),
+                new AuthorizeService(
+                    provider.GetService<IUserRepository>(),
+                    provider.GetService<IRoleRepository>(),
+                    provider.GetService<ITokenService>(),
                     provider.GetService<IMapper>()));
-
 
             var tokenValidationParameters = new TokenValidationParameters
             {
@@ -121,8 +124,9 @@ namespace CinemaTicketReservationSystem.WebApi
 
             services.AddSwaggerGen(swagger =>
             {
-                swagger.SwaggerDoc("v1",
-                    new OpenApiInfo {Title = "CinemaTicketReservationSystem.WebApi", Version = "v1"});
+                swagger.SwaggerDoc(
+                    "v1",
+                    new OpenApiInfo { Title = "CinemaTicketReservationSystem.WebApi", Version = "v1" });
                 swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
@@ -164,10 +168,10 @@ namespace CinemaTicketReservationSystem.WebApi
                 if (scope != null)
                 {
                     var services = scope.ServiceProvider;
-                    using (var dbContext = services.GetRequiredService<ApplicationDbContext>())
+                    using (var context = services.GetRequiredService<ApplicationDbContext>())
                     {
-                        dbContext.Database.Migrate();
-                        RoleInitialize.Seed(dbContext);
+                        context.Database.Migrate();
+                        RoleInitialize.Seed(context);
                     }
                 }
             }

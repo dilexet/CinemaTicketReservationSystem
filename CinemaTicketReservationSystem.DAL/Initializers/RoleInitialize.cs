@@ -1,9 +1,7 @@
 using System.Linq;
-using System.Threading.Tasks;
 using CinemaTicketReservationSystem.DAL.Context;
 using CinemaTicketReservationSystem.DAL.Entity;
 using CinemaTicketReservationSystem.DAL.Enums;
-using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicketReservationSystem.DAL.Initializers
 {
@@ -16,17 +14,16 @@ namespace CinemaTicketReservationSystem.DAL.Initializers
                 context.Roles.AddRange(
                     new Role()
                     {
-                        Name = RoleTypes.Admin.ToString()
+                        Name = RoleTypes.Admin.ToString(),
                     },
                     new Role()
                     {
-                        Name = RoleTypes.Manager.ToString()
+                        Name = RoleTypes.Manager.ToString(),
                     },
                     new Role()
                     {
-                        Name = RoleTypes.User.ToString()
-                    }
-                );
+                        Name = RoleTypes.User.ToString(),
+                    });
 
                 context.SaveChanges();
             }
@@ -34,17 +31,17 @@ namespace CinemaTicketReservationSystem.DAL.Initializers
             {
                 if (context.Roles.SingleOrDefault(x => x.Name.Equals(RoleTypes.Admin.ToString())) == null)
                 {
-                    context.Roles.Add(new Role() {Name = RoleTypes.Admin.ToString()});
+                    context.Roles.Add(new Role() { Name = RoleTypes.Admin.ToString() });
                 }
 
                 if (context.Roles.SingleOrDefault(x => x.Name.Equals(RoleTypes.Manager.ToString())) == null)
                 {
-                    context.Roles.Add(new Role() {Name = RoleTypes.Manager.ToString()});
+                    context.Roles.Add(new Role() { Name = RoleTypes.Manager.ToString() });
                 }
 
                 if (context.Roles.SingleOrDefault(x => x.Name.Equals(RoleTypes.User.ToString())) == null)
                 {
-                    context.Roles.Add(new Role() {Name = RoleTypes.User.ToString()});
+                    context.Roles.Add(new Role() { Name = RoleTypes.User.ToString() });
                 }
 
                 context.SaveChanges();

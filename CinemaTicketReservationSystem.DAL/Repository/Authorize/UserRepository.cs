@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
-
 namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
 {
     public class UserRepository : IUserRepository
@@ -23,7 +22,6 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             _context = context;
             _log = log;
         }
-
 
         public async Task<bool> CreateAsync(User user)
         {
@@ -166,7 +164,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             {
                 throw new ArgumentNullException(nameof(password));
             }
-            
+
             var result = BCrypt.Net.BCrypt.Verify(password, hashPassword);
             return result;
         }
@@ -177,7 +175,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             {
                 throw new ArgumentNullException(nameof(password));
             }
-            
+
             var hashPassword = BCrypt.Net.BCrypt.HashPassword(password);
             return hashPassword;
         }

@@ -15,8 +15,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
         private readonly IRefreshTokenService _refreshTokenService;
         private readonly IRefreshTokenRepository _repository;
 
-        public TokenService(IJwtService jwtService, IRefreshTokenService refreshTokenService,
-            IRefreshTokenRepository repository)
+        public TokenService(IJwtService jwtService, IRefreshTokenService refreshTokenService, IRefreshTokenRepository repository)
         {
             _jwtService = jwtService;
             _refreshTokenService = refreshTokenService;

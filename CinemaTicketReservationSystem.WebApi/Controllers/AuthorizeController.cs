@@ -7,7 +7,6 @@ using CinemaTicketReservationSystem.BLL.Results;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Token;
 using CinemaTicketReservationSystem.WebApi.Models.Response;
-using CinemaTicketReservationSystem.WebApi.Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +23,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         private readonly IValidator<RefreshTokenRequest> _refreshTokenValidator;
         private readonly IMapper _mapper;
 
-        public AuthorizeController(IAuthorizeService authorizeService, IMapper mapper,
-            IValidator<UserLoginRequest> loginValidator, IValidator<UserRegisterRequest> registerValidator, IValidator<RefreshTokenRequest> refreshTokenValidator)
+        public AuthorizeController(IAuthorizeService authorizeService, IMapper mapper, IValidator<UserLoginRequest> loginValidator, IValidator<UserRegisterRequest> registerValidator, IValidator<RefreshTokenRequest> refreshTokenValidator)
         {
             _authorizeService = authorizeService;
             _mapper = mapper;
@@ -59,7 +57,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
                 {
                     Code = StatusCodes.Status500InternalServerError,
                     Success = false,
-                    Errors = new[] {e.Message}
+                    Errors = new[] { e.Message }
                 });
             }
 
@@ -100,7 +98,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
                 {
                     Code = StatusCodes.Status500InternalServerError,
                     Success = false,
-                    Errors = new[] {e.Message}
+                    Errors = new[] { e.Message }
                 });
             }
 
@@ -133,7 +131,8 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             AuthorizeResult result;
             try
             {
-                result = await _authorizeService.RefreshTokenAsync(refreshTokenRequest.Username,
+                result = await _authorizeService.RefreshTokenAsync(
+                    refreshTokenRequest.Username,
                     refreshTokenRequest.Token);
             }
             catch (Exception e)
@@ -142,7 +141,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
                 {
                     Code = StatusCodes.Status500InternalServerError,
                     Success = false,
-                    Errors = new[] {e.Message}
+                    Errors = new[] { e.Message }
                 });
             }
 

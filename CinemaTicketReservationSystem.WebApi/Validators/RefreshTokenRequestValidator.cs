@@ -4,7 +4,6 @@ using FluentValidation;
 namespace CinemaTicketReservationSystem.WebApi.Validators
 {
     public class RefreshTokenRequestValidator : AbstractValidator<RefreshTokenRequest>
-
     {
         public RefreshTokenRequestValidator()
         {

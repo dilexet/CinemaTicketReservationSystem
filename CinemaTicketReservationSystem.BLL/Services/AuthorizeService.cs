@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -19,8 +18,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
 
-        public AuthorizeService(IUserRepository userRepository, IRoleRepository roleRepository,
-            ITokenService tokenService, IMapper mapper)
+        public AuthorizeService(IUserRepository userRepository, IRoleRepository roleRepository, ITokenService tokenService, IMapper mapper)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
@@ -39,7 +37,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[] {"Invalid username or password"}
+                    Errors = new[]
+                    {
+                        "Invalid username or password"
+                    }
                 };
             }
 
@@ -49,7 +50,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[] {tokenResult.Error}
+                    Errors = new[]
+                    {
+                        tokenResult.Error
+                    }
                 };
             }
 
@@ -59,7 +63,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[] {"An error occured while updating to the database"}
+                    Errors = new[]
+                    {
+                        "An error occured while updating to the database"
+                    }
                 };
             }
 
@@ -80,13 +87,16 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[] {"User is exists"}
+                    Errors = new[]
+                    {
+                        "User is exists"
+                    }
                 };
             }
 
             User user = _mapper.Map<User>(registerModel);
             user.PasswordHash = _userRepository.HasPasswordAsync(registerModel.Password);
-            
+
             if (await _userRepository.SingleOrDefaultAsync() == null)
             {
                 user.Role = await _roleRepository.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.Admin.ToString()));
@@ -101,7 +111,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[] {"An error occured while adding to the database"}
+                    Errors = new[]
+                    {
+                        "An error occured while adding to the database"
+                    }
                 };
             }
 
@@ -111,7 +124,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[] {tokenResult.Error}
+                    Errors = new[]
+                    {
+                        tokenResult.Error
+                    }
                 };
             }
 
@@ -122,7 +138,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[] {"An error occured while updating to the database"}
+                    Errors = new[]
+                    {
+                        "An error occured while updating to the database"
+                    }
                 };
             }
 
@@ -134,7 +153,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             };
         }
 
-        public async Task<AuthorizeResult> RefreshTokenAsync(String username, String refreshToken)
+        public async Task<AuthorizeResult> RefreshTokenAsync(string username, string refreshToken)
         {
             var userExisting = await _userRepository.SingleOrDefaultAsync(x =>
                 x.Email.Equals(username) || x.Name.Equals(username));
@@ -143,7 +162,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[] {"User is not exists"}
+                    Errors = new[]
+                    {
+                        "User is not exists"
+                    }
                 };
             }
 
@@ -153,7 +175,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[] {"Token is not exists"}
+                    Errors = new[]
+                    {
+                        "Token is not exists"
+                    }
                 };
             }
 
@@ -165,7 +190,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[] {refreshTokenResult.Error}
+                    Errors = new[]
+                    {
+                        refreshTokenResult.Error
+                    }
                 };
             }
 

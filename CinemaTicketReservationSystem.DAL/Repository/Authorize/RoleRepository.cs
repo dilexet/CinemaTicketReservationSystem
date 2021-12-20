@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
-
 namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
 {
     public class RoleRepository : IRoleRepository
@@ -24,8 +23,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             _log = log;
         }
 
-
-       public async Task<bool> CreateAsync(Role role)
+        public async Task<bool> CreateAsync(Role role)
         {
             if (role == null)
             {
