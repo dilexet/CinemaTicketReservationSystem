@@ -1,4 +1,4 @@
-namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize
+﻿namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize
 {
     public class UserLoginRequest
     {

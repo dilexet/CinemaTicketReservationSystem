@@ -1,4 +1,4 @@
-namespace CinemaTicketReservationSystem.WebApi.Models.ViewModels.Authorize
+﻿namespace CinemaTicketReservationSystem.WebApi.Models.ViewModels.Authorize
 {
     public class UserViewModel
     {

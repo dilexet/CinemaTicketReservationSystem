@@ -1,4 +1,4 @@
-namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Token
+﻿namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Token
 {
     public class RefreshTokenRequest
     {

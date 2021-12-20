@@ -1,4 +1,4 @@
-using CinemaTicketReservationSystem.WebApi.Models.Requests.Token;
+﻿using CinemaTicketReservationSystem.WebApi.Models.Requests.Token;
 using FluentValidation;
 
 namespace CinemaTicketReservationSystem.WebApi.Validators
