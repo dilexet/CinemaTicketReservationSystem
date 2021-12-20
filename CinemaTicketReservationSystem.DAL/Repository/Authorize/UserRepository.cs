@@ -166,8 +166,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             {
                 throw new ArgumentNullException(nameof(password));
             }
-
-            // TODO: SOLID ????
+            
             var result = BCrypt.Net.BCrypt.Verify(password, hashPassword);
             return result;
         }
@@ -178,8 +177,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             {
                 throw new ArgumentNullException(nameof(password));
             }
-
-            // TODO: SOLID ????
+            
             var hashPassword = BCrypt.Net.BCrypt.HashPassword(password);
             return hashPassword;
         }
