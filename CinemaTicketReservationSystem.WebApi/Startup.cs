@@ -23,6 +23,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Reflection;
 using System.Text;
 
 namespace CinemaTicketReservationSystem.WebApi
@@ -39,7 +40,8 @@ namespace CinemaTicketReservationSystem.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddMvc().AddFluentValidation();
+            services.AddMvc()
+                .AddFluentValidation(x => x.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
 
             var sqlConnectionString = Configuration.GetConnectionString("DataAccessMSSqlProvider");
 
@@ -126,7 +128,10 @@ namespace CinemaTicketReservationSystem.WebApi
             {
                 swagger.SwaggerDoc(
                     "v1",
-                    new OpenApiInfo { Title = "CinemaTicketReservationSystem.WebApi", Version = "v1" });
+                    new OpenApiInfo
+                    {
+                        Title = "CinemaTicketReservationSystem.WebApi", Version = "v1"
+                    });
                 swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
