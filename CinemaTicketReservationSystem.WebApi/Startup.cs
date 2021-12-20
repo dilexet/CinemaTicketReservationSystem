@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
@@ -90,16 +89,22 @@ namespace CinemaTicketReservationSystem.WebApi
                 IssuerSigningKey =
                     new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtOptions:AccessTokenSecret"])),
                 ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
                 ValidateIssuerSigningKey = true,
                 ValidateIssuer = true,
                 ValidateAudience = true
             };
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(
+                    option =>
+                    {
+                        option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                        option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    })
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = false;
-                    options.SaveToken = false;
+                    options.SaveToken = true;
                     options.Audience = Configuration["JwtOptions:Audience"];
                     options.TokenValidationParameters = tokenValidationParameters;
                 });
@@ -133,6 +138,7 @@ namespace CinemaTicketReservationSystem.WebApi
                     }
                 });
             });
+            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -152,8 +158,8 @@ namespace CinemaTicketReservationSystem.WebApi
                     var services = scope.ServiceProvider;
                     using (var dbContext = services.GetRequiredService<ApplicationDbContext>())
                     {
-                         dbContext.Database.Migrate();
-                         RoleInitialize.Seed(dbContext);
+                        dbContext.Database.Migrate();
+                        RoleInitialize.Seed(dbContext);
                     }
                 }
             }
