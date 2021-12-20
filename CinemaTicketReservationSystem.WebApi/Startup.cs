@@ -14,6 +14,11 @@ using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Context;
 using CinemaTicketReservationSystem.DAL.Initializers;
 using CinemaTicketReservationSystem.DAL.Repository.Authorize;
+using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
+using CinemaTicketReservationSystem.WebApi.Models.Requests.Token;
+using CinemaTicketReservationSystem.WebApi.Validators;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -34,6 +39,7 @@ namespace CinemaTicketReservationSystem.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMvc().AddFluentValidation();
 
 
             var sqlConnectionString = Configuration.GetConnectionString("DataAccessMSSqlProvider");
@@ -59,9 +65,12 @@ namespace CinemaTicketReservationSystem.WebApi
             services.AddScoped<IAuthorizeService, AuthorizeService>();
 
             // Other
-            // TODO: add mapper config
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            // Validators
+            services.AddTransient<IValidator<UserLoginRequest>, UserLoginRequestValidator>();
+            services.AddTransient<IValidator<UserRegisterRequest>, UserRegisterRequestValidator>();
+            services.AddTransient<IValidator<RefreshTokenRequest>, RefreshTokenRequestValidator>();
 
             // BLL
             services.AddOptions();
@@ -138,7 +147,6 @@ namespace CinemaTicketReservationSystem.WebApi
                     }
                 });
             });
-            services.AddMvc();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
