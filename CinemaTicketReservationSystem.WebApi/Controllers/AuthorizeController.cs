@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract;
 using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
@@ -10,6 +8,8 @@ using CinemaTicketReservationSystem.WebApi.Models.Response;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {

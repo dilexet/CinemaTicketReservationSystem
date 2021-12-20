@@ -1,4 +1,4 @@
-namespace CinemaTicketReservationSystem.BLL.Domain.TokenModels
+﻿namespace CinemaTicketReservationSystem.BLL.Domain.TokenModels
 {
     public class JwtOptions
     {

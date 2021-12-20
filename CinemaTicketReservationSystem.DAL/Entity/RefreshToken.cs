@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace CinemaTicketReservationSystem.DAL.Entity
 {
@@ -13,7 +13,8 @@ namespace CinemaTicketReservationSystem.DAL.Entity
         public string JwtId { get; set; } // Map the token with jwtId
 
         public bool
-            IsUsed { get; set; } // if its used we dont want generate a new Jwt token with the same refresh token
+            IsUsed
+        { get; set; } // if its used we dont want generate a new Jwt token with the same refresh token
 
         public bool IsRevoked { get; set; } // if it has been revoke for security reasons
 

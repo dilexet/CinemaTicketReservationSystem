@@ -1,11 +1,11 @@
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Threading.Tasks;
-using CinemaTicketReservationSystem.BLL.Abstract;
+﻿using CinemaTicketReservationSystem.BLL.Abstract;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Results;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
 
 namespace CinemaTicketReservationSystem.BLL.Services
 {

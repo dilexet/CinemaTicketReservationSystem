@@ -1,6 +1,4 @@
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract;
 using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
@@ -8,6 +6,8 @@ using CinemaTicketReservationSystem.BLL.Results;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity;
 using CinemaTicketReservationSystem.DAL.Enums;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CinemaTicketReservationSystem.BLL.Services
 {

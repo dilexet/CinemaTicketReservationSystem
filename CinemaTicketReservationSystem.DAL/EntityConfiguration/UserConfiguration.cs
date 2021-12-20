@@ -1,4 +1,4 @@
-using CinemaTicketReservationSystem.DAL.Entity;
+﻿using CinemaTicketReservationSystem.DAL.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

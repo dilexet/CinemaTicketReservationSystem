@@ -1,9 +1,9 @@
-using System;
-using System.Linq;
-using CinemaTicketReservationSystem.BLL.Abstract;
+﻿using CinemaTicketReservationSystem.BLL.Abstract;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.DAL.Entity;
 using Microsoft.Extensions.Options;
+using System;
+using System.Linq;
 
 namespace CinemaTicketReservationSystem.BLL.Services
 {

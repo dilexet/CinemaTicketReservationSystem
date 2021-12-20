@@ -1,7 +1,7 @@
-using System.Linq;
-using CinemaTicketReservationSystem.DAL.Context;
+﻿using CinemaTicketReservationSystem.DAL.Context;
 using CinemaTicketReservationSystem.DAL.Entity;
 using CinemaTicketReservationSystem.DAL.Enums;
+using System.Linq;
 
 namespace CinemaTicketReservationSystem.DAL.Initializers
 {

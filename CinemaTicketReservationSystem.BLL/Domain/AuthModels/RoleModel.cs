@@ -1,4 +1,4 @@
-namespace CinemaTicketReservationSystem.BLL.Domain.AuthModels
+﻿namespace CinemaTicketReservationSystem.BLL.Domain.AuthModels
 {
     public class RoleModel
     {

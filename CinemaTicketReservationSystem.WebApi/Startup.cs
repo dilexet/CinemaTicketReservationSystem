@@ -1,6 +1,4 @@
-using System;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Services;
@@ -24,6 +22,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Text;
 
 namespace CinemaTicketReservationSystem.WebApi
 {

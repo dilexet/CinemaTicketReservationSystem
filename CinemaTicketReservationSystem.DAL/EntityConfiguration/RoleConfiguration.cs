@@ -1,8 +1,8 @@
-using System;
-using CinemaTicketReservationSystem.DAL.Entity;
+﻿using CinemaTicketReservationSystem.DAL.Entity;
 using CinemaTicketReservationSystem.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace CinemaTicketReservationSystem.DAL.EntityConfiguration
 {

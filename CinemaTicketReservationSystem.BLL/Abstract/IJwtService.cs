@@ -1,5 +1,5 @@
+﻿using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using System.IdentityModel.Tokens.Jwt;
-using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 
 namespace CinemaTicketReservationSystem.BLL.Abstract
 {

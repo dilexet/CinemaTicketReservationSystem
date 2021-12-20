@@ -1,4 +1,4 @@
-using CinemaTicketReservationSystem.DAL.Entity;
+﻿using CinemaTicketReservationSystem.DAL.Entity;
 
 namespace CinemaTicketReservationSystem.BLL.Results
 {

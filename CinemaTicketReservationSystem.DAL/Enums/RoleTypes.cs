@@ -1,4 +1,4 @@
-namespace CinemaTicketReservationSystem.DAL.Enums
+﻿namespace CinemaTicketReservationSystem.DAL.Enums
 {
     public enum RoleTypes
     {
