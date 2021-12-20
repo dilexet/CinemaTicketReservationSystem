@@ -37,7 +37,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 throw new Exception("Token options is null or empty");
             }
 
-            DateTime now = DateTime.UtcNow;
+            DateTime now = DateTime.Now;
 
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
             var header = new JwtHeader(credentials);
