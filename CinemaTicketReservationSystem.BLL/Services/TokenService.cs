@@ -62,7 +62,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             if (!_refreshTokenService.Validate(refreshToken))
             {
-                await _repository.Remove(refreshToken);
+                await _repository.RemoveAsync(refreshToken);
                 return new TokenResult()
                 {
                     Success = false,
@@ -87,7 +87,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             refreshToken.JwtId = token.Id;
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-            if (!await _repository.Update(refreshToken))
+            if (!await _repository.UpdateAsync(refreshToken))
             {
                 return new TokenResult()
                 {
