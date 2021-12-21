@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CinemaTicketReservationSystem.DAL.Migrations
 {
@@ -69,17 +69,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("015fe27f-f64f-4f36-8119-15c1fac7aa23"), "Admin" });
+                values: new object[] { new Guid("50414e1e-b528-4915-8933-40f897a3cc72"), "Admin" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("d94183eb-4329-497f-a780-19a5fcbbbf4c"), "Manager" });
+                values: new object[] { new Guid("1328f198-6f08-45a3-83db-f7251c379e7d"), "Manager" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("1841e2d8-d255-4b10-a2bb-8fa910a46a2e"), "User" });
+                values: new object[] { new Guid("a383a4c5-2cfe-41c1-a554-7d00eab59d01"), "User" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_UserId",
@@ -89,8 +89,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 table: "Users",
-                column: "RoleId",
-                unique: true);
+                column: "RoleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

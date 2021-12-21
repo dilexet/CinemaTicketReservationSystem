@@ -69,17 +69,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("015fe27f-f64f-4f36-8119-15c1fac7aa23"),
+                            Id = new Guid("50414e1e-b528-4915-8933-40f897a3cc72"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("d94183eb-4329-497f-a780-19a5fcbbbf4c"),
+                            Id = new Guid("1328f198-6f08-45a3-83db-f7251c379e7d"),
                             Name = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("1841e2d8-d255-4b10-a2bb-8fa910a46a2e"),
+                            Id = new Guid("a383a4c5-2cfe-41c1-a554-7d00eab59d01"),
                             Name = "User"
                         });
                 });
@@ -104,8 +104,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId")
-                        .IsUnique();
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -124,8 +123,8 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.User", b =>
                 {
                     b.HasOne("CinemaTicketReservationSystem.DAL.Entity.Role", "Role")
-                        .WithOne("User")
-                        .HasForeignKey("CinemaTicketReservationSystem.DAL.Entity.User", "RoleId")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -134,7 +133,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.Role", b =>
                 {
-                    b.Navigation("User");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.User", b =>
