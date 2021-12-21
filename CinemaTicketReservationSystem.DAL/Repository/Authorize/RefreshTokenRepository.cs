@@ -79,7 +79,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             return refreshTokens;
         }
 
-        public async Task<RefreshToken> SingleOrDefaultAsync(Expression<Func<RefreshToken, bool>> predicate = null)
+        public async Task<RefreshToken> FirstOrDefaultAsync(Expression<Func<RefreshToken, bool>> predicate = null)
         {
             RefreshToken refreshToken = null;
             try
@@ -87,9 +87,10 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
                 refreshToken = predicate != null
                     ? await _context.Set<RefreshToken>().Where(predicate)
                         .Include(x => x.User)
-                        .SingleOrDefaultAsync()
+                        .FirstOrDefaultAsync()
                     : await _context.Set<RefreshToken>().Include(x => x.User)
-                       .SingleOrDefaultAsync();
+                        .OrderBy(x => x.Id)
+                        .FirstOrDefaultAsync();
             }
             catch (SqlException e)
             {
@@ -99,7 +100,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             return refreshToken;
         }
 
-        public async Task<bool> Update(RefreshToken refreshToken)
+        public async Task<bool> UpdateAsync(RefreshToken refreshToken)
         {
             if (refreshToken == null)
             {
@@ -118,7 +119,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             }
         }
 
-        public async Task<bool> Remove(RefreshToken refreshToken)
+        public async Task<bool> RemoveAsync(RefreshToken refreshToken)
         {
             if (refreshToken == null)
             {
