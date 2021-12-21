@@ -10,6 +10,13 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
+            builder.HasKey(x => x.Id);
+
+            builder
+                .HasMany(x => x.Users)
+                .WithOne(x => x.Role)
+                .HasForeignKey(x => x.RoleId);
+
             builder.HasData(
                 new { Id = Guid.NewGuid(), Name = RoleTypes.Admin.ToString() },
                 new { Id = Guid.NewGuid(), Name = RoleTypes.Manager.ToString() },
