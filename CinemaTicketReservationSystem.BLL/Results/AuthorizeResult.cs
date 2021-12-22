@@ -1,15 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace CinemaTicketReservationSystem.BLL.Results
+﻿namespace CinemaTicketReservationSystem.BLL.Results
 {
-    public class AuthorizeResult
+    public class AuthorizeResult : Result
     {
-        public bool Success { get; set; }
-
         public string JwtToken { get; set; }
 
         public string RefreshToken { get; set; }
-
-        public IEnumerable<object> Errors { get; set; }
     }
 }
