@@ -52,6 +52,45 @@ namespace CinemaTicketReservationSystem.BLL.Services
             };
         }
 
+        public async Task<UserManagementResult> GetById(Guid id)
+        {
+            var user = await _userRepository.FindByIdAsync(id);
+            if (user == null)
+            {
+                return new UserManagementResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "User is not exists"
+                    }
+                };
+            }
+
+            UserModel userModel;
+            try
+            {
+                userModel = _mapper.Map<UserModel>(user);
+            }
+            catch (AutoMapperMappingException e)
+            {
+                return new UserManagementResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        e.Message
+                    }
+                };
+            }
+
+            return new UserManagementResult()
+            {
+                Success = true,
+                UserModel = userModel
+            };
+        }
+
         public async Task<UserManagementResult> CreateUser(UserModel userModel)
         {
             var userExist = await _userRepository.FirstOrDefaultAsync(x => x.Name == userModel.Name);

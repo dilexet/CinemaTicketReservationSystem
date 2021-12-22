@@ -9,6 +9,8 @@ namespace CinemaTicketReservationSystem.BLL.Abstract.Service
     {
         Task<UserManagementGetUsersResult> GetUsers();
 
+        Task<UserManagementResult> GetById(Guid id);
+
         Task<UserManagementResult> CreateUser(UserModel userModel);
 
         Task<UserManagementResult> UpdateUser(Guid id, UserModel userModel);
