@@ -1,7 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Net;
-using System.Net.Mime;
 using System.Reflection;
 using System.Text;
 using AutoMapper;
@@ -23,9 +20,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,9 +43,16 @@ namespace CinemaTicketReservationSystem.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().ConfigureApiBehaviorOptions(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             services.AddMvc(config =>
-                    config.Filters.Add(typeof(CustomExceptionFilter)))
+                {
+                    config.Filters.Add(typeof(CustomExceptionFilter));
+                    config.Filters.Add(typeof(CustomValidationFilterAttribute));
+                })
                 .AddFluentValidation(x => x.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
 
             var sqlConnectionString = Configuration.GetConnectionString("DataAccessMSSqlProvider");
@@ -201,23 +203,6 @@ namespace CinemaTicketReservationSystem.WebApi
                     }
                 }
             }
-
-            app.UseExceptionHandler(
-                options =>
-                {
-                    options.Run(
-                        async context =>
-                        {
-                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                            context.Response.ContentType = "text/html";
-                            var ex = context.Features.Get<IExceptionHandlerFeature>();
-                            if (ex != null)
-                            {
-                                var err = "Error";
-                                await context.Response.WriteAsync(err).ConfigureAwait(false);
-                            }
-                        });
-                });
 
             app.UseDeveloperExceptionPage();
             app.UseHttpsRedirection();
