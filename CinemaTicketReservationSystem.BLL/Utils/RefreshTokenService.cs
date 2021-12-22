@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using CinemaTicketReservationSystem.BLL.Abstract;
 using CinemaTicketReservationSystem.BLL.Abstract.Utils;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.DAL.Entity;
