@@ -1,13 +1,14 @@
-﻿using CinemaTicketReservationSystem.BLL.Abstract;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
+using CinemaTicketReservationSystem.BLL.Abstract;
+using CinemaTicketReservationSystem.BLL.Abstract.Utils;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Results;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Threading.Tasks;
 
-namespace CinemaTicketReservationSystem.BLL.Services
+namespace CinemaTicketReservationSystem.BLL.Utils
 {
     public class TokenService : ITokenService
     {
@@ -36,7 +37,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new TokenResult()
                 {
                     Success = false,
-                    Error = e.Message
+                    Errors = new[]
+                    {
+                        e.Message
+                    }
                 };
             }
 
@@ -46,7 +50,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new TokenResult()
                 {
                     Success = false,
-                    Error = "An error occured while adding to the database"
+                    Errors = new[]
+                    {
+                        "An error occured while adding to the database"
+                    }
                 };
             }
 
@@ -66,7 +73,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new TokenResult()
                 {
                     Success = false,
-                    Error = "Token has expired"
+                    Errors = new[]
+                    {
+                        "Token has expired"
+                    }
                 };
             }
 
@@ -80,7 +90,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new TokenResult()
                 {
                     Success = false,
-                    Error = e.Message
+                    Errors = new[]
+                    {
+                        e.Message
+                    }
                 };
             }
 
@@ -92,7 +105,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new TokenResult()
                 {
                     Success = false,
-                    Error = "An error occured while updating to the database"
+                    Errors = new[]
+                    {
+                        "An error occured while updating to the database"
+                    }
                 };
             }
 

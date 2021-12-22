@@ -1,9 +1,9 @@
-﻿using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
+﻿using System.Threading.Tasks;
+using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Results;
 using CinemaTicketReservationSystem.DAL.Entity;
-using System.Threading.Tasks;
 
-namespace CinemaTicketReservationSystem.BLL.Abstract
+namespace CinemaTicketReservationSystem.BLL.Abstract.Utils
 {
     public interface ITokenService
     {
