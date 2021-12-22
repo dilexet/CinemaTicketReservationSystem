@@ -25,11 +25,27 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("get-users")]
+        // TODO: Added filters and sort
+        [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
             var usersResult = await _userManagement.GetUsers();
             var response = _mapper.Map<UserManagementGetUsersResponse>(usersResult);
+            if (!response.Success)
+            {
+                response.Code = StatusCodes.Status400BadRequest;
+                return BadRequest(response);
+            }
+
+            response.Code = StatusCodes.Status200OK;
+            return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var usersResult = await _userManagement.GetById(id);
+            var response = _mapper.Map<UserManagementResponse>(usersResult);
             if (!response.Success)
             {
                 response.Code = StatusCodes.Status400BadRequest;
