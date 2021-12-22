@@ -1,13 +1,14 @@
-﻿using AutoMapper;
-using CinemaTicketReservationSystem.BLL.Abstract;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using CinemaTicketReservationSystem.BLL.Abstract.Service;
+using CinemaTicketReservationSystem.BLL.Abstract.Utils;
 using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Results;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity;
 using CinemaTicketReservationSystem.DAL.Enums;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CinemaTicketReservationSystem.BLL.Services
 {
@@ -50,10 +51,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[]
-                    {
-                        tokenResult.Error
-                    }
+                    Errors = tokenResult.Errors
                 };
             }
 
@@ -124,10 +122,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[]
-                    {
-                        tokenResult.Error
-                    }
+                    Errors = tokenResult.Errors
                 };
             }
 
@@ -190,10 +185,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[]
-                    {
-                        refreshTokenResult.Error
-                    }
+                    Errors = refreshTokenResult.Errors
                 };
             }
 
