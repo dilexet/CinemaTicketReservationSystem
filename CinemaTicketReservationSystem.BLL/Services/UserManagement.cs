@@ -28,22 +28,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             var users = await _userRepository.GetBy().ToListAsync();
 
-            IEnumerable<UserModel> usersModel;
-            try
-            {
-                usersModel = _mapper.Map<IEnumerable<UserModel>>(users);
-            }
-            catch (AutoMapperMappingException e)
-            {
-                return new UserManagementGetUsersResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        e.Message
-                    }
-                };
-            }
+            var usersModel = _mapper.Map<IEnumerable<UserModel>>(users);
 
             return new UserManagementGetUsersResult()
             {
@@ -67,22 +52,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            UserModel userModel;
-            try
-            {
-                userModel = _mapper.Map<UserModel>(user);
-            }
-            catch (AutoMapperMappingException e)
-            {
-                return new UserManagementResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        e.Message
-                    }
-                };
-            }
+            UserModel userModel = _mapper.Map<UserModel>(user);
 
             return new UserManagementResult()
             {
@@ -134,22 +104,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            UserModel newUserModel;
-            try
-            {
-                newUserModel = _mapper.Map<UserModel>(user);
-            }
-            catch (AutoMapperMappingException e)
-            {
-                return new UserManagementResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        e.Message
-                    }
-                };
-            }
+            UserModel newUserModel = _mapper.Map<UserModel>(user);
 
             return new UserManagementResult()
             {
@@ -202,22 +157,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            UserModel newUserModel;
-            try
-            {
-                newUserModel = _mapper.Map<UserModel>(userExist);
-            }
-            catch (AutoMapperMappingException e)
-            {
-                return new UserManagementResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        e.Message
-                    }
-                };
-            }
+            UserModel newUserModel = _mapper.Map<UserModel>(userExist);
 
             return new UserManagementResult()
             {
