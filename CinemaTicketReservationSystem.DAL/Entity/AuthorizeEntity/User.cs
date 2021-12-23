@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CinemaTicketReservationSystem.DAL.Entity
+namespace CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity
 {
-    public class User
+    public class User : BasedEntity
     {
-        public Guid Id { get; set; }
-
         public string Name { get; set; }
 
         public string Email { get; set; }
