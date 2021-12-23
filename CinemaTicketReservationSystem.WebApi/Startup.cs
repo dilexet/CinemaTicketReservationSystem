@@ -34,6 +34,8 @@ namespace CinemaTicketReservationSystem.WebApi
 {
     public class Startup
     {
+        private const string NameCorsPolicy = "DefaultCorsPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -43,6 +45,22 @@ namespace CinemaTicketReservationSystem.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var originHttp = Configuration["Origins:HttpOrigin"];
+            var originHttps = Configuration["Origins:HttpsOrigin"];
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(NameCorsPolicy, builder =>
+                {
+                    builder
+                        .WithOrigins(originHttp, originHttps)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .SetIsOriginAllowed(_ => true)
+                        .AllowCredentials();
+                });
+            });
+
             services.AddControllers().ConfigureApiBehaviorOptions(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
@@ -187,6 +205,7 @@ namespace CinemaTicketReservationSystem.WebApi
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(NameCorsPolicy);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
