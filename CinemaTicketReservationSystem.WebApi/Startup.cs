@@ -145,6 +145,10 @@ namespace CinemaTicketReservationSystem.WebApi
             {
                 options.AddPolicy("AdminRole", policy =>
                     policy.RequireRole(RoleTypes.Admin.ToString()));
+                options.AddPolicy("UserRole", policy =>
+                    policy.RequireRole(RoleTypes.User.ToString()));
+                options.AddPolicy("ManagerRole", policy =>
+                    policy.RequireRole(RoleTypes.Manager.ToString()));
             });
 
             services.AddSwaggerGen(swagger =>
