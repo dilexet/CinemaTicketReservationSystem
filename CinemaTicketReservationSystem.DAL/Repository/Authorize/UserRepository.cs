@@ -80,7 +80,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             return users;
         }
 
-        public async Task<User> SingleOrDefaultAsync(Expression<Func<User, bool>> predicate = null)
+        public async Task<User> FirstOrDefaultAsync(Expression<Func<User, bool>> predicate = null)
         {
             User user = null;
             try
@@ -89,9 +89,9 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
                     ? await _context.Set<User>().Where(predicate)
                         .Include(x => x.Role)
                         .Include(x => x.RefreshTokens)
-                        .SingleOrDefaultAsync()
+                        .FirstOrDefaultAsync()
                     : await _context.Set<User>().Include(x => x.Role)
-                        .Include(x => x.RefreshTokens).SingleOrDefaultAsync();
+                        .Include(x => x.RefreshTokens).OrderBy(x => x.Id).FirstOrDefaultAsync();
             }
             catch (SqlException e)
             {
@@ -101,7 +101,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             return user;
         }
 
-        public async Task<bool> Update(User user)
+        public async Task<bool> UpdateAsync(User user)
         {
             if (user == null)
             {
@@ -120,7 +120,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             }
         }
 
-        public async Task<bool> Remove(User user)
+        public async Task<bool> RemoveAsync(User user)
         {
             if (user == null)
             {
@@ -169,7 +169,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             return result;
         }
 
-        public string HasPasswordAsync(string password)
+        public string HashPassword(string password)
         {
             if (string.IsNullOrEmpty(password))
             {

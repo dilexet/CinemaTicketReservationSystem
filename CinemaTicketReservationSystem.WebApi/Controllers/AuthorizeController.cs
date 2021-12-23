@@ -1,14 +1,14 @@
-﻿using AutoMapper;
-using CinemaTicketReservationSystem.BLL.Abstract;
+﻿using System;
+using System.Threading.Tasks;
+using AutoMapper;
+using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
 using CinemaTicketReservationSystem.BLL.Results;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Token;
-using CinemaTicketReservationSystem.WebApi.Models.Response;
+using CinemaTicketReservationSystem.WebApi.Models.Response.Authorize;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {

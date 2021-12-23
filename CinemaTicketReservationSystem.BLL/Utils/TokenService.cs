@@ -1,13 +1,13 @@
-﻿using CinemaTicketReservationSystem.BLL.Abstract;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Threading.Tasks;
+using CinemaTicketReservationSystem.BLL.Abstract.Utils;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Results;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Threading.Tasks;
 
-namespace CinemaTicketReservationSystem.BLL.Services
+namespace CinemaTicketReservationSystem.BLL.Utils
 {
     public class TokenService : ITokenService
     {
@@ -36,7 +36,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new TokenResult()
                 {
                     Success = false,
-                    Error = e.Message
+                    Errors = new[]
+                    {
+                        e.Message
+                    }
                 };
             }
 
@@ -46,7 +49,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new TokenResult()
                 {
                     Success = false,
-                    Error = "An error occured while adding to the database"
+                    Errors = new[]
+                    {
+                        "An error occured while adding to the database"
+                    }
                 };
             }
 
@@ -62,11 +68,14 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             if (!_refreshTokenService.Validate(refreshToken))
             {
-                await _repository.Remove(refreshToken);
+                await _repository.RemoveAsync(refreshToken);
                 return new TokenResult()
                 {
                     Success = false,
-                    Error = "Token has expired"
+                    Errors = new[]
+                    {
+                        "Token has expired"
+                    }
                 };
             }
 
@@ -80,19 +89,25 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new TokenResult()
                 {
                     Success = false,
-                    Error = e.Message
+                    Errors = new[]
+                    {
+                        e.Message
+                    }
                 };
             }
 
             refreshToken.JwtId = token.Id;
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-            if (!await _repository.Update(refreshToken))
+            if (!await _repository.UpdateAsync(refreshToken))
             {
                 return new TokenResult()
                 {
                     Success = false,
-                    Error = "An error occured while updating to the database"
+                    Errors = new[]
+                    {
+                        "An error occured while updating to the database"
+                    }
                 };
             }
 

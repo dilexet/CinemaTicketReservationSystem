@@ -1,8 +1,8 @@
-﻿using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
+﻿using System.Threading.Tasks;
+using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
 using CinemaTicketReservationSystem.BLL.Results;
-using System.Threading.Tasks;
 
-namespace CinemaTicketReservationSystem.BLL.Abstract
+namespace CinemaTicketReservationSystem.BLL.Abstract.Service
 {
     public interface IAuthorizeService
     {

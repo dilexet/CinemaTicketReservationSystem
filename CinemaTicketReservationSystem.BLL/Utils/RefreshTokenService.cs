@@ -1,11 +1,11 @@
-﻿using CinemaTicketReservationSystem.BLL.Abstract;
+﻿using System;
+using System.Linq;
+using CinemaTicketReservationSystem.BLL.Abstract.Utils;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.DAL.Entity;
 using Microsoft.Extensions.Options;
-using System;
-using System.Linq;
 
-namespace CinemaTicketReservationSystem.BLL.Services
+namespace CinemaTicketReservationSystem.BLL.Utils
 {
     public class RefreshTokenService : IRefreshTokenService
     {

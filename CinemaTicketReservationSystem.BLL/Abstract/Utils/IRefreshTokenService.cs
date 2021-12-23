@@ -1,7 +1,7 @@
-﻿using CinemaTicketReservationSystem.DAL.Entity;
-using System;
+﻿using System;
+using CinemaTicketReservationSystem.DAL.Entity;
 
-namespace CinemaTicketReservationSystem.BLL.Abstract
+namespace CinemaTicketReservationSystem.BLL.Abstract.Utils
 {
     public interface IRefreshTokenService
     {

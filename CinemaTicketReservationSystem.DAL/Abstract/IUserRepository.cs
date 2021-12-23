@@ -6,6 +6,6 @@ namespace CinemaTicketReservationSystem.DAL.Abstract
     {
         bool CheckPassword(string hashPassword, string password);
 
-        string HasPasswordAsync(string password);
+        string HashPassword(string password);
     }
 }

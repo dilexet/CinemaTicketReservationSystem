@@ -1,13 +1,14 @@
-﻿using AutoMapper;
-using CinemaTicketReservationSystem.BLL.Abstract;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using CinemaTicketReservationSystem.BLL.Abstract.Service;
+using CinemaTicketReservationSystem.BLL.Abstract.Utils;
 using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Results;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity;
 using CinemaTicketReservationSystem.DAL.Enums;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CinemaTicketReservationSystem.BLL.Services
 {
@@ -28,7 +29,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<AuthorizeResult> LoginAsync(LoginModel loginModel)
         {
-            var userExisting = await _userRepository.SingleOrDefaultAsync(x =>
+            var userExisting = await _userRepository.FirstOrDefaultAsync(x =>
                 x.Email.Equals(loginModel.Name) || x.Name.Equals(loginModel.Name));
 
             if (userExisting == null ||
@@ -50,15 +51,12 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[]
-                    {
-                        tokenResult.Error
-                    }
+                    Errors = tokenResult.Errors
                 };
             }
 
             userExisting.RefreshTokens.ToList().Add(tokenResult.RefreshToken);
-            if (!await _userRepository.Update(userExisting))
+            if (!await _userRepository.UpdateAsync(userExisting))
             {
                 return new AuthorizeResult()
                 {
@@ -80,7 +78,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<AuthorizeResult> RegisterAsync(RegisterModel registerModel)
         {
-            var userExisting = await _userRepository.SingleOrDefaultAsync(x =>
+            var userExisting = await _userRepository.FirstOrDefaultAsync(x =>
                 x.Email.Equals(registerModel.Email) || x.Name.Equals(registerModel.Name));
             if (userExisting != null)
             {
@@ -95,15 +93,15 @@ namespace CinemaTicketReservationSystem.BLL.Services
             }
 
             User user = _mapper.Map<User>(registerModel);
-            user.PasswordHash = _userRepository.HasPasswordAsync(registerModel.Password);
+            user.PasswordHash = _userRepository.HashPassword(registerModel.Password);
 
-            if (await _userRepository.SingleOrDefaultAsync() == null)
+            if (await _userRepository.FirstOrDefaultAsync() == null)
             {
-                user.Role = await _roleRepository.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.Admin.ToString()));
+                user.Role = await _roleRepository.FirstOrDefaultAsync(x => x.Name.Equals(RoleTypes.Admin.ToString()));
             }
             else
             {
-                user.Role = await _roleRepository.SingleOrDefaultAsync(x => x.Name.Equals(RoleTypes.User.ToString()));
+                user.Role = await _roleRepository.FirstOrDefaultAsync(x => x.Name.Equals(RoleTypes.User.ToString()));
             }
 
             if (!await _userRepository.CreateAsync(user))
@@ -124,16 +122,13 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[]
-                    {
-                        tokenResult.Error
-                    }
+                    Errors = tokenResult.Errors
                 };
             }
 
             user.RefreshTokens.ToList().Add(tokenResult.RefreshToken);
 
-            if (!await _userRepository.Update(user))
+            if (!await _userRepository.UpdateAsync(user))
             {
                 return new AuthorizeResult()
                 {
@@ -155,7 +150,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<AuthorizeResult> RefreshTokenAsync(string username, string refreshToken)
         {
-            var userExisting = await _userRepository.SingleOrDefaultAsync(x =>
+            var userExisting = await _userRepository.FirstOrDefaultAsync(x =>
                 x.Email.Equals(username) || x.Name.Equals(username));
             if (userExisting == null)
             {
@@ -190,10 +185,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 return new AuthorizeResult()
                 {
                     Success = false,
-                    Errors = new[]
-                    {
-                        refreshTokenResult.Error
-                    }
+                    Errors = refreshTokenResult.Errors
                 };
             }
 

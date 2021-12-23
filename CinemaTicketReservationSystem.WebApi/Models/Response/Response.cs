@@ -1,16 +1,13 @@
 ﻿using System.Collections.Generic;
+using CinemaTicketReservationSystem.WebApi.Models.Abstract;
 
 namespace CinemaTicketReservationSystem.WebApi.Models.Response
 {
-    public class AuthorizeResponse
+    public class Response : IResponse
     {
         public int Code { get; set; }
 
         public bool Success { get; set; }
-
-        public string JwtToken { get; set; }
-
-        public string RefreshToken { get; set; }
 
         public IEnumerable<object> Errors { get; set; }
     }

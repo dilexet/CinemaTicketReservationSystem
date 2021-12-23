@@ -18,8 +18,8 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration
 
             builder
                 .HasOne(x => x.Role)
-                .WithOne(x => x.User)
-                .HasForeignKey<User>(x => x.RoleId);
+                .WithMany(x => x.Users)
+                .HasForeignKey(x => x.RoleId);
         }
     }
 }

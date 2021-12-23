@@ -1,11 +1,18 @@
-﻿using AutoMapper;
-using CinemaTicketReservationSystem.BLL.Abstract;
+﻿using System;
+using System.Reflection;
+using System.Text;
+using AutoMapper;
+using CinemaTicketReservationSystem.BLL.Abstract.Service;
+using CinemaTicketReservationSystem.BLL.Abstract.Utils;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Services;
+using CinemaTicketReservationSystem.BLL.Utils;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Context;
+using CinemaTicketReservationSystem.DAL.Enums;
 using CinemaTicketReservationSystem.DAL.Initializers;
 using CinemaTicketReservationSystem.DAL.Repository.Authorize;
+using CinemaTicketReservationSystem.WebApi.CustomFilters;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Token;
 using CinemaTicketReservationSystem.WebApi.Validators;
@@ -22,9 +29,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Reflection;
-using System.Text;
 
 namespace CinemaTicketReservationSystem.WebApi
 {
@@ -39,8 +43,16 @@ namespace CinemaTicketReservationSystem.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddMvc()
+            services.AddControllers().ConfigureApiBehaviorOptions(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
+            services.AddMvc(config =>
+                {
+                    config.Filters.Add(typeof(CustomExceptionFilter));
+                    config.Filters.Add(typeof(CustomValidationFilterAttribute));
+                })
                 .AddFluentValidation(x => x.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
 
             var sqlConnectionString = Configuration.GetConnectionString("DataAccessMSSqlProvider");
@@ -96,6 +108,12 @@ namespace CinemaTicketReservationSystem.WebApi
                     provider.GetService<ITokenService>(),
                     provider.GetService<IMapper>()));
 
+            services.AddScoped<IUserManagement>(provider =>
+                new UserManagement(
+                    provider.GetService<IUserRepository>(),
+                    provider.GetService<IRoleRepository>(),
+                    provider.GetService<IMapper>()));
+
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidIssuer = Configuration["JwtOptions:Issuer"],
@@ -122,7 +140,16 @@ namespace CinemaTicketReservationSystem.WebApi
                     options.Audience = Configuration["JwtOptions:Audience"];
                     options.TokenValidationParameters = tokenValidationParameters;
                 });
-            services.AddAuthorization();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminRole", policy =>
+                    policy.RequireRole(RoleTypes.Admin.ToString()));
+                options.AddPolicy("UserRole", policy =>
+                    policy.RequireRole(RoleTypes.User.ToString()));
+                options.AddPolicy("ManagerRole", policy =>
+                    policy.RequireRole(RoleTypes.Manager.ToString()));
+            });
 
             services.AddSwaggerGen(swagger =>
             {

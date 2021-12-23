@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CinemaTicketReservationSystem.DAL.Entity
 {
@@ -8,6 +9,6 @@ namespace CinemaTicketReservationSystem.DAL.Entity
 
         public string Name { get; set; }
 
-        public User User { get; set; }
+        public IEnumerable<User> Users { get; set; }
     }
 }

@@ -78,16 +78,17 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             return roles;
         }
 
-        public async Task<Role> SingleOrDefaultAsync(Expression<Func<Role, bool>> predicate = null)
+        public async Task<Role> FirstOrDefaultAsync(Expression<Func<Role, bool>> predicate = null)
         {
             Role role = null;
             try
             {
                 role = predicate != null
                     ? await _context.Set<Role>().Where(predicate)
-                        .SingleOrDefaultAsync()
+                        .FirstOrDefaultAsync()
                     : await _context.Set<Role>()
-                        .SingleOrDefaultAsync();
+                        .OrderBy(x => x.Id)
+                        .FirstOrDefaultAsync();
             }
             catch (SqlException e)
             {
@@ -97,7 +98,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             return role;
         }
 
-        public async Task<bool> Update(Role role)
+        public async Task<bool> UpdateAsync(Role role)
         {
             if (role == null)
             {
@@ -116,7 +117,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             }
         }
 
-        public async Task<bool> Remove(Role role)
+        public async Task<bool> RemoveAsync(Role role)
         {
             if (role == null)
             {

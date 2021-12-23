@@ -14,11 +14,11 @@ namespace CinemaTicketReservationSystem.DAL.Abstract
 
         IQueryable<TEntity> GetBy(Expression<Func<TEntity, bool>> predicate = null);
 
-        Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate = null);
+        Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate = null);
 
-        Task<bool> Update(TEntity entity);
+        Task<bool> UpdateAsync(TEntity entity);
 
-        Task<bool> Remove(TEntity entity);
+        Task<bool> RemoveAsync(TEntity entity);
 
         Task<bool> SaveAsync();
     }
