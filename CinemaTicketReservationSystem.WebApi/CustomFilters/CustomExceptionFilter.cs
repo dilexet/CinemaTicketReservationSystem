@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 
-namespace CinemaTicketReservationSystem.WebApi.Services
+namespace CinemaTicketReservationSystem.WebApi.CustomFilters
 {
     public class CustomExceptionFilter : IExceptionFilter
     {
