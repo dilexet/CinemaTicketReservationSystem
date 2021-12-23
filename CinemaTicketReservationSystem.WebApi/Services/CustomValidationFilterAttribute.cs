@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CinemaTicketReservationSystem.WebApi.Models.Response;
-using CinemaTicketReservationSystem.WebApi.Models.Response.ValidationDetails;
+using CinemaTicketReservationSystem.WebApi.Models.Response.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -14,18 +13,14 @@ namespace CinemaTicketReservationSystem.WebApi.Services
         {
             if (!context.ModelState.IsValid)
             {
-                List<ModelValidationDetails> errors = new List<ModelValidationDetails>();
+                IDictionary<string, IEnumerable<object>> errors = new Dictionary<string, IEnumerable<object>>();
 
                 foreach (var modelState in context.ModelState)
                 {
-                    errors.Add(new ModelValidationDetails()
-                    {
-                        Field = modelState.Key,
-                        Errors = modelState.Value.Errors.Select(x => x.ErrorMessage)
-                    });
+                    errors.Add(modelState.Key, modelState.Value.Errors.Select(modelError => modelError.ErrorMessage));
                 }
 
-                context.Result = new BadRequestObjectResult(new Response()
+                context.Result = new BadRequestObjectResult(new ModelValidationResponse()
                 {
                     Code = StatusCodes.Status400BadRequest,
                     Success = false,
