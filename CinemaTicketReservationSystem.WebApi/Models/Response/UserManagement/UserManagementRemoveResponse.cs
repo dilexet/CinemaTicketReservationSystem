@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CinemaTicketReservationSystem.WebApi.Models.Response
+namespace CinemaTicketReservationSystem.WebApi.Models.Response.UserManagement
 {
     public class UserManagementRemoveResponse : Response
     {

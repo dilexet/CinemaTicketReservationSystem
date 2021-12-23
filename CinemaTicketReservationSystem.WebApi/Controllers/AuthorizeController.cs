@@ -6,7 +6,7 @@ using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
 using CinemaTicketReservationSystem.BLL.Results;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Token;
-using CinemaTicketReservationSystem.WebApi.Models.Response;
+using CinemaTicketReservationSystem.WebApi.Models.Response.Authorize;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

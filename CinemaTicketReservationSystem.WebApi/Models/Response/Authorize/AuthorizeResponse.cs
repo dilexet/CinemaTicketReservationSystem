@@ -1,4 +1,4 @@
-﻿namespace CinemaTicketReservationSystem.WebApi.Models.Response
+﻿namespace CinemaTicketReservationSystem.WebApi.Models.Response.Authorize
 {
     public class AuthorizeResponse : Response
     {

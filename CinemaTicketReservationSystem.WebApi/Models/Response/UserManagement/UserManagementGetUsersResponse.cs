@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CinemaTicketReservationSystem.WebApi.Models.ViewModels;
 
-namespace CinemaTicketReservationSystem.WebApi.Models.Response
+namespace CinemaTicketReservationSystem.WebApi.Models.Response.UserManagement
 {
     public class UserManagementGetUsersResponse : Response
     {

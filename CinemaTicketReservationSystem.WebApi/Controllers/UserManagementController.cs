@@ -4,7 +4,7 @@ using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Domain.UserModels;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.User;
-using CinemaTicketReservationSystem.WebApi.Models.Response;
+using CinemaTicketReservationSystem.WebApi.Models.Response.UserManagement;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

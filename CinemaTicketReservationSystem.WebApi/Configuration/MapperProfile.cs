@@ -6,7 +6,8 @@ using CinemaTicketReservationSystem.BLL.Results;
 using CinemaTicketReservationSystem.DAL.Entity;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.User;
-using CinemaTicketReservationSystem.WebApi.Models.Response;
+using CinemaTicketReservationSystem.WebApi.Models.Response.Authorize;
+using CinemaTicketReservationSystem.WebApi.Models.Response.UserManagement;
 using CinemaTicketReservationSystem.WebApi.Models.ViewModels;
 
 namespace CinemaTicketReservationSystem.WebApi.Configuration
