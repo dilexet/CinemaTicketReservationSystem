@@ -5,6 +5,8 @@ namespace CinemaTicketReservationSystem.BLL.Domain.MovieModels
 {
     public class MovieDescriptionModel
     {
+        public Guid Id { get; set; }
+
         public DateTime ReleaseDate { get; set; }
 
         public string Description { get; set; }
