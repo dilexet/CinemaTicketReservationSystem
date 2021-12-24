@@ -21,7 +21,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<MovieServiceResult> AddMovie(MovieModel movieModel)
         {
-            var movieExist = await _movieRepository.FirstOrDefaultAsync(x => x.Name.Equals(movieModel));
+            var movieExist = await _movieRepository.FirstOrDefaultAsync(x => x.Name == movieModel.Name);
             if (movieExist != null)
             {
                 return new MovieServiceResult()
