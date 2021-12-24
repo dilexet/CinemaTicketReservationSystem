@@ -4,15 +4,13 @@ using CinemaTicketReservationSystem.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CinemaTicketReservationSystem.DAL.EntityConfiguration
+namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.AuthorizeConfigurations
 {
     public class RoleConfiguration : IEntityTypeConfiguration<Role>
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
             builder.HasKey(x => x.Id);
-
-            builder.Property(x => x.Name).IsUnicode();
 
             builder
                 .HasMany(x => x.Users)
