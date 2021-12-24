@@ -22,6 +22,15 @@ namespace CinemaTicketReservationSystem.WebApi.CustomFilters
                     context.Exception.Message
                 };
             }
+            else
+            {
+                response.Code = StatusCodes.Status500InternalServerError;
+                response.Success = false;
+                response.Errors = new[]
+                {
+                    context.Exception.Message
+                };
+            }
 
             context.ExceptionHandled = true;
 
