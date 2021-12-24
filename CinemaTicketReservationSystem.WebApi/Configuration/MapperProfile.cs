@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
 using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
@@ -70,7 +71,7 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
 
             CreateMap<UserManagementRemoveResult, UserManagementRemoveResponse>();
 
-            CreateMap<MovieCreateRequest, MovieModel>().ForMember(
+            CreateMap<MovieRequest, MovieModel>().ForMember(
                 dest => dest.MovieDescriptionModel,
                 source => source.MapFrom(res =>
                     new MovieDescriptionModel()
@@ -88,10 +89,11 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
             CreateMap<MovieDescription, MovieDescriptionModel>();
             CreateMap<MovieDescriptionModel, MovieDescription>();
 
-            CreateMap<MovieModel, Movie>().ForMember(
-                dest => dest.MovieDescription,
-                source =>
-                    source.MapFrom(res => res.MovieDescriptionModel));
+            CreateMap<MovieModel, Movie>()
+                .ForMember(
+                    dest => dest.MovieDescription,
+                    source =>
+                        source.MapFrom(res => res.MovieDescriptionModel));
 
             CreateMap<Movie, MovieModel>().ForMember(
                 dest => dest.MovieDescriptionModel,
