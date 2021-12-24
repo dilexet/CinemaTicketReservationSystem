@@ -1,13 +1,18 @@
 ﻿using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
+using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Domain.UserModels;
 using CinemaTicketReservationSystem.BLL.Results.Authorize;
+using CinemaTicketReservationSystem.BLL.Results.Movie;
 using CinemaTicketReservationSystem.BLL.Results.UserManagement;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
+using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
+using CinemaTicketReservationSystem.WebApi.Models.Requests.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.User;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Authorize;
+using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Response.UserManagement;
 using CinemaTicketReservationSystem.WebApi.Models.ViewModels;
 
@@ -64,6 +69,44 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                     res => res.UserModel));
 
             CreateMap<UserManagementRemoveResult, UserManagementRemoveResponse>();
+
+            CreateMap<MovieCreateRequest, MovieModel>().ForMember(
+                dest => dest.MovieDescriptionModel,
+                source => source.MapFrom(res =>
+                    new MovieDescriptionModel()
+                    {
+                        ReleaseDate = res.ReleaseDate,
+                        Description = res.Description,
+                        Countries = res.Countries,
+                        Genres = res.Genres,
+                        Directors = res.Directors,
+                        Screenwriters = res.Screenwriters,
+                        Producers = res.Producers,
+                        Actors = res.Actors
+                    }));
+
+            CreateMap<MovieDescription, MovieDescriptionModel>();
+            CreateMap<MovieDescriptionModel, MovieDescription>();
+
+            CreateMap<MovieModel, Movie>().ForMember(
+                dest => dest.MovieDescription,
+                source =>
+                    source.MapFrom(res => res.MovieDescriptionModel));
+
+            CreateMap<Movie, MovieModel>().ForMember(
+                dest => dest.MovieDescriptionModel,
+                source =>
+                    source.MapFrom(res => res.MovieDescription));
+
+            CreateMap<MovieDescriptionModel, ModelDescriptionViewModel>();
+
+            CreateMap<MovieModel, MovieViewModel>().ForMember(
+                dest => dest.ModelDescriptionViewModel,
+                source => source.MapFrom(res => res.MovieDescriptionModel));
+
+            CreateMap<MovieServiceResult, MovieResponse>().ForMember(
+                dest => dest.Movie,
+                source => source.MapFrom(res => res.MovieModel));
         }
     }
 }
