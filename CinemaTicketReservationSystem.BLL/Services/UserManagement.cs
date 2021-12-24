@@ -5,7 +5,7 @@ using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Domain.UserModels;
 using CinemaTicketReservationSystem.BLL.Results;
-using CinemaTicketReservationSystem.DAL.Abstract;
+using CinemaTicketReservationSystem.DAL.Abstract.Authorize;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using Microsoft.EntityFrameworkCore;
 

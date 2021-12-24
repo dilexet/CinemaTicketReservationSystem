@@ -7,7 +7,7 @@ using CinemaTicketReservationSystem.BLL.Abstract.Utils;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Services;
 using CinemaTicketReservationSystem.BLL.Utils;
-using CinemaTicketReservationSystem.DAL.Abstract;
+using CinemaTicketReservationSystem.DAL.Abstract.Authorize;
 using CinemaTicketReservationSystem.DAL.Context;
 using CinemaTicketReservationSystem.DAL.Enums;
 using CinemaTicketReservationSystem.DAL.Initializers;

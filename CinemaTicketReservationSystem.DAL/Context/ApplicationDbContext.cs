@@ -2,7 +2,7 @@
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
-using CinemaTicketReservationSystem.DAL.Entity.TicketsEntity;
+using CinemaTicketReservationSystem.DAL.Entity.TicketEntity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicketReservationSystem.DAL.Context

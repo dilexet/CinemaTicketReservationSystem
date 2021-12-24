@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using CinemaTicketReservationSystem.DAL.Abstract;
+using CinemaTicketReservationSystem.DAL.Abstract.Authorize;
 using CinemaTicketReservationSystem.DAL.Context;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using Microsoft.Data.SqlClient;

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using CinemaTicketReservationSystem.BLL.Abstract.Utils;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Results;
-using CinemaTicketReservationSystem.DAL.Abstract;
+using CinemaTicketReservationSystem.DAL.Abstract.Authorize;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 
 namespace CinemaTicketReservationSystem.BLL.Utils
