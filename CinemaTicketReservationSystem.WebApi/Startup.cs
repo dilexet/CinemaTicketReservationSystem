@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Text;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Abstract.Utils;
@@ -9,16 +8,14 @@ using CinemaTicketReservationSystem.BLL.Services;
 using CinemaTicketReservationSystem.BLL.Utils;
 using CinemaTicketReservationSystem.DAL.Abstract.Authorize;
 using CinemaTicketReservationSystem.DAL.Context;
-using CinemaTicketReservationSystem.DAL.Enums;
-using CinemaTicketReservationSystem.DAL.Initializers;
 using CinemaTicketReservationSystem.DAL.Repository.Authorize;
 using CinemaTicketReservationSystem.WebApi.CustomFilters;
+using CinemaTicketReservationSystem.WebApi.Extensions;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Token;
 using CinemaTicketReservationSystem.WebApi.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -27,8 +24,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 
 namespace CinemaTicketReservationSystem.WebApi
 {
@@ -45,21 +40,7 @@ namespace CinemaTicketReservationSystem.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var originHttp = Configuration["Origins:HttpOrigin"];
-            var originHttps = Configuration["Origins:HttpsOrigin"];
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy(NameCorsPolicy, builder =>
-                {
-                    builder
-                        .WithOrigins(originHttp, originHttps)
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .SetIsOriginAllowed(_ => true)
-                        .AllowCredentials();
-                });
-            });
+            services.AddCorsToConfigureServices(Configuration, NameCorsPolicy);
 
             services.AddControllers().ConfigureApiBehaviorOptions(options =>
             {
@@ -132,75 +113,9 @@ namespace CinemaTicketReservationSystem.WebApi
                     provider.GetService<IRoleRepository>(),
                     provider.GetService<IMapper>()));
 
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidIssuer = Configuration["JwtOptions:Issuer"],
-                ValidAudience = Configuration["JwtOptions:Audience"],
-                IssuerSigningKey =
-                    new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtOptions:AccessTokenSecret"])),
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero,
-                ValidateIssuerSigningKey = true,
-                ValidateIssuer = true,
-                ValidateAudience = true
-            };
+            services.AddAuthenticationToConfigureServices(Configuration);
 
-            services.AddAuthentication(
-                    option =>
-                    {
-                        option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                        option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    })
-                .AddJwtBearer(options =>
-                {
-                    options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
-                    options.Audience = Configuration["JwtOptions:Audience"];
-                    options.TokenValidationParameters = tokenValidationParameters;
-                });
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("AdminRole", policy =>
-                    policy.RequireRole(RoleTypes.Admin.ToString()));
-                options.AddPolicy("UserRole", policy =>
-                    policy.RequireRole(RoleTypes.User.ToString()));
-                options.AddPolicy("ManagerRole", policy =>
-                    policy.RequireRole(RoleTypes.Manager.ToString()));
-            });
-
-            services.AddSwaggerGen(swagger =>
-            {
-                swagger.SwaggerDoc(
-                    "v1",
-                    new OpenApiInfo
-                    {
-                        Title = "CinemaTicketReservationSystem.WebApi", Version = "v1"
-                    });
-                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-                {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Description = "Enter ‘Bearer’ [space] and then your valid token",
-                });
-                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        new string[] { }
-                    }
-                });
-            });
+            services.AddSwaggerToConfigureServices();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -209,23 +124,10 @@ namespace CinemaTicketReservationSystem.WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "CinemaTicketReservationSystem.WebApi v1"));
+                app.UseSwaggerConfigure();
             }
 
-            using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope())
-            {
-                if (scope != null)
-                {
-                    var services = scope.ServiceProvider;
-                    using (var context = services.GetRequiredService<ApplicationDbContext>())
-                    {
-                        context.Database.Migrate();
-                        RoleInitialize.Seed(context);
-                    }
-                }
-            }
+            app.UseDbMigrateConfigure();
 
             app.UseDeveloperExceptionPage();
             app.UseHttpsRedirection();
