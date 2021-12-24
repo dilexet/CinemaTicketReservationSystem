@@ -1,12 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
+using CinemaTicketReservationSystem.DAL.Enums;
 
 namespace CinemaTicketReservationSystem.DAL.Entity.TicketsEntity
 {
     public class Ticket : BasedEntity
     {
         public decimal TotalPrice { get; set; }
+
+        public TicketState TicketState { get; set; }
+
+        public Guid SessionId { get; set; }
+
+        public Guid SeatId { get; set; }
 
         public Session Session { get; set; }
 
