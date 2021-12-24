@@ -6,8 +6,6 @@ namespace CinemaTicketReservationSystem.DAL.Entity.MovieEntity
 {
     public class MovieDescription : BasedEntity
     {
-        public Guid MovieId { get; set; }
-
         public DateTime ReleaseDate { get; set; }
 
         public string Description { get; set; }
