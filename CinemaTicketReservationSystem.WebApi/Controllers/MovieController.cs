@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
@@ -24,9 +25,9 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddMovie(MovieCreateRequest movieCreateRequest)
+        public async Task<IActionResult> AddMovie(MovieRequest movieRequest)
         {
-            var movieResult = await _movieService.AddMovie(_mapper.Map<MovieModel>(movieCreateRequest));
+            var movieResult = await _movieService.AddMovie(_mapper.Map<MovieModel>(movieRequest));
             var response = _mapper.Map<MovieResponse>(movieResult);
             if (!response.Success)
             {
@@ -39,9 +40,18 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateMovieInfo()
+        public async Task<IActionResult> UpdateMovieInfo(Guid id, MovieRequest movieRequest)
         {
-            return Ok();
+            var movieResult = await _movieService.UpdateMovieInfo(id, _mapper.Map<MovieModel>(movieRequest));
+            var response = _mapper.Map<MovieResponse>(movieResult);
+            if (!response.Success)
+            {
+                response.Code = StatusCodes.Status400BadRequest;
+                return BadRequest(response);
+            }
+
+            response.Code = StatusCodes.Status200OK;
+            return Ok(response);
         }
 
         [HttpDelete]
