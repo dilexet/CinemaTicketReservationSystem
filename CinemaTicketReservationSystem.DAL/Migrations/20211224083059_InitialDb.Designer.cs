@@ -4,14 +4,16 @@ using CinemaTicketReservationSystem.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CinemaTicketReservationSystem.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211224083059_InitialDb")]
+    partial class InitialDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,17 +71,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("dabdfc9a-49b7-4aa6-9a8f-507826800cf5"),
+                            Id = new Guid("f7f79d9f-a7fa-48c6-bd6c-b7ff8d9520d7"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("0b09591c-40b3-4963-a4c5-32867af05ac2"),
+                            Id = new Guid("e704bf06-8522-4c67-a880-cb66e58121ee"),
                             Name = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("63bcd85d-b01e-48f8-9ee5-772b0c39b260"),
+                            Id = new Guid("f769d653-2bbf-4611-b969-3cbe459b7b39"),
                             Name = "User"
                         });
                 });
@@ -278,37 +280,31 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ActorsString")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Actors");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CountriesString")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Countries");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DirectorsString")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Directors");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GenresString")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Genres");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("MovieId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ProducersString")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Producers");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ScreenwritersString")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Screenwriters");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
