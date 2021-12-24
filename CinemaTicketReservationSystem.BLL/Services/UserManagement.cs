@@ -115,6 +115,18 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<UserManagementResult> UpdateUser(Guid id, UserModel userModel)
         {
+            if (await _userRepository.FirstOrDefaultAsync(x => x.Name == userModel.Name) != null)
+            {
+                return new UserManagementResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "User with this name is exists"
+                    }
+                };
+            }
+
             var userExist = await _userRepository.FindByIdAsync(id);
             if (userExist == null)
             {
