@@ -8,7 +8,7 @@ namespace CinemaTicketReservationSystem.DAL.Entity.TicketsEntity
 {
     public class Ticket : BasedEntity
     {
-        public decimal TotalPrice { get; set; }
+        public double TotalPrice { get; set; }
 
         public TicketState TicketState { get; set; }
 

@@ -5,7 +5,7 @@ namespace CinemaTicketReservationSystem.DAL.Entity.SessionEntity
 {
     public class SessionSeatType : BasedEntity
     {
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
         public Guid SeatTypeId { get; set; }
 
