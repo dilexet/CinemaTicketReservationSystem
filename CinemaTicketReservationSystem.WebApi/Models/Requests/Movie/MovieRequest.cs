@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Movie
 {
-    public class MovieCreateRequest
+    public class MovieRequest
     {
         public string Name { get; set; }
 
