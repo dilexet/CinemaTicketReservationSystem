@@ -1,6 +1,6 @@
 ﻿using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 
-namespace CinemaTicketReservationSystem.BLL.Results
+namespace CinemaTicketReservationSystem.BLL.Results.Authorize
 {
     public class TokenResult : Result
     {

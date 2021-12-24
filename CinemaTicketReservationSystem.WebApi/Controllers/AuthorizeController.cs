@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
-using CinemaTicketReservationSystem.BLL.Results;
+using CinemaTicketReservationSystem.BLL.Results.Authorize;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Token;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Authorize;

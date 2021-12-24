@@ -1,4 +1,4 @@
-﻿namespace CinemaTicketReservationSystem.BLL.Results
+﻿namespace CinemaTicketReservationSystem.BLL.Results.Authorize
 {
     public class AuthorizeResult : Result
     {

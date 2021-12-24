@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CinemaTicketReservationSystem.BLL.Domain.UserModels;
 
-namespace CinemaTicketReservationSystem.BLL.Results
+namespace CinemaTicketReservationSystem.BLL.Results.UserManagement
 {
     public class UserManagementGetUsersResult : Result
     {

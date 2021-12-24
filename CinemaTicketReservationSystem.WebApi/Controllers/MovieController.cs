@@ -4,7 +4,6 @@ using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
