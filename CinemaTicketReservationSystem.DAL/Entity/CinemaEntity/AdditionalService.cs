@@ -1,6 +1,6 @@
 ﻿using System;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
-using CinemaTicketReservationSystem.DAL.Entity.TicketsEntity;
+using CinemaTicketReservationSystem.DAL.Entity.TicketEntity;
 
 namespace CinemaTicketReservationSystem.DAL.Entity.CinemaEntity
 {

@@ -4,7 +4,7 @@ using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 using CinemaTicketReservationSystem.DAL.Enums;
 
-namespace CinemaTicketReservationSystem.DAL.Entity.TicketsEntity
+namespace CinemaTicketReservationSystem.DAL.Entity.TicketEntity
 {
     public class Ticket : BasedEntity
     {
