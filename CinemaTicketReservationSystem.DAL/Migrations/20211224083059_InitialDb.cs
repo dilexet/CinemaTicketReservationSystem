@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CinemaTicketReservationSystem.DAL.Migrations
 {
+#pragma warning disable SA1601
     public partial class InitialDb : Migration
+#pragma warning restore SA1601
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
