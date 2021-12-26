@@ -18,13 +18,5 @@ namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Movie
         public IEnumerable<string> Countries { get; set; }
 
         public IEnumerable<string> Genres { get; set; }
-
-        public IEnumerable<string> Directors { get; set; }
-
-        public IEnumerable<string> Screenwriters { get; set; }
-
-        public IEnumerable<string> Producers { get; set; }
-
-        public IEnumerable<string> Actors { get; set; }
     }
 }

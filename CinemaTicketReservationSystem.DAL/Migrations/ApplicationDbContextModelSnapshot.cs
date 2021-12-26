@@ -69,17 +69,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f1cf0d29-4d6a-43bc-9c0e-9ab59cc2146c"),
+                            Id = new Guid("8aeea306-f459-47c7-acd0-a8e266a2a9b1"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("0834c804-5f78-489a-8f4e-1033352e72ea"),
+                            Id = new Guid("0d731b29-6d2a-4653-beab-2a87565d50b2"),
                             Name = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("925c981b-67e0-4eb2-99b1-3d190d40bc50"),
+                            Id = new Guid("79c5de21-fa87-4626-98c8-059f3c670e2b"),
                             Name = "User"
                         });
                 });
@@ -280,10 +280,6 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ActorsString")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Actors");
-
                     b.Property<string>("CountriesString")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Countries");
@@ -291,24 +287,12 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DirectorsString")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Directors");
-
                     b.Property<string>("GenresString")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Genres");
 
-                    b.Property<string>("ProducersString")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Producers");
-
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("ScreenwritersString")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Screenwriters");
 
                     b.HasKey("Id");
 

@@ -93,10 +93,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
             movieExist.MovieDescription.Description = movieModel.MovieDescriptionModel.Description;
             movieExist.MovieDescription.Countries = movieModel.MovieDescriptionModel.Countries;
             movieExist.MovieDescription.Genres = movieModel.MovieDescriptionModel.Genres;
-            movieExist.MovieDescription.Directors = movieModel.MovieDescriptionModel.Directors;
-            movieExist.MovieDescription.Screenwriters = movieModel.MovieDescriptionModel.Screenwriters;
-            movieExist.MovieDescription.Producers = movieModel.MovieDescriptionModel.Producers;
-            movieExist.MovieDescription.Actors = movieModel.MovieDescriptionModel.Actors;
 
             if (!await _movieRepository.UpdateAsync(movieExist))
             {
