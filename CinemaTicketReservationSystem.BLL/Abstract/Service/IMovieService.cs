@@ -10,5 +10,7 @@ namespace CinemaTicketReservationSystem.BLL.Abstract.Service
         Task<MovieServiceResult> AddMovie(MovieModel movieModel);
 
         Task<MovieServiceResult> UpdateMovieInfo(Guid id, MovieModel movieModel);
+
+        Task<MovieServiceRemoveResult> RemoveMovie(Guid id);
     }
 }

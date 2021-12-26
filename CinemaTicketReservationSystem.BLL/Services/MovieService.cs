@@ -114,5 +114,39 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 MovieModel = newMovieModel
             };
         }
+
+        public async Task<MovieServiceRemoveResult> RemoveMovie(Guid id)
+        {
+            var movieExist = await _movieRepository.FindByIdAsync(id);
+            if (movieExist == null)
+            {
+                return new MovieServiceRemoveResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "Movie is not exists"
+                    }
+                };
+            }
+
+            if (!await _movieRepository.RemoveAsync(movieExist))
+            {
+                return new MovieServiceRemoveResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "An error occured while removing to the database"
+                    }
+                };
+            }
+
+            return new MovieServiceRemoveResult()
+            {
+                Success = true,
+                Id = id
+            };
+        }
     }
 }
