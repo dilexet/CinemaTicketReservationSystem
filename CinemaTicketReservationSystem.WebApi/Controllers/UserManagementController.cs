@@ -33,7 +33,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<UserManagementGetUsersResponse>(usersResult);
             if (!response.Success)
             {
-                response.Code = StatusCodes.Status400BadRequest;
+                response.Code = StatusCodes.Status404NotFound;
                 return BadRequest(response);
             }
 
@@ -48,7 +48,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<UserManagementResponse>(usersResult);
             if (!response.Success)
             {
-                response.Code = StatusCodes.Status400BadRequest;
+                response.Code = StatusCodes.Status404NotFound;
                 return BadRequest(response);
             }
 
