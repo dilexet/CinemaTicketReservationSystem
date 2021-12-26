@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
+using CinemaTicketReservationSystem.BLL.Filters;
 using CinemaTicketReservationSystem.BLL.Results.Movie;
 
 namespace CinemaTicketReservationSystem.BLL.Abstract.Service
@@ -12,5 +13,9 @@ namespace CinemaTicketReservationSystem.BLL.Abstract.Service
         Task<MovieServiceResult> UpdateMovieInfo(Guid id, MovieModel movieModel);
 
         Task<MovieServiceRemoveResult> RemoveMovie(Guid id);
+
+        Task<MovieServiceGetMoviesResult> GetMovies(FilterParametersModel filter);
+
+        Task<MovieServiceResult> GetMovieById(Guid id);
     }
 }

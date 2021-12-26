@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
+using CinemaTicketReservationSystem.BLL.Filters;
 using CinemaTicketReservationSystem.BLL.Results.Movie;
 using CinemaTicketReservationSystem.DAL.Abstract.Movie;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicketReservationSystem.BLL.Services
 {
@@ -146,6 +150,88 @@ namespace CinemaTicketReservationSystem.BLL.Services
             {
                 Success = true,
                 Id = id
+            };
+        }
+
+        public async Task<MovieServiceGetMoviesResult> GetMovies(FilterParametersModel filter)
+        {
+            IQueryable<Movie> movies = null;
+            if (filter == null)
+            {
+                movies = _movieRepository.GetBy();
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(filter.SearchQuery))
+                {
+                    var searQuery = filter.SearchQuery.ToLower();
+                    movies = _movieRepository.GetBy(movie =>
+                        movie.Name.ToLower().IndexOf(searQuery, StringComparison.Ordinal) >= 0 ||
+                        movie.MovieDescription.Description.ToLower()
+                            .IndexOf(searQuery, StringComparison.Ordinal) >= 0 ||
+                        movie.MovieDescription.Genres.Count(genre =>
+                            genre.ToLower().IndexOf(searQuery, StringComparison.Ordinal) >= 0) > 0);
+                }
+
+                if (!string.IsNullOrEmpty(filter.SortBy))
+                {
+                    switch (filter.SortBy)
+                    {
+                        case "name":
+                            movies = movies?.OrderBy(movie => movie.Name);
+                            break;
+                        case "release_date":
+                            movies = movies?.OrderBy(movie => movie.MovieDescription.ReleaseDate);
+                            break;
+                        default:
+                            movies = _movieRepository.GetBy();
+                            break;
+                    }
+                }
+            }
+
+            if (movies == null)
+            {
+                return new MovieServiceGetMoviesResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "No movies found"
+                    }
+                };
+            }
+
+            var moviesModel = _mapper.Map<IEnumerable<MovieModel>>(await movies.ToListAsync());
+
+            return new MovieServiceGetMoviesResult()
+            {
+                Success = true,
+                MovieModels = moviesModel
+            };
+        }
+
+        public async Task<MovieServiceResult> GetMovieById(Guid id)
+        {
+            var movie = await _movieRepository.FindByIdAsync(id);
+            if (movie == null)
+            {
+                return new MovieServiceResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "Movie is not exists"
+                    }
+                };
+            }
+
+            var movieModel = _mapper.Map<MovieModel>(movie);
+
+            return new MovieServiceResult()
+            {
+                Success = true,
+                MovieModel = movieModel
             };
         }
     }
