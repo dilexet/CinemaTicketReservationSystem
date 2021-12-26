@@ -80,10 +80,6 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                         Description = res.Description,
                         Countries = res.Countries,
                         Genres = res.Genres,
-                        Directors = res.Directors,
-                        Screenwriters = res.Screenwriters,
-                        Producers = res.Producers,
-                        Actors = res.Actors
                     }));
 
             CreateMap<MovieDescription, MovieDescriptionModel>();
