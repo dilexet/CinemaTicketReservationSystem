@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
+using CinemaTicketReservationSystem.BLL.Filters;
+using CinemaTicketReservationSystem.WebApi.Models.Filters;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;
 using Microsoft.AspNetCore.Http;
@@ -70,15 +72,33 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMovieById()
+        public async Task<IActionResult> GetMovieById(Guid id)
         {
-            return Ok();
+            var movieResult = await _movieService.GetMovieById(id);
+            var response = _mapper.Map<MovieResponse>(movieResult);
+            if (!response.Success)
+            {
+                response.Code = StatusCodes.Status404NotFound;
+                return BadRequest(response);
+            }
+
+            response.Code = StatusCodes.Status200OK;
+            return Ok(response);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMovies()
+        public async Task<IActionResult> GetMovies([FromQuery] FilterParameters filter)
         {
-            return Ok();
+            var movieResult = await _movieService.GetMovies(_mapper.Map<FilterParametersModel>(filter));
+            var response = _mapper.Map<MovieGetAllResponse>(movieResult);
+            if (!response.Success)
+            {
+                response.Code = StatusCodes.Status404NotFound;
+                return BadRequest(response);
+            }
+
+            response.Code = StatusCodes.Status200OK;
+            return Ok(response);
         }
     }
 }
