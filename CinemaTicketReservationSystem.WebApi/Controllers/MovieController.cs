@@ -55,9 +55,18 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> RemoveMovie()
+        public async Task<IActionResult> RemoveMovie(Guid id)
         {
-            return Ok();
+            var movieResult = await _movieService.RemoveMovie(id);
+            var response = _mapper.Map<MovieRemoveResponse>(movieResult);
+            if (!response.Success)
+            {
+                response.Code = StatusCodes.Status400BadRequest;
+                return BadRequest(response);
+            }
+
+            response.Code = StatusCodes.Status200OK;
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
