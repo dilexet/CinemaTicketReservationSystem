@@ -1,14 +1,15 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
 using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Domain.UserModels;
+using CinemaTicketReservationSystem.BLL.Filters;
 using CinemaTicketReservationSystem.BLL.Results.Authorize;
 using CinemaTicketReservationSystem.BLL.Results.Movie;
 using CinemaTicketReservationSystem.BLL.Results.UserManagement;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
+using CinemaTicketReservationSystem.WebApi.Models.Filters;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.User;
@@ -107,6 +108,13 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                 source => source.MapFrom(res => res.MovieModel));
 
             CreateMap<MovieServiceRemoveResult, MovieRemoveResponse>();
+            CreateMap<MovieServiceGetMoviesResult, MovieGetAllResponse>()
+                .ForMember(
+                    dest => dest.Movies,
+                    source =>
+                        source.MapFrom(res => res.MovieModels));
+
+            CreateMap<FilterParameters, FilterParametersModel>();
         }
     }
 }
