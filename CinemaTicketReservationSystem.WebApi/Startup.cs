@@ -26,10 +26,10 @@ namespace CinemaTicketReservationSystem.WebApi
         {
             services.AddCorsToConfigureServices(Configuration, NameCorsPolicy);
 
-            services.AddControllers().ConfigureApiBehaviorOptions(options =>
-            {
-                options.SuppressModelStateInvalidFilter = true;
-            });
+            services.AddControllers()
+                .ConfigureApiBehaviorOptions(options => { options.SuppressModelStateInvalidFilter = true; })
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.DateFormatString = Configuration["DateTime:Format"]);
 
             services.AddMvc(config =>
                 {
