@@ -105,6 +105,8 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
             CreateMap<MovieServiceResult, MovieResponse>().ForMember(
                 dest => dest.Movie,
                 source => source.MapFrom(res => res.MovieModel));
+
+            CreateMap<MovieServiceRemoveResult, MovieRemoveResponse>();
         }
     }
 }
