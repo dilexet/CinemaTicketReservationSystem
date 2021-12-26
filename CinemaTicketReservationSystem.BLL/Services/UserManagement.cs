@@ -28,6 +28,18 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             var users = await _userRepository.GetBy().ToListAsync();
 
+            if (users == null)
+            {
+                return new UserManagementGetUsersResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "No users found"
+                    }
+                };
+            }
+
             var usersModel = _mapper.Map<IEnumerable<UserModel>>(users);
 
             return new UserManagementGetUsersResult()
