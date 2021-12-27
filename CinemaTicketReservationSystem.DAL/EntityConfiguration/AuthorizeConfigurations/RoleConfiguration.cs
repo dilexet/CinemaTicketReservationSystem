@@ -1,6 +1,5 @@
 ﻿using System;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
-using CinemaTicketReservationSystem.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -20,15 +19,15 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.AuthorizeConfigu
             builder.HasData(
                 new
                 {
-                    Id = Guid.NewGuid(), Name = RoleTypes.Admin.ToString()
+                    Id = Guid.NewGuid(), Name = "Admin"
                 },
                 new
                 {
-                    Id = Guid.NewGuid(), Name = RoleTypes.Manager.ToString()
+                    Id = Guid.NewGuid(), Name = "Manager"
                 },
                 new
                 {
-                    Id = Guid.NewGuid(), Name = RoleTypes.User.ToString()
+                    Id = Guid.NewGuid(), Name = "User"
                 });
         }
     }
