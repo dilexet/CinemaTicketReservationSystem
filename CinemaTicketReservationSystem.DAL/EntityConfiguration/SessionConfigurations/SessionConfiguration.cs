@@ -19,27 +19,16 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.SessionConfigura
                 .HasOne(x => x.Hall)
                 .WithMany(x => x.Sessions)
                 .HasForeignKey(x => x.HallId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder
-                .HasOne(x => x.Cinema)
-                .WithMany(x => x.Sessions)
-                .HasForeignKey(x => x.CinemaId);
-
-            builder
-                .HasMany(x => x.SessionSeatTypes)
-                .WithOne(x => x.Session)
-                .HasForeignKey(x => x.SessionId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .HasMany(x => x.SessionAdditionalServices)
                 .WithOne(x => x.Session)
                 .HasForeignKey(x => x.SessionId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .HasMany(x => x.Tickets)
+                .HasMany(x => x.SessionSeats)
                 .WithOne(x => x.Session)
                 .HasForeignKey(x => x.SessionId)
                 .OnDelete(DeleteBehavior.Cascade);

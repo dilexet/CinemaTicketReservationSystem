@@ -13,7 +13,8 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.SessionConfigura
             builder
                 .HasOne(x => x.Session)
                 .WithMany(x => x.SessionAdditionalServices)
-                .HasForeignKey(x => x.SessionId);
+                .HasForeignKey(x => x.SessionId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .HasOne(x => x.AdditionalService)

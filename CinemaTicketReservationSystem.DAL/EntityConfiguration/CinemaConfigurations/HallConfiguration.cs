@@ -11,14 +11,21 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.CinemaConfigurat
             builder.HasKey(x => x.Id);
 
             builder
+                .HasOne(x => x.Cinema)
+                .WithMany(x => x.Halls)
+                .HasForeignKey(x => x.CinemaId);
+
+            builder
                 .HasMany(x => x.Sessions)
                 .WithOne(x => x.Hall)
-                .HasForeignKey(x => x.HallId);
+                .HasForeignKey(x => x.HallId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .HasMany(x => x.Rows)
                 .WithOne(x => x.Hall)
-                .HasForeignKey(x => x.HallId);
+                .HasForeignKey(x => x.HallId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
