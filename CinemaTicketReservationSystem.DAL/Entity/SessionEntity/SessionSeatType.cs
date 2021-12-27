@@ -11,8 +11,6 @@ namespace CinemaTicketReservationSystem.DAL.Entity.SessionEntity
 
         public virtual SeatType SeatType { get; set; }
 
-        public Guid SessionSeatId { get; set; }
-
         public virtual SessionSeat SessionSeat { get; set; }
     }
 }

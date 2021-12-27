@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CinemaTicketReservationSystem.DAL.Entity.CinemaEntity
 {
@@ -8,8 +7,6 @@ namespace CinemaTicketReservationSystem.DAL.Entity.CinemaEntity
         public string Name { get; set; }
 
         public uint NumberOfHalls { get; set; }
-
-        public Guid AddressId { get; set; }
 
         public virtual Address Address { get; set; }
 
