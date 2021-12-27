@@ -69,17 +69,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8aeea306-f459-47c7-acd0-a8e266a2a9b1"),
+                            Id = new Guid("4d9c4b4f-296e-4a5a-a8be-1323a8ca06c7"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("0d731b29-6d2a-4653-beab-2a87565d50b2"),
+                            Id = new Guid("b862bb2f-8486-470a-bf85-0e022e192c10"),
                             Name = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("79c5de21-fa87-4626-98c8-059f3c670e2b"),
+                            Id = new Guid("dfb986f5-987b-4a25-9564-9f060ff2ffd9"),
                             Name = "User"
                         });
                 });
@@ -257,9 +257,6 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("MovieDescriptionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -267,9 +264,6 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MovieDescriptionId")
-                        .IsUnique();
 
                     b.ToTable("Movies");
                 });
@@ -291,10 +285,16 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Genres");
 
+                    b.Property<Guid>("MovieId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MovieId")
+                        .IsUnique();
 
                     b.ToTable("MovieDescriptions");
                 });
@@ -499,15 +499,15 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Navigation("SessionSeatType");
                 });
 
-            modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.MovieEntity.Movie", b =>
+            modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.MovieEntity.MovieDescription", b =>
                 {
-                    b.HasOne("CinemaTicketReservationSystem.DAL.Entity.MovieEntity.MovieDescription", "MovieDescription")
-                        .WithOne("Movie")
-                        .HasForeignKey("CinemaTicketReservationSystem.DAL.Entity.MovieEntity.Movie", "MovieDescriptionId")
+                    b.HasOne("CinemaTicketReservationSystem.DAL.Entity.MovieEntity.Movie", "Movie")
+                        .WithOne("MovieDescription")
+                        .HasForeignKey("CinemaTicketReservationSystem.DAL.Entity.MovieEntity.MovieDescription", "MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("MovieDescription");
+                    b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.SessionEntity.Session", b =>
@@ -606,12 +606,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.MovieEntity.Movie", b =>
                 {
-                    b.Navigation("Session");
-                });
+                    b.Navigation("MovieDescription");
 
-            modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.MovieEntity.MovieDescription", b =>
-                {
-                    b.Navigation("Movie");
+                    b.Navigation("Session");
                 });
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.SessionEntity.Session", b =>

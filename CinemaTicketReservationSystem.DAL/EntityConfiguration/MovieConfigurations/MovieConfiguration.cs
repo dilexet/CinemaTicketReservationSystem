@@ -13,7 +13,7 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.MovieConfigurati
             builder
                 .HasOne(x => x.MovieDescription)
                 .WithOne(x => x.Movie)
-                .HasForeignKey<Movie>(x => x.MovieDescriptionId)
+                .HasForeignKey<MovieDescription>(x => x.MovieId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

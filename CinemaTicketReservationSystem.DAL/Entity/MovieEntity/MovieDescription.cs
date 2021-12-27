@@ -10,6 +10,8 @@ namespace CinemaTicketReservationSystem.DAL.Entity.MovieEntity
 
         public string Description { get; set; }
 
+        public Guid MovieId { get; set; }
+
         public Movie Movie { get; set; }
 
         public string CountriesString { get; set; }

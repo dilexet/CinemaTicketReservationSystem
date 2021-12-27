@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CinemaTicketReservationSystem.DAL.Migrations
 {
-    public partial class InitDatabase : Migration
+    public partial class InitialDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,18 +22,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MovieDescriptions",
+                name: "Movies",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Countries = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Genres = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MovieDescriptions", x => x.Id);
+                    table.PrimaryKey("PK_Movies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,22 +68,23 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Movies",
+                name: "MovieDescriptions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MovieDescriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Countries = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Genres = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Movies", x => x.Id);
+                    table.PrimaryKey("PK_MovieDescriptions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Movies_MovieDescriptions_MovieDescriptionId",
-                        column: x => x.MovieDescriptionId,
-                        principalTable: "MovieDescriptions",
+                        name: "FK_MovieDescriptions_Movies_MovieId",
+                        column: x => x.MovieId,
+                        principalTable: "Movies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -329,17 +329,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("8aeea306-f459-47c7-acd0-a8e266a2a9b1"), "Admin" });
+                values: new object[] { new Guid("4d9c4b4f-296e-4a5a-a8be-1323a8ca06c7"), "Admin" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("0d731b29-6d2a-4653-beab-2a87565d50b2"), "Manager" });
+                values: new object[] { new Guid("b862bb2f-8486-470a-bf85-0e022e192c10"), "Manager" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("79c5de21-fa87-4626-98c8-059f3c670e2b"), "User" });
+                values: new object[] { new Guid("dfb986f5-987b-4a25-9564-9f060ff2ffd9"), "User" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdditionalServices_SessionAdditionalServiceId",
@@ -358,9 +358,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 column: "CinemaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Movies_MovieDescriptionId",
-                table: "Movies",
-                column: "MovieDescriptionId",
+                name: "IX_MovieDescriptions_MovieId",
+                table: "MovieDescriptions",
+                column: "MovieId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -438,6 +438,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "AdditionalServices");
 
             migrationBuilder.DropTable(
+                name: "MovieDescriptions");
+
+            migrationBuilder.DropTable(
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
@@ -475,9 +478,6 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Cinemas");
-
-            migrationBuilder.DropTable(
-                name: "MovieDescriptions");
         }
     }
 }
