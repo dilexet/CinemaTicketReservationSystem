@@ -1,22 +1,28 @@
 ﻿using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
+using CinemaTicketReservationSystem.BLL.Domain.CinemaModels;
 using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Domain.UserModels;
 using CinemaTicketReservationSystem.BLL.Filters;
 using CinemaTicketReservationSystem.BLL.Results.Authorize;
+using CinemaTicketReservationSystem.BLL.Results.Cinema;
 using CinemaTicketReservationSystem.BLL.Results.Movie;
 using CinemaTicketReservationSystem.BLL.Results.UserManagement;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
+using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.WebApi.Models.Filters;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
+using CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.User;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Authorize;
+using CinemaTicketReservationSystem.WebApi.Models.Response.Cinema;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Response.UserManagement;
 using CinemaTicketReservationSystem.WebApi.Models.ViewModels;
+using CinemaTicketReservationSystem.WebApi.Models.ViewModels.Cinema;
 
 namespace CinemaTicketReservationSystem.WebApi.Configuration
 {
@@ -115,6 +121,162 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                         source.MapFrom(res => res.MovieModels));
 
             CreateMap<FilterParameters, FilterParametersModel>();
+
+            CreateMap<AdditionalServiceRequest, AdditionalServiceModel>();
+
+            CreateMap<SeatRequest, SeatModel>()
+                .ForMember(
+                    dest => dest.SeatType,
+                    source => source.MapFrom(res => new SeatTypeModel()
+                    {
+                        Name = res.SeatTypeName
+                    }));
+
+            CreateMap<RowRequest, RowModel>()
+                .ForMember(
+                    dest => dest.Seats,
+                    source => source.MapFrom(res => res.Seats));
+
+            CreateMap<HallRequest, HallModel>()
+                .ForMember(
+                    dest => dest.Rows,
+                    source => source.MapFrom(res => res.Rows));
+
+            CreateMap<CinemaRequest, CinemaModel>()
+                .ForMember(
+                    dest => dest.AddressModel,
+                    source => source.MapFrom(res => new AddressModel()
+                    {
+                        CityName = res.CityName,
+                        Street = res.Street
+                    }))
+                .ForMember(
+                    dest => dest.Halls,
+                    source => source.MapFrom(res => res.Halls))
+                .ForMember(
+                    dest => dest.AdditionalServices,
+                    source => source.MapFrom(res => res.AdditionalServices));
+
+            CreateMap<SeatModel, SeatViewModel>()
+                .ForMember(
+                    dest => dest.SeatTypeName,
+                    source => source.MapFrom(res => res.SeatType.Name));
+
+            CreateMap<RowModel, RowViewModel>()
+                .ForMember(
+                    dest => dest.Seats,
+                    source => source.MapFrom(res => res.Seats));
+
+            CreateMap<HallModel, HallViewModel>()
+                .ForMember(
+                    dest => dest.Rows,
+                    source =>
+                        source.MapFrom(res => res.Rows));
+
+            CreateMap<AdditionalServiceModel, AdditionalServiceViewModel>();
+
+            CreateMap<CinemaModel, CinemaViewModel>()
+                .ForMember(
+                    dest => dest.CityName,
+                    source =>
+                        source.MapFrom(res => res.AddressModel.CityName))
+                .ForMember(
+                    dest => dest.Street,
+                    source =>
+                        source.MapFrom(res => res.AddressModel.Street))
+                .ForMember(
+                    dest => dest.AdditionalServices,
+                    source =>
+                        source.MapFrom(res => res.AdditionalServices))
+                .ForMember(
+                    dest => dest.Halls,
+                    source =>
+                        source.MapFrom(res => res.Halls));
+
+            CreateMap<SeatType, SeatTypeModel>();
+
+            CreateMap<Seat, SeatModel>()
+                .ForMember(
+                    dest => dest.SeatType,
+                    source =>
+                        source.MapFrom(res => res.SeatType));
+
+            CreateMap<Row, RowModel>()
+                .ForMember(
+                    dest => dest.Seats,
+                    source =>
+                        source.MapFrom(res => res.Seats));
+
+            CreateMap<Hall, HallModel>()
+                .ForMember(
+                    dest => dest.Rows,
+                    source =>
+                        source.MapFrom(res => res.Rows));
+
+            CreateMap<AdditionalService, AdditionalServiceModel>();
+            CreateMap<Address, AddressModel>();
+
+            CreateMap<Cinema, CinemaModel>()
+                .ForMember(
+                    dest => dest.Halls,
+                    source =>
+                        source.MapFrom(res => res.Halls))
+                .ForMember(
+                    dest => dest.AddressModel,
+                    source =>
+                        source.MapFrom(res => res.Address))
+                .ForMember(
+                    dest => dest.AdditionalServices,
+                    source =>
+                        source.MapFrom(res => res.AdditionalServices));
+
+            CreateMap<SeatTypeModel, SeatType>();
+
+            CreateMap<SeatModel, Seat>()
+                .ForMember(
+                    dest => dest.SeatType,
+                    source =>
+                        source.MapFrom(res => res.SeatType));
+
+            CreateMap<RowModel, Row>()
+                .ForMember(
+                    dest => dest.Seats,
+                    source =>
+                        source.MapFrom(res => res.Seats));
+
+            CreateMap<HallModel, Hall>()
+                .ForMember(
+                    dest => dest.Rows,
+                    source =>
+                        source.MapFrom(res => res.Rows));
+
+            CreateMap<AdditionalServiceModel, AdditionalService>();
+            CreateMap<AddressModel, Address>();
+
+            CreateMap<CinemaModel, Cinema>()
+                .ForMember(
+                    dest => dest.Halls,
+                    source =>
+                        source.MapFrom(res => res.Halls))
+                .ForMember(
+                    dest => dest.Address,
+                    source =>
+                        source.MapFrom(res => res.AddressModel))
+                .ForMember(
+                    dest => dest.AdditionalServices,
+                    source =>
+                        source.MapFrom(res => res.AdditionalServices));
+
+            CreateMap<CinemaServiceResult, CinemaResponse>().ForMember(
+                dest => dest.Cinema,
+                source => source.MapFrom(res => res.CinemaModel));
+
+            CreateMap<CinemaServiceRemoveResult, CinemaRemoveResponse>();
+            CreateMap<CinemaServiceGetAllResult, CinemaGetAllResponse>()
+                .ForMember(
+                    dest => dest.Cinemas,
+                    source =>
+                        source.MapFrom(res => res.CinemaModels));
         }
     }
 }
