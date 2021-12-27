@@ -21,12 +21,6 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.CinemaConfigurat
                 .WithOne(x => x.Seat)
                 .HasForeignKey<SessionSeat>(x => x.SeatId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder
-                .HasOne(x => x.SeatType)
-                .WithMany(x => x.Seat)
-                .HasForeignKey(x => x.SeatTypeId)
-                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -24,8 +24,6 @@ namespace CinemaTicketReservationSystem.DAL.Context
 
         public DbSet<Seat> Seats { get; set; }
 
-        public DbSet<SeatType> SeatTypes { get; set; }
-
         public DbSet<Movie> Movies { get; set; }
 
         public DbSet<MovieDescription> MovieDescriptions { get; set; }
