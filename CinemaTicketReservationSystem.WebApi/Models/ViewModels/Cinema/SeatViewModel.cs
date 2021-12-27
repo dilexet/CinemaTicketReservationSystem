@@ -8,6 +8,6 @@ namespace CinemaTicketReservationSystem.WebApi.Models.ViewModels.Cinema
 
         public uint NumberSeat { get; set; }
 
-        public string SeatTypeName { get; set; }
+        public string SeatType { get; set; }
     }
 }
