@@ -2,7 +2,6 @@
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
-using CinemaTicketReservationSystem.DAL.Entity.TicketEntity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicketReservationSystem.DAL.Context
@@ -37,7 +36,7 @@ namespace CinemaTicketReservationSystem.DAL.Context
 
         public DbSet<SessionSeatType> SessionSeatTypes { get; set; }
 
-        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<SessionSeat> SessionSeats { get; set; }
 
 #pragma warning disable SA1201
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -49,6 +48,10 @@ namespace CinemaTicketReservationSystem.DAL.Context
         public ApplicationDbContext()
         {
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder
+                .UseLazyLoadingProxies();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
