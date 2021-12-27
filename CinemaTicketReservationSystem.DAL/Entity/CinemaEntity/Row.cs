@@ -11,8 +11,8 @@ namespace CinemaTicketReservationSystem.DAL.Entity.CinemaEntity
 
         public Guid HallId { get; set; }
 
-        public Hall Hall { get; set; }
+        public virtual Hall Hall { get; set; }
 
-        public IEnumerable<Seat> Seats { get; set; }
+        public virtual IEnumerable<Seat> Seats { get; set; }
     }
 }

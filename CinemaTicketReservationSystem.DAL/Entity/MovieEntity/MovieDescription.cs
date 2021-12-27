@@ -12,7 +12,7 @@ namespace CinemaTicketReservationSystem.DAL.Entity.MovieEntity
 
         public Guid MovieId { get; set; }
 
-        public Movie Movie { get; set; }
+        public virtual Movie Movie { get; set; }
 
         public string CountriesString { get; set; }
 

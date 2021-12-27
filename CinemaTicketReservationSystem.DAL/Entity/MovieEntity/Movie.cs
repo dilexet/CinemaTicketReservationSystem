@@ -11,8 +11,8 @@ namespace CinemaTicketReservationSystem.DAL.Entity.MovieEntity
 
         public DateTime EndDate { get; set; }
 
-        public Session Session { get; set; }
+        public virtual Session Session { get; set; }
 
-        public MovieDescription MovieDescription { get; set; }
+        public virtual MovieDescription MovieDescription { get; set; }
     }
 }

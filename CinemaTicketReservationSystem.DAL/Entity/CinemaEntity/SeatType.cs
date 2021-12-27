@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 
 namespace CinemaTicketReservationSystem.DAL.Entity.CinemaEntity
@@ -8,10 +7,8 @@ namespace CinemaTicketReservationSystem.DAL.Entity.CinemaEntity
     {
         public string Name { get; set; }
 
-        public IEnumerable<Seat> Seat { get; set; }
+        public virtual IEnumerable<Seat> Seat { get; set; }
 
-        public Guid SessionSeatTypeId { get; set; }
-
-        public SessionSeatType SessionSeatType { get; set; }
+        public virtual SessionSeatType SessionSeatType { get; set; }
     }
 }

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CinemaTicketReservationSystem.DAL.Entity.CinemaEntity
 {
@@ -7,12 +7,14 @@ namespace CinemaTicketReservationSystem.DAL.Entity.CinemaEntity
     {
         public string Name { get; set; }
 
-        public string CityName { get; set; }
-
         public uint NumberOfHalls { get; set; }
 
-        public IEnumerable<Session> Sessions { get; set; }
+        public Guid AddressId { get; set; }
 
-        public IEnumerable<Hall> Halls { get; set; }
+        public virtual Address Address { get; set; }
+
+        public virtual IEnumerable<AdditionalService> AdditionalServices { get; set; }
+
+        public virtual IEnumerable<Hall> Halls { get; set; }
     }
 }

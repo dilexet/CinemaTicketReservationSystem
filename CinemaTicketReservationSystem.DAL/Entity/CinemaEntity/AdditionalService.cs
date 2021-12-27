@@ -1,6 +1,5 @@
 ﻿using System;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
-using CinemaTicketReservationSystem.DAL.Entity.TicketEntity;
 
 namespace CinemaTicketReservationSystem.DAL.Entity.CinemaEntity
 {
@@ -8,12 +7,10 @@ namespace CinemaTicketReservationSystem.DAL.Entity.CinemaEntity
     {
         public string Name { get; set; }
 
-        public Guid TicketId { get; set; }
+        public Guid CinemaId { get; set; }
 
-        public Ticket Ticket { get; set; }
+        public virtual Cinema Cinema { get; set; }
 
-        public Guid SessionAdditionalServiceId { get; set; }
-
-        public SessionAdditionalService SessionAdditionalService { get; set; }
+        public virtual SessionAdditionalService SessionAdditionalService { get; set; }
     }
 }

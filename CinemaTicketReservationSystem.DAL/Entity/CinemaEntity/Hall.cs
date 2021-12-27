@@ -12,10 +12,10 @@ namespace CinemaTicketReservationSystem.DAL.Entity.CinemaEntity
 
         public Guid CinemaId { get; set; }
 
-        public Cinema Cinema { get; set; }
+        public virtual Cinema Cinema { get; set; }
 
-        public IEnumerable<Session> Sessions { get; set; }
+        public virtual IEnumerable<Session> Sessions { get; set; }
 
-        public IEnumerable<Row> Rows { get; set; }
+        public virtual IEnumerable<Row> Rows { get; set; }
     }
 }

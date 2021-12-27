@@ -13,8 +13,8 @@ namespace CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity
 
         public Guid RoleId { get; set; }
 
-        public Role Role { get; set; }
+        public virtual Role Role { get; set; }
 
-        public IEnumerable<RefreshToken> RefreshTokens { get; set; }
+        public virtual IEnumerable<RefreshToken> RefreshTokens { get; set; }
     }
 }

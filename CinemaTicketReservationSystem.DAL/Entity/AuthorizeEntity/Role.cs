@@ -6,6 +6,6 @@ namespace CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity
     {
         public string Name { get; set; }
 
-        public IEnumerable<User> Users { get; set; }
+        public virtual IEnumerable<User> Users { get; set; }
     }
 }

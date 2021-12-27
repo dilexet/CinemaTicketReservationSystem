@@ -19,6 +19,6 @@ namespace CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity
 
         public DateTime ExpiryDate { get; set; } // Refresh token is long lived it could last for months.
 
-        public User User { get; set; }
+        public virtual User User { get; set; }
     }
 }

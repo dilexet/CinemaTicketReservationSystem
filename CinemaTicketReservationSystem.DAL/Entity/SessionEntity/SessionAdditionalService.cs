@@ -9,10 +9,10 @@ namespace CinemaTicketReservationSystem.DAL.Entity.SessionEntity
 
         public Guid AdditionalServiceId { get; set; }
 
-        public AdditionalService AdditionalService { get; set; }
+        public virtual AdditionalService AdditionalService { get; set; }
 
         public Guid SessionId { get; set; }
 
-        public Session Session { get; set; }
+        public virtual Session Session { get; set; }
     }
 }
