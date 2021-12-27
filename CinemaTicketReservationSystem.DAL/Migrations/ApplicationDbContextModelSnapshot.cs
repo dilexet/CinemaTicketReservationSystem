@@ -69,17 +69,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a8d16ee8-8e11-4555-9303-779b94ab346b"),
+                            Id = new Guid("86d4c36e-5bc0-41b8-86c8-8dec67fc47e4"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("a6e40009-d07b-4756-b06a-cc4a8f03d571"),
+                            Id = new Guid("8275929a-1da1-445b-8f4d-f01af2d7c040"),
                             Name = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("4093a6a4-02f7-4b65-bcb3-cff1ec2f19e4"),
+                            Id = new Guid("7ef8ba6c-695b-4d1b-94b0-b53e3fa3c3dd"),
                             Name = "User"
                         });
                 });
@@ -224,62 +224,14 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Property<Guid>("RowId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("SeatTypeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("SeatType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RowId");
 
-                    b.HasIndex("SeatTypeId");
-
                     b.ToTable("Seats");
-                });
-
-            modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.CinemaEntity.SeatType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SeatTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("9685e332-31fb-4d63-902c-b5f825ae7928"),
-                            Name = "Private Suite"
-                        },
-                        new
-                        {
-                            Id = new Guid("02d8971f-fd30-4120-9204-29a9db626747"),
-                            Name = "Premiere Sofa"
-                        },
-                        new
-                        {
-                            Id = new Guid("e7b02a80-3369-4308-b39c-33dbae640c22"),
-                            Name = "Love Seat"
-                        },
-                        new
-                        {
-                            Id = new Guid("d23a029a-858c-49d2-98ff-1c9156c69faf"),
-                            Name = "Cinema chair"
-                        },
-                        new
-                        {
-                            Id = new Guid("0352de1d-78b7-44be-a87b-90bb2c8a227c"),
-                            Name = "Armchairs bags"
-                        },
-                        new
-                        {
-                            Id = new Guid("23eab0d5-9538-44e4-9e0b-b1a1041ee926"),
-                            Name = "VIP"
-                        });
                 });
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.MovieEntity.Movie", b =>
@@ -431,13 +383,10 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<Guid>("SeatTypeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("SeatType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SeatTypeId")
-                        .IsUnique();
 
                     b.ToTable("SessionSeatTypes");
                 });
@@ -516,15 +465,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CinemaTicketReservationSystem.DAL.Entity.CinemaEntity.SeatType", "SeatType")
-                        .WithMany("Seat")
-                        .HasForeignKey("SeatTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Row");
-
-                    b.Navigation("SeatType");
                 });
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.MovieEntity.MovieDescription", b =>
@@ -607,17 +548,6 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Navigation("SessionSeatType");
                 });
 
-            modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.SessionEntity.SessionSeatType", b =>
-                {
-                    b.HasOne("CinemaTicketReservationSystem.DAL.Entity.CinemaEntity.SeatType", "SeatType")
-                        .WithOne("SessionSeatType")
-                        .HasForeignKey("CinemaTicketReservationSystem.DAL.Entity.SessionEntity.SessionSeatType", "SeatTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SeatType");
-                });
-
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity.Role", b =>
                 {
                     b.Navigation("Users");
@@ -657,13 +587,6 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.CinemaEntity.Seat", b =>
                 {
                     b.Navigation("SessionSeat");
-                });
-
-            modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.CinemaEntity.SeatType", b =>
-                {
-                    b.Navigation("Seat");
-
-                    b.Navigation("SessionSeatType");
                 });
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.MovieEntity.Movie", b =>
