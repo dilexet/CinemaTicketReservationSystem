@@ -2,7 +2,7 @@
 
 namespace CinemaTicketReservationSystem.BLL.Results.Cinema
 {
-    public class CinemaServiceResult
+    public class CinemaServiceResult : Result
     {
         public CinemaModel CinemaModel { get; set; }
     }
