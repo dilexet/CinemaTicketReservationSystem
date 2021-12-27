@@ -7,7 +7,6 @@ using CinemaTicketReservationSystem.BLL.Filters;
 using CinemaTicketReservationSystem.WebApi.Models.Filters;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.User;
 using CinemaTicketReservationSystem.WebApi.Models.Response.UserManagement;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
