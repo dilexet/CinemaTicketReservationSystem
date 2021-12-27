@@ -5,56 +5,51 @@ using System.Threading.Tasks;
 using CinemaTicketReservationSystem.DAL.Abstract.Cinema;
 using CinemaTicketReservationSystem.DAL.Context;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
 namespace CinemaTicketReservationSystem.DAL.Repository.Cinema
 {
-    public class CinemaRepository : ICinemaRepository
+    public class CinemaRepository : BaseRepository<Entity.CinemaEntity.Cinema>, ICinemaRepository
     {
-        private readonly ApplicationDbContext _context;
         private readonly ILogger<CinemaRepository> _log;
 
         public CinemaRepository(ApplicationDbContext context, ILogger<CinemaRepository> log)
+            : base(context)
         {
-            _context = context;
             _log = log;
         }
 
-        public async Task<bool> CreateAsync(Entity.CinemaEntity.Cinema entity)
+        public override async Task<bool> CreateAsync(Entity.CinemaEntity.Cinema cinema)
         {
-            if (entity == null)
+            try
             {
-                throw new ArgumentNullException(nameof(entity));
+                return await base.CreateAsync(cinema);
             }
-
-            var result = await _context.Set<Entity.CinemaEntity.Cinema>().AddAsync(entity);
-            if (result != null)
+            catch (SqlException e)
             {
-                return await SaveAsync();
+                _log.LogError(e.ToString());
+            }
+            catch (ArgumentNullException e)
+            {
+                _log.LogError(e.ToString());
             }
 
             return false;
         }
 
-        public async Task<Entity.CinemaEntity.Cinema> FindByIdAsync(Guid? id)
+        public override async Task<Entity.CinemaEntity.Cinema> FindByIdAsync(Guid? id)
         {
-            if (id == null)
-            {
-                throw new ArgumentNullException(nameof(id));
-            }
-
             Entity.CinemaEntity.Cinema cinema = null;
             try
             {
-                cinema = await _context.Set<Entity.CinemaEntity.Cinema>()
-                    .Where(x => x.Id.Equals(id))
-                    .Include(x => x.Sessions)
-                    .Include(x => x.Halls)
-                    .FirstOrDefaultAsync();
+                cinema = await base.FindByIdAsync(id);
             }
             catch (SqlException e)
+            {
+                _log.LogError(e.ToString());
+            }
+            catch (ArgumentNullException e)
             {
                 _log.LogError(e.ToString());
             }
@@ -62,20 +57,12 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Cinema
             return cinema;
         }
 
-        public IQueryable<Entity.CinemaEntity.Cinema> GetBy(
-            Expression<Func<Entity.CinemaEntity.Cinema, bool>> predicate = null)
+        public override IQueryable<Entity.CinemaEntity.Cinema> GetBy(Expression<Func<Entity.CinemaEntity.Cinema, bool>> predicate = null)
         {
             IQueryable<Entity.CinemaEntity.Cinema> cinemas = null;
             try
             {
-                cinemas = predicate != null
-                    ? _context.Set<Entity.CinemaEntity.Cinema>()
-                        .Where(predicate)
-                        .Include(x => x.Sessions)
-                        .Include(x => x.Halls)
-                    : _context.Set<Entity.CinemaEntity.Cinema>()
-                        .Include(x => x.Sessions)
-                        .Include(x => x.Halls);
+                cinemas = base.GetBy(predicate);
             }
             catch (SqlException e)
             {
@@ -85,21 +72,12 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Cinema
             return cinemas;
         }
 
-        public async Task<Entity.CinemaEntity.Cinema> FirstOrDefaultAsync(
-            Expression<Func<Entity.CinemaEntity.Cinema, bool>> predicate = null)
+        public override async Task<Entity.CinemaEntity.Cinema> FirstOrDefaultAsync(Expression<Func<Entity.CinemaEntity.Cinema, bool>> predicate = null)
         {
             Entity.CinemaEntity.Cinema cinema = null;
             try
             {
-                cinema = predicate != null
-                    ? await _context.Set<Entity.CinemaEntity.Cinema>().Where(predicate)
-                        .Include(x => x.Sessions)
-                        .Include(x => x.Halls)
-                        .FirstOrDefaultAsync()
-                    : await _context.Set<Entity.CinemaEntity.Cinema>()
-                        .Include(x => x.Sessions)
-                        .Include(x => x.Halls)
-                        .OrderBy(x => x.Id).FirstOrDefaultAsync();
+                cinema = await base.FirstOrDefaultAsync(predicate);
             }
             catch (SqlException e)
             {
@@ -109,50 +87,47 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Cinema
             return cinema;
         }
 
-        public async Task<bool> UpdateAsync(Entity.CinemaEntity.Cinema entity)
+        public override async Task<bool> UpdateAsync(Entity.CinemaEntity.Cinema cinema)
         {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
             try
             {
-                _context.Entry(entity).State = EntityState.Modified;
-                return await SaveAsync();
+                return await base.UpdateAsync(cinema);
             }
             catch (SqlException e)
             {
                 _log.LogError(e.ToString());
-                return false;
             }
+            catch (ArgumentNullException e)
+            {
+                _log.LogError(e.ToString());
+            }
+
+            return false;
         }
 
-        public async Task<bool> RemoveAsync(Entity.CinemaEntity.Cinema entity)
+        public override async Task<bool> RemoveAsync(Entity.CinemaEntity.Cinema cinema)
         {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
             try
             {
-                _context.Set<Entity.CinemaEntity.Cinema>().Remove(entity);
-                return await SaveAsync();
+                return await base.RemoveAsync(cinema);
             }
             catch (SqlException e)
             {
                 _log.LogError(e.ToString());
-                return false;
             }
+            catch (ArgumentNullException e)
+            {
+                _log.LogError(e.ToString());
+            }
+
+            return false;
         }
 
-        public async Task<bool> SaveAsync()
+        public override async Task<bool> SaveAsync()
         {
             try
             {
-                await _context.SaveChangesAsync();
-                return true;
+                return await base.SaveAsync();
             }
             catch (SqlException e)
             {

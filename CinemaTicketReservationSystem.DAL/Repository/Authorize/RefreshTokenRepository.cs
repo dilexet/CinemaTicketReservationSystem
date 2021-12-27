@@ -6,55 +6,51 @@ using CinemaTicketReservationSystem.DAL.Abstract.Authorize;
 using CinemaTicketReservationSystem.DAL.Context;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
 namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
 {
-    public class RefreshTokenRepository : IRefreshTokenRepository
+    public class RefreshTokenRepository : BaseRepository<RefreshToken>, IRefreshTokenRepository
     {
-        private readonly ApplicationDbContext _context;
         private readonly ILogger<RefreshTokenRepository> _log;
 
         public RefreshTokenRepository(ApplicationDbContext context, ILogger<RefreshTokenRepository> log)
+            : base(context)
         {
-            _context = context;
             _log = log;
         }
 
-        public async Task<bool> CreateAsync(RefreshToken refreshToken)
+        public override async Task<bool> CreateAsync(RefreshToken refreshToken)
         {
-            if (refreshToken == null)
+            try
             {
-                throw new ArgumentNullException(nameof(refreshToken));
+                return await base.CreateAsync(refreshToken);
             }
-
-            var result = await _context.Set<RefreshToken>().AddAsync(refreshToken);
-            if (result != null)
+            catch (SqlException e)
             {
-                return await SaveAsync();
+                _log.LogError(e.ToString());
+            }
+            catch (ArgumentNullException e)
+            {
+                _log.LogError(e.ToString());
             }
 
             return false;
         }
 
-        public async Task<RefreshToken> FindByIdAsync(Guid? id)
+        public override async Task<RefreshToken> FindByIdAsync(Guid? id)
         {
-            if (id == null)
-            {
-                throw new ArgumentNullException(nameof(id));
-            }
-
             RefreshToken refreshToken = null;
             try
             {
-                refreshToken = await _context.Set<RefreshToken>()
-                    .Where(x => x.Id.Equals(id))
-                    .Include(x => x.User)
-                    .FirstOrDefaultAsync();
+                refreshToken = await base.FindByIdAsync(id);
             }
             catch (SqlException e)
+            {
+                _log.LogError(e.ToString());
+            }
+            catch (ArgumentNullException e)
             {
                 _log.LogError(e.ToString());
             }
@@ -62,14 +58,12 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             return refreshToken;
         }
 
-        public IQueryable<RefreshToken> GetBy(Expression<Func<RefreshToken, bool>> predicate = null)
+        public override IQueryable<RefreshToken> GetBy(Expression<Func<RefreshToken, bool>> predicate = null)
         {
             IQueryable<RefreshToken> refreshTokens = null;
             try
             {
-                refreshTokens = predicate != null
-                    ? _context.Set<RefreshToken>().Where(predicate).Include(x => x.User)
-                    : _context.Set<RefreshToken>().Include(x => x.User);
+                refreshTokens = base.GetBy(predicate);
             }
             catch (SqlException e)
             {
@@ -79,18 +73,13 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             return refreshTokens;
         }
 
-        public async Task<RefreshToken> FirstOrDefaultAsync(Expression<Func<RefreshToken, bool>> predicate = null)
+        public override async Task<RefreshToken> FirstOrDefaultAsync(
+            Expression<Func<RefreshToken, bool>> predicate = null)
         {
             RefreshToken refreshToken = null;
             try
             {
-                refreshToken = predicate != null
-                    ? await _context.Set<RefreshToken>().Where(predicate)
-                        .Include(x => x.User)
-                        .FirstOrDefaultAsync()
-                    : await _context.Set<RefreshToken>().Include(x => x.User)
-                        .OrderBy(x => x.Id)
-                        .FirstOrDefaultAsync();
+                refreshToken = await base.FirstOrDefaultAsync(predicate);
             }
             catch (SqlException e)
             {
@@ -100,50 +89,47 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             return refreshToken;
         }
 
-        public async Task<bool> UpdateAsync(RefreshToken refreshToken)
+        public override async Task<bool> UpdateAsync(RefreshToken refreshToken)
         {
-            if (refreshToken == null)
-            {
-                throw new ArgumentNullException(nameof(refreshToken));
-            }
-
             try
             {
-                _context.Entry(refreshToken).State = EntityState.Modified;
-                return await SaveAsync();
+                return await base.UpdateAsync(refreshToken);
             }
             catch (SqlException e)
             {
                 _log.LogError(e.ToString());
-                return false;
             }
+            catch (ArgumentNullException e)
+            {
+                _log.LogError(e.ToString());
+            }
+
+            return false;
         }
 
-        public async Task<bool> RemoveAsync(RefreshToken refreshToken)
+        public override async Task<bool> RemoveAsync(RefreshToken refreshToken)
         {
-            if (refreshToken == null)
-            {
-                throw new ArgumentNullException(nameof(refreshToken));
-            }
-
             try
             {
-                _context.Set<RefreshToken>().Remove(refreshToken);
-                return await SaveAsync();
+                return await base.RemoveAsync(refreshToken);
             }
             catch (SqlException e)
             {
                 _log.LogError(e.ToString());
-                return false;
             }
+            catch (ArgumentNullException e)
+            {
+                _log.LogError(e.ToString());
+            }
+
+            return false;
         }
 
-        public async Task<bool> SaveAsync()
+        public override async Task<bool> SaveAsync()
         {
             try
             {
-                await _context.SaveChangesAsync();
-                return true;
+                return await base.SaveAsync();
             }
             catch (SqlException e)
             {

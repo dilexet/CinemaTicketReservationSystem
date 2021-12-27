@@ -6,56 +6,51 @@ using CinemaTicketReservationSystem.DAL.Abstract.Authorize;
 using CinemaTicketReservationSystem.DAL.Context;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
 namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        private readonly ApplicationDbContext _context;
         private readonly ILogger<UserRepository> _log;
 
         public UserRepository(ApplicationDbContext context, ILogger<UserRepository> log)
+            : base(context)
         {
-            _context = context;
             _log = log;
         }
 
-        public async Task<bool> CreateAsync(User user)
+        public override async Task<bool> CreateAsync(User user)
         {
-            if (user == null)
+            try
             {
-                throw new ArgumentNullException(nameof(user));
+                return await base.CreateAsync(user);
             }
-
-            var result = await _context.Set<User>().AddAsync(user);
-            if (result != null)
+            catch (SqlException e)
             {
-                return await SaveAsync();
+                _log.LogError(e.ToString());
+            }
+            catch (ArgumentNullException e)
+            {
+                _log.LogError(e.ToString());
             }
 
             return false;
         }
 
-        public async Task<User> FindByIdAsync(Guid? id)
+        public override async Task<User> FindByIdAsync(Guid? id)
         {
-            if (id == null)
-            {
-                throw new ArgumentNullException(nameof(id));
-            }
-
             User user = null;
             try
             {
-                user = await _context.Set<User>()
-                    .Where(x => x.Id.Equals(id))
-                    .Include(x => x.Role)
-                    .Include(x => x.RefreshTokens)
-                    .FirstOrDefaultAsync();
+                user = await base.FindByIdAsync(id);
             }
             catch (SqlException e)
+            {
+                _log.LogError(e.ToString());
+            }
+            catch (ArgumentNullException e)
             {
                 _log.LogError(e.ToString());
             }
@@ -63,14 +58,12 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             return user;
         }
 
-        public IQueryable<User> GetBy(Expression<Func<User, bool>> predicate = null)
+        public override IQueryable<User> GetBy(Expression<Func<User, bool>> predicate = null)
         {
             IQueryable<User> users = null;
             try
             {
-                users = predicate != null
-                    ? _context.Set<User>().Where(predicate).Include(x => x.Role)
-                    : _context.Set<User>().Include(x => x.Role);
+                users = base.GetBy(predicate);
             }
             catch (SqlException e)
             {
@@ -80,18 +73,12 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             return users;
         }
 
-        public async Task<User> FirstOrDefaultAsync(Expression<Func<User, bool>> predicate = null)
+        public override async Task<User> FirstOrDefaultAsync(Expression<Func<User, bool>> predicate = null)
         {
             User user = null;
             try
             {
-                user = predicate != null
-                    ? await _context.Set<User>().Where(predicate)
-                        .Include(x => x.Role)
-                        .Include(x => x.RefreshTokens)
-                        .FirstOrDefaultAsync()
-                    : await _context.Set<User>().Include(x => x.Role)
-                        .Include(x => x.RefreshTokens).OrderBy(x => x.Id).FirstOrDefaultAsync();
+                user = await base.FirstOrDefaultAsync(predicate);
             }
             catch (SqlException e)
             {
@@ -101,50 +88,47 @@ namespace CinemaTicketReservationSystem.DAL.Repository.Authorize
             return user;
         }
 
-        public async Task<bool> UpdateAsync(User user)
+        public override async Task<bool> UpdateAsync(User user)
         {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
             try
             {
-                _context.Entry(user).State = EntityState.Modified;
-                return await SaveAsync();
+                return await base.UpdateAsync(user);
             }
             catch (SqlException e)
             {
                 _log.LogError(e.ToString());
-                return false;
             }
+            catch (ArgumentNullException e)
+            {
+                _log.LogError(e.ToString());
+            }
+
+            return false;
         }
 
-        public async Task<bool> RemoveAsync(User user)
+        public override async Task<bool> RemoveAsync(User user)
         {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
             try
             {
-                _context.Set<User>().Remove(user);
-                return await SaveAsync();
+                return await base.RemoveAsync(user);
             }
             catch (SqlException e)
             {
                 _log.LogError(e.ToString());
-                return false;
             }
+            catch (ArgumentNullException e)
+            {
+                _log.LogError(e.ToString());
+            }
+
+            return false;
         }
 
-        public async Task<bool> SaveAsync()
+        public override async Task<bool> SaveAsync()
         {
             try
             {
-                await _context.SaveChangesAsync();
-                return true;
+                return await base.SaveAsync();
             }
             catch (SqlException e)
             {
