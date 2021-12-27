@@ -5,6 +5,7 @@ using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Services;
 using CinemaTicketReservationSystem.BLL.Utils;
 using CinemaTicketReservationSystem.DAL.Abstract.Authorize;
+using CinemaTicketReservationSystem.DAL.Abstract.Cinema;
 using CinemaTicketReservationSystem.DAL.Abstract.Movie;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +48,11 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
             services.AddScoped<IMovieService>(provider =>
                 new MovieService(
                     provider.GetService<IMovieRepository>(),
+                    provider.GetService<IMapper>()));
+
+            services.AddScoped<ICinemaService>(provider =>
+                new CinemaService(
+                    provider.GetService<ICinemaRepository>(),
                     provider.GetService<IMapper>()));
         }
     }
