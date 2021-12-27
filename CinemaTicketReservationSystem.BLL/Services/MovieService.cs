@@ -155,42 +155,30 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<MovieServiceGetMoviesResult> GetMovies(FilterParametersModel filter)
         {
-            IQueryable<Movie> movies = null;
-            if (filter == null)
-            {
-                movies = _movieRepository.GetBy();
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(filter.SearchQuery))
-                {
-                    var searQuery = filter.SearchQuery.ToLower();
-                    movies = _movieRepository.GetBy(movie =>
-                        movie.Name.ToLower().IndexOf(searQuery, StringComparison.Ordinal) >= 0 ||
-                        movie.MovieDescription.Description.ToLower()
-                            .IndexOf(searQuery, StringComparison.Ordinal) >= 0 ||
-                        movie.MovieDescription.Genres.Count(genre =>
-                            genre.ToLower().IndexOf(searQuery, StringComparison.Ordinal) >= 0) > 0);
-                }
+            IQueryable<Movie> movies = _movieRepository.GetBy();
 
-                if (!string.IsNullOrEmpty(filter.SortBy))
+            if (!string.IsNullOrEmpty(filter.SearchQuery))
+            {
+                var searQuery = filter.SearchQuery.ToLower();
+                movies = movies.Where(movie =>
+                    movie.Name.ToLower().Contains(searQuery) ||
+                    movie.MovieDescription.Description.ToLower().Contains(searQuery));
+            }
+
+            if (!string.IsNullOrEmpty(filter.SortBy))
+            {
+                switch (filter.SortBy)
                 {
-                    switch (filter.SortBy)
-                    {
-                        case "name":
-                            movies = movies?.OrderBy(movie => movie.Name);
-                            break;
-                        case "release_date":
-                            movies = movies?.OrderBy(movie => movie.MovieDescription.ReleaseDate);
-                            break;
-                        default:
-                            movies = _movieRepository.GetBy();
-                            break;
-                    }
+                    case "name":
+                        movies = movies?.OrderBy(movie => movie.Name);
+                        break;
+                    case "release_date":
+                        movies = movies?.OrderBy(movie => movie.MovieDescription.ReleaseDate);
+                        break;
                 }
             }
 
-            if (movies == null)
+            if (movies == null || !movies.Any())
             {
                 return new MovieServiceGetMoviesResult()
                 {

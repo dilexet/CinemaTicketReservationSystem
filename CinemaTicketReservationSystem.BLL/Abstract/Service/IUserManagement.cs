@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CinemaTicketReservationSystem.BLL.Domain.UserModels;
+using CinemaTicketReservationSystem.BLL.Filters;
 using CinemaTicketReservationSystem.BLL.Results.UserManagement;
 
 namespace CinemaTicketReservationSystem.BLL.Abstract.Service
 {
     public interface IUserManagement
     {
-        Task<UserManagementGetUsersResult> GetUsers();
+        Task<UserManagementGetUsersResult> GetUsers(FilterParametersModel filter);
 
         Task<UserManagementResult> GetById(Guid id);
 

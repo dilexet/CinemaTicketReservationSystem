@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Domain.UserModels;
+using CinemaTicketReservationSystem.BLL.Filters;
 using CinemaTicketReservationSystem.BLL.Results.UserManagement;
 using CinemaTicketReservationSystem.DAL.Abstract.Authorize;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
@@ -24,11 +26,33 @@ namespace CinemaTicketReservationSystem.BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<UserManagementGetUsersResult> GetUsers()
+        public async Task<UserManagementGetUsersResult> GetUsers(FilterParametersModel filter)
         {
-            var users = await _userRepository.GetBy().ToListAsync();
+            var users = _userRepository.GetBy();
 
-            if (users == null)
+            if (!string.IsNullOrEmpty(filter.SearchQuery))
+            {
+                var searQuery = filter.SearchQuery.ToLower();
+                users = users.Where(user =>
+                    user.Name.ToLower().Contains(searQuery) ||
+                    user.Email.ToLower().Contains(searQuery) ||
+                    user.Role.Name.ToLower().Contains(searQuery));
+            }
+
+            if (!string.IsNullOrEmpty(filter.SortBy))
+            {
+                switch (filter.SortBy)
+                {
+                    case "name":
+                        users = users?.OrderBy(movie => movie.Name);
+                        break;
+                    case "role_name":
+                        users = users?.OrderBy(movie => movie.Role.Name);
+                        break;
+                }
+            }
+
+            if (users == null || !users.Any())
             {
                 return new UserManagementGetUsersResult()
                 {
@@ -40,7 +64,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            var usersModel = _mapper.Map<IEnumerable<UserModel>>(users);
+            var usersModel = _mapper.Map<IEnumerable<UserModel>>(await users.ToListAsync());
 
             return new UserManagementGetUsersResult()
             {
