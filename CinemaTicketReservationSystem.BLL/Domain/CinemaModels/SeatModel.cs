@@ -8,6 +8,6 @@ namespace CinemaTicketReservationSystem.BLL.Domain.CinemaModels
 
         public uint NumberSeat { get; set; }
 
-        public SeatTypeModel SeatType { get; set; }
+        public string SeatType { get; set; }
     }
 }
