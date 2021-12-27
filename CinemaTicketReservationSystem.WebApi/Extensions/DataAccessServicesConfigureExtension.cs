@@ -2,13 +2,11 @@
 using CinemaTicketReservationSystem.DAL.Abstract.Cinema;
 using CinemaTicketReservationSystem.DAL.Abstract.Movie;
 using CinemaTicketReservationSystem.DAL.Abstract.Session;
-using CinemaTicketReservationSystem.DAL.Abstract.Ticket;
 using CinemaTicketReservationSystem.DAL.Context;
 using CinemaTicketReservationSystem.DAL.Repository.Authorize;
 using CinemaTicketReservationSystem.DAL.Repository.Cinema;
 using CinemaTicketReservationSystem.DAL.Repository.Movie;
 using CinemaTicketReservationSystem.DAL.Repository.Session;
-using CinemaTicketReservationSystem.DAL.Repository.Ticket;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,11 +54,6 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
                 new SessionRepository(
                     provider.GetService<ApplicationDbContext>(),
                     provider.GetService<ILogger<SessionRepository>>()));
-
-            services.AddScoped<ITicketRepository>(provider =>
-                new TicketRepository(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<TicketRepository>>()));
         }
     }
 }
