@@ -7,7 +7,7 @@ namespace CinemaTicketReservationSystem.BLL.Abstract.Service
 {
     public interface ICinemaService
     {
-        Task<CinemaServiceResult> AddCinema(CinemaModel cinema);
+        Task<CinemaServiceResult> AddCinema(CinemaModel cinemaModel);
 
         Task<CinemaServiceResult> UpdateCinemaInfo(Guid id, CinemaModel cinema);
 
