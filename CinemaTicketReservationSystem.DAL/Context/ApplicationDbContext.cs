@@ -36,6 +36,8 @@ namespace CinemaTicketReservationSystem.DAL.Context
 
         public DbSet<SessionSeat> SessionSeats { get; set; }
 
+        public DbSet<SeatType> SeatTypes { get; set; }
+
 #pragma warning disable SA1201
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 #pragma warning restore SA1201
