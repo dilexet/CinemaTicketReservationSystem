@@ -197,5 +197,222 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 CinemaModel = cinemaModel
             };
         }
+
+        public async Task<CinemaServiceResult> AddAdditionalService(
+            Guid cinemaId, AdditionalServiceModel additionalServiceModel)
+        {
+            var cinemaExist = await _cinemaRepository.FindByIdAsync(cinemaId);
+            if (cinemaExist == null)
+            {
+                return new CinemaServiceResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "Cinema is not exists"
+                    }
+                };
+            }
+
+            if (cinemaExist.AdditionalServices.FirstOrDefault(x => x.Name == additionalServiceModel.Name) != null)
+            {
+                return new CinemaServiceResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "Additional service with this name is exists"
+                    }
+                };
+            }
+
+            var additionalService = _mapper.Map<AdditionalService>(additionalServiceModel);
+            var additionalServicesExist = cinemaExist.AdditionalServices.ToList();
+            additionalServicesExist.Add(additionalService);
+            cinemaExist.AdditionalServices = additionalServicesExist;
+
+            if (!await _cinemaRepository.UpdateAsync(cinemaExist))
+            {
+                return new CinemaServiceResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "An error occured while updating to the database"
+                    }
+                };
+            }
+
+            CinemaModel newCinemaModel = _mapper.Map<CinemaModel>(cinemaExist);
+
+            return new CinemaServiceResult()
+            {
+                Success = true,
+                CinemaModel = newCinemaModel
+            };
+        }
+
+        public async Task<CinemaServiceResult> AddHall(Guid cinemaId, HallModel hallModel)
+        {
+            var cinemaExist = await _cinemaRepository.FindByIdAsync(cinemaId);
+            if (cinemaExist == null)
+            {
+                return new CinemaServiceResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "Cinema is not exists"
+                    }
+                };
+            }
+
+            if (cinemaExist.Halls.FirstOrDefault(x => x.Name == hallModel.Name) != null)
+            {
+                return new CinemaServiceResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "Hall with this name is exists"
+                    }
+                };
+            }
+
+            var hall = _mapper.Map<Hall>(hallModel);
+            var hallsExist = cinemaExist.Halls.ToList();
+            hallsExist.Add(hall);
+            cinemaExist.Halls = hallsExist;
+
+            if (!await _cinemaRepository.UpdateAsync(cinemaExist))
+            {
+                return new CinemaServiceResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "An error occured while updating to the database"
+                    }
+                };
+            }
+
+            CinemaModel newCinemaModel = _mapper.Map<CinemaModel>(cinemaExist);
+
+            return new CinemaServiceResult()
+            {
+                Success = true,
+                CinemaModel = newCinemaModel
+            };
+        }
+
+        public async Task<CinemaServiceResult> UpdateAdditionalService(
+            Guid id, Guid cinemaId, AdditionalServiceModel additionalServiceModel)
+        {
+            var cinemaExist = await _cinemaRepository.FindByIdAsync(cinemaId);
+            if (cinemaExist == null)
+            {
+                return new CinemaServiceResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "Cinema is not exists"
+                    }
+                };
+            }
+
+            var additionalServicesExist = cinemaExist.AdditionalServices.ToList();
+            var serviceExist = additionalServicesExist.FirstOrDefault(x => x.Id == id);
+            if (serviceExist == null)
+            {
+                return new CinemaServiceResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "Additional service is not exists"
+                    }
+                };
+            }
+
+            serviceExist.Name = additionalServiceModel.Name;
+
+            cinemaExist.AdditionalServices = additionalServicesExist;
+
+            if (!await _cinemaRepository.UpdateAsync(cinemaExist))
+            {
+                return new CinemaServiceResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "An error occured while updating to the database"
+                    }
+                };
+            }
+
+            CinemaModel newCinemaModel = _mapper.Map<CinemaModel>(cinemaExist);
+
+            return new CinemaServiceResult()
+            {
+                Success = true,
+                CinemaModel = newCinemaModel
+            };
+        }
+
+        public async Task<CinemaServiceResult> UpdateHall(Guid id, Guid cinemaId, HallModel hallModel)
+        {
+            var cinemaExist = await _cinemaRepository.FindByIdAsync(cinemaId);
+            if (cinemaExist == null)
+            {
+                return new CinemaServiceResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "Cinema is not exists"
+                    }
+                };
+            }
+
+            var hallsExist = cinemaExist.Halls.ToList();
+            var hall = hallsExist.FirstOrDefault(x => x.Id == id);
+            if (hall == null)
+            {
+                return new CinemaServiceResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "Hall is not exists"
+                    }
+                };
+            }
+
+            hall.Name = hallModel.Name;
+            hall.NumberOfSeats = hallModel.NumberOfSeats;
+            hall.Rows = _mapper.Map<IEnumerable<Row>>(hallModel.Rows);
+            cinemaExist.Halls = hallsExist;
+
+            if (!await _cinemaRepository.UpdateAsync(cinemaExist))
+            {
+                return new CinemaServiceResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "An error occured while updating to the database"
+                    }
+                };
+            }
+
+            CinemaModel newCinemaModel = _mapper.Map<CinemaModel>(cinemaExist);
+
+            return new CinemaServiceResult()
+            {
+                Success = true,
+                CinemaModel = newCinemaModel
+            };
+        }
     }
 }
