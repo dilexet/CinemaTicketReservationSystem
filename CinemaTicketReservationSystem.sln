@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.31911.196
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaTicketReservationSystem.WebApi", "CinemaTicketReservationSystem.WebApi\CinemaTicketReservationSystem.WebApi.csproj", "{EC0C4AB2-7CBC-4DD4-8F5B-023AF8FE57BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaTicketReservationSystem.BLL", "CinemaTicketReservationSystem.BLL\CinemaTicketReservationSystem.BLL.csproj", "{D3FEF0DA-4116-45A9-8621-0A1BC83C8456}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaTicketReservationSystem.BLL", "CinemaTicketReservationSystem.BLL\CinemaTicketReservationSystem.BLL.csproj", "{D3FEF0DA-4116-45A9-8621-0A1BC83C8456}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaTicketReservationSystem.DAL", "CinemaTicketReservationSystem.DAL\CinemaTicketReservationSystem.DAL.csproj", "{BD936B34-E16B-4C11-9D31-11C787FAB34C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaTicketReservationSystem.DAL", "CinemaTicketReservationSystem.DAL\CinemaTicketReservationSystem.DAL.csproj", "{BD936B34-E16B-4C11-9D31-11C787FAB34C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
