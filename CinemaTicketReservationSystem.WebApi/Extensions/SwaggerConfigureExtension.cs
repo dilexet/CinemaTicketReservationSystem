@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CinemaTicketReservationSystem.WebApi.CustomFilters;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
@@ -16,6 +17,7 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
                     {
                         Title = "CinemaTicketReservationSystem.WebApi", Version = "v1"
                     });
+                swagger.OperationFilter<FileUploadOperationFilter>();
                 swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
