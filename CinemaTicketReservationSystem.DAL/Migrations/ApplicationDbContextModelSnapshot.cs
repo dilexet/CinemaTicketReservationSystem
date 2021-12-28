@@ -69,17 +69,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7ae29411-dcef-4b37-9782-04d63df7ceee"),
+                            Id = new Guid("53580760-5ce5-4f3d-8c1e-218866a85d99"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("027cfedc-8faf-45b2-a253-f00348783217"),
+                            Id = new Guid("d8155a71-6d6d-4ec9-9235-4c326e2eca6d"),
                             Name = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("82b2b7ca-238f-43e8-9ca1-6909ee903f92"),
+                            Id = new Guid("08e8be80-11bf-4efd-a51f-8515b1c47c0b"),
                             Name = "User"
                         });
                 });
@@ -250,37 +250,37 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("21df568d-8f17-468c-b3d0-58c1b3050396"),
+                            Id = new Guid("33e3e2c1-5b67-476a-9ecf-186497dd5743"),
                             Name = "Love Seat"
                         },
                         new
                         {
-                            Id = new Guid("81211ef7-0852-4b96-89b2-65b55466ec37"),
+                            Id = new Guid("d37559b1-25eb-4ac6-a723-0f1e8e88924e"),
                             Name = "Rest Sofa"
                         },
                         new
                         {
-                            Id = new Guid("dc8c83c9-b862-4e88-adee-5d035bae0d9a"),
+                            Id = new Guid("ca89bf52-de9b-4271-9f62-b2932aab15dc"),
                             Name = "Premiere Sofa"
                         },
                         new
                         {
-                            Id = new Guid("9a0b5e43-6055-4979-a8c9-f62357f8ed45"),
+                            Id = new Guid("d2001941-591c-42a1-a16f-1dd507bd8f8f"),
                             Name = "Private Suite"
                         },
                         new
                         {
-                            Id = new Guid("0dad8549-8abb-405b-98e2-dc1d2afa8d59"),
+                            Id = new Guid("227c1d89-2e3e-4a66-b05b-8f3f03a216be"),
                             Name = "Bag Chair"
                         },
                         new
                         {
-                            Id = new Guid("ab438ddd-05b6-4a57-8c2f-1fbe61441dfc"),
+                            Id = new Guid("27dc67f5-d154-4c93-8563-3f3618b61868"),
                             Name = "VIP"
                         },
                         new
                         {
-                            Id = new Guid("248a4600-33fd-4fbc-a18f-e7f12d7b4837"),
+                            Id = new Guid("686f8c68-67a2-4614-9c3b-3b88fd35c0c2"),
                             Name = "Regular"
                         });
                 });
@@ -295,6 +295,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PosterUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
