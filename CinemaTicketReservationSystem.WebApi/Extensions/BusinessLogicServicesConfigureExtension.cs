@@ -54,6 +54,11 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
                 new CinemaService(
                     provider.GetService<ICinemaRepository>(),
                     provider.GetService<IMapper>()));
+
+            services.AddScoped<ISeatTypeService>(provider =>
+                new SeatTypeService(
+                    provider.GetService<ISeatTypeRepository>(),
+                    provider.GetService<IMapper>()));
         }
     }
 }
