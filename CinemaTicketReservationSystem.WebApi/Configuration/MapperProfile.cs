@@ -2,12 +2,14 @@
 using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
 using CinemaTicketReservationSystem.BLL.Domain.CinemaModels;
 using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
+using CinemaTicketReservationSystem.BLL.Domain.SeatTypeModels;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Domain.UserModels;
 using CinemaTicketReservationSystem.BLL.Filters;
 using CinemaTicketReservationSystem.BLL.Results.Authorize;
 using CinemaTicketReservationSystem.BLL.Results.Cinema;
 using CinemaTicketReservationSystem.BLL.Results.Movie;
+using CinemaTicketReservationSystem.BLL.Results.SeatType;
 using CinemaTicketReservationSystem.BLL.Results.UserManagement;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
@@ -270,6 +272,14 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                     dest => dest.Cinemas,
                     source =>
                         source.MapFrom(res => res.CinemaModels));
+
+            CreateMap<SeatType, SeatTypeModel>();
+            CreateMap<SeatTypeModel, SeatTypeViewModel>();
+            CreateMap<SeatTypeServiceGetAllResult, SeatTypeGetAllResponse>()
+                .ForMember(
+                    dest => dest.SeatTypes,
+                    source =>
+                        source.MapFrom(res => res.SeatTypeModels));
         }
     }
 }
