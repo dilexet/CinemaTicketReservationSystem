@@ -1,6 +1,4 @@
-﻿using CinemaTicketReservationSystem.DAL.Enums;
-
-namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema
+﻿namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema
 {
     public class SeatRequest
     {
