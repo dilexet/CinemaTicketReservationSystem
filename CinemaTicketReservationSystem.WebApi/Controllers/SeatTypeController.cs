@@ -22,7 +22,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCinemas()
+        public async Task<IActionResult> GetSeatTypes()
         {
             var seatTypesResult = await _seatTypeService.GetSeatTypes();
             var response = _mapper.Map<SeatTypeGetAllResponse>(seatTypesResult);
