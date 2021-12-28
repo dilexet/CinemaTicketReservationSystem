@@ -32,7 +32,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddMovie([FromBody] MovieRequest movieRequest, [FromForm] IFormFile file)
+        public async Task<IActionResult> AddMovie([FromHeader] MovieRequest movieRequest, [FromForm] IFormFile file)
         {
             var uploadFileResult = await UploadFile(file);
             if (uploadFileResult == null)
