@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Cinema;
 using Microsoft.AspNetCore.Http;
@@ -22,9 +21,9 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSeatTypes()
+        public IActionResult GetSeatTypes()
         {
-            var seatTypesResult = await _seatTypeService.GetSeatTypes();
+            var seatTypesResult = _seatTypeService.GetSeatTypes();
             var response = _mapper.Map<SeatTypeGetAllResponse>(seatTypesResult);
             if (!response.Success)
             {

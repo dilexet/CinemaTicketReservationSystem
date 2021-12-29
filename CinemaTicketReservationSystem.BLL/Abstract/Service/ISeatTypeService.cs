@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using CinemaTicketReservationSystem.BLL.Results.SeatType;
+﻿using CinemaTicketReservationSystem.BLL.Results.SeatType;
 
 namespace CinemaTicketReservationSystem.BLL.Abstract.Service
 {
     public interface ISeatTypeService
     {
-        Task<SeatTypeServiceGetAllResult> GetSeatTypes();
+        SeatTypeServiceGetAllResult GetSeatTypes();
     }
 }
