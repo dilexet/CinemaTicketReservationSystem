@@ -1,6 +1,6 @@
 ﻿using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 
-namespace CinemaTicketReservationSystem.DAL.Abstract.Authorize
+namespace CinemaTicketReservationSystem.DAL.Abstract
 {
     public interface IUserRepository : IRepository<User>
     {
