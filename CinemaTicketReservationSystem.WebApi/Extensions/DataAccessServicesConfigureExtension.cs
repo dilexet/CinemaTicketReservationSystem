@@ -59,6 +59,16 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
                 new SeatTypeRepository(
                     provider.GetService<ApplicationDbContext>(),
                     provider.GetService<ILogger<SeatTypeRepository>>()));
+
+            services.AddScoped<IAdditionalRepository>(provider =>
+                new AdditionalServiceRepository(
+                    provider.GetService<ApplicationDbContext>(),
+                    provider.GetService<ILogger<AdditionalServiceRepository>>()));
+
+            services.AddScoped<IHallRepository>(provider =>
+                new HallRepository(
+                    provider.GetService<ApplicationDbContext>(),
+                    provider.GetService<ILogger<HallRepository>>()));
         }
     }
 }
