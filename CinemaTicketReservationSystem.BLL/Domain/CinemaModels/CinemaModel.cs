@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using CinemaTicketReservationSystem.BLL.Domain.AdditionalServiceModels;
+using CinemaTicketReservationSystem.BLL.Domain.HallModels;
 
 namespace CinemaTicketReservationSystem.BLL.Domain.CinemaModels
 {
@@ -8,8 +10,6 @@ namespace CinemaTicketReservationSystem.BLL.Domain.CinemaModels
         public Guid Id { get; set; }
 
         public string Name { get; set; }
-
-        public uint NumberOfHalls { get; set; }
 
         public AddressModel AddressModel { get; set; }
 
