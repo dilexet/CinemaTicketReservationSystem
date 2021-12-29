@@ -69,17 +69,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("53580760-5ce5-4f3d-8c1e-218866a85d99"),
+                            Id = new Guid("f06f7958-2a34-43b8-a59f-2b3dfac43d9c"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("d8155a71-6d6d-4ec9-9235-4c326e2eca6d"),
+                            Id = new Guid("200756d8-b182-4413-a0e6-1990c3dbd879"),
                             Name = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("08e8be80-11bf-4efd-a51f-8515b1c47c0b"),
+                            Id = new Guid("78d3b917-ca33-41ea-89a3-077bdd52a9ec"),
                             Name = "User"
                         });
                 });
@@ -159,9 +159,6 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("NumberOfHalls")
-                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -250,37 +247,37 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("33e3e2c1-5b67-476a-9ecf-186497dd5743"),
+                            Id = new Guid("d1f983fe-6bc2-40af-acc2-3542b5ac8421"),
                             Name = "Love Seat"
                         },
                         new
                         {
-                            Id = new Guid("d37559b1-25eb-4ac6-a723-0f1e8e88924e"),
+                            Id = new Guid("ea2110e7-fe4e-45fe-a260-6dc50ef6d4db"),
                             Name = "Rest Sofa"
                         },
                         new
                         {
-                            Id = new Guid("ca89bf52-de9b-4271-9f62-b2932aab15dc"),
+                            Id = new Guid("8201b31f-ad0f-4678-baf0-1dcb5547b7c8"),
                             Name = "Premiere Sofa"
                         },
                         new
                         {
-                            Id = new Guid("d2001941-591c-42a1-a16f-1dd507bd8f8f"),
+                            Id = new Guid("542c7034-e806-452a-826d-835bd8780ed2"),
                             Name = "Private Suite"
                         },
                         new
                         {
-                            Id = new Guid("227c1d89-2e3e-4a66-b05b-8f3f03a216be"),
+                            Id = new Guid("1fe7c475-6608-4839-9bc8-c9b588b263a0"),
                             Name = "Bag Chair"
                         },
                         new
                         {
-                            Id = new Guid("27dc67f5-d154-4c93-8563-3f3618b61868"),
+                            Id = new Guid("ea8514e9-5f76-44f7-a1d5-d904a043a482"),
                             Name = "VIP"
                         },
                         new
                         {
-                            Id = new Guid("686f8c68-67a2-4614-9c3b-3b88fd35c0c2"),
+                            Id = new Guid("e5e7d573-7927-4890-a33d-85c333d7f938"),
                             Name = "Regular"
                         });
                 });

@@ -6,8 +6,6 @@ namespace CinemaTicketReservationSystem.DAL.Entity.CinemaEntity
     {
         public string Name { get; set; }
 
-        public uint NumberOfHalls { get; set; }
-
         public virtual Address Address { get; set; }
 
         public virtual IEnumerable<AdditionalService> AdditionalServices { get; set; }

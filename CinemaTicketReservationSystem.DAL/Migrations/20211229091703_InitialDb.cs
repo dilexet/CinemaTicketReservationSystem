@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CinemaTicketReservationSystem.DAL.Migrations
 {
+#pragma warning disable SA1118 // ParameterMustNotSpanMultipleLines
     public partial class InitialDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -12,8 +13,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumberOfHalls = table.Column<long>(type: "bigint", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -330,15 +330,15 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
-#pragma warning disable SA1118
+
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("53580760-5ce5-4f3d-8c1e-218866a85d99"), "Admin" },
-                    { new Guid("d8155a71-6d6d-4ec9-9235-4c326e2eca6d"), "Manager" },
-                    { new Guid("08e8be80-11bf-4efd-a51f-8515b1c47c0b"), "User" }
+                    { new Guid("f06f7958-2a34-43b8-a59f-2b3dfac43d9c"), "Admin" },
+                    { new Guid("200756d8-b182-4413-a0e6-1990c3dbd879"), "Manager" },
+                    { new Guid("78d3b917-ca33-41ea-89a3-077bdd52a9ec"), "User" }
                 });
 
             migrationBuilder.InsertData(
@@ -346,13 +346,13 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("33e3e2c1-5b67-476a-9ecf-186497dd5743"), "Love Seat" },
-                    { new Guid("d37559b1-25eb-4ac6-a723-0f1e8e88924e"), "Rest Sofa" },
-                    { new Guid("ca89bf52-de9b-4271-9f62-b2932aab15dc"), "Premiere Sofa" },
-                    { new Guid("d2001941-591c-42a1-a16f-1dd507bd8f8f"), "Private Suite" },
-                    { new Guid("227c1d89-2e3e-4a66-b05b-8f3f03a216be"), "Bag Chair" },
-                    { new Guid("27dc67f5-d154-4c93-8563-3f3618b61868"), "VIP" },
-                    { new Guid("686f8c68-67a2-4614-9c3b-3b88fd35c0c2"), "Regular" }
+                    { new Guid("d1f983fe-6bc2-40af-acc2-3542b5ac8421"), "Love Seat" },
+                    { new Guid("ea2110e7-fe4e-45fe-a260-6dc50ef6d4db"), "Rest Sofa" },
+                    { new Guid("8201b31f-ad0f-4678-baf0-1dcb5547b7c8"), "Premiere Sofa" },
+                    { new Guid("542c7034-e806-452a-826d-835bd8780ed2"), "Private Suite" },
+                    { new Guid("1fe7c475-6608-4839-9bc8-c9b588b263a0"), "Bag Chair" },
+                    { new Guid("ea8514e9-5f76-44f7-a1d5-d904a043a482"), "VIP" },
+                    { new Guid("e5e7d573-7927-4890-a33d-85c333d7f938"), "Regular" }
                 });
 
             migrationBuilder.CreateIndex(
