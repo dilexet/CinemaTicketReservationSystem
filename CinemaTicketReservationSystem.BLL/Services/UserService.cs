@@ -6,27 +6,27 @@ using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Domain.UserModels;
 using CinemaTicketReservationSystem.BLL.Filters;
-using CinemaTicketReservationSystem.BLL.Results.UserManagement;
+using CinemaTicketReservationSystem.BLL.Results.User;
 using CinemaTicketReservationSystem.DAL.Abstract.Authorize;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicketReservationSystem.BLL.Services
 {
-    public class UserManagement : IUserManagement
+    public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
         private readonly IMapper _mapper;
 
-        public UserManagement(IUserRepository userRepository, IRoleRepository roleRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _mapper = mapper;
         }
 
-        public async Task<UserManagementGetUsersResult> GetUsers(FilterParametersModel filter)
+        public async Task<UserServiceGetUsersResult> GetUsers(FilterParametersModel filter)
         {
             var users = _userRepository.GetBy();
 
@@ -54,7 +54,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (users == null || !users.Any())
             {
-                return new UserManagementGetUsersResult()
+                return new UserServiceGetUsersResult()
                 {
                     Success = false,
                     Errors = new[]
@@ -66,19 +66,19 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var usersModel = _mapper.Map<IEnumerable<UserModel>>(await users.ToListAsync());
 
-            return new UserManagementGetUsersResult()
+            return new UserServiceGetUsersResult()
             {
                 Success = true,
                 UserModels = usersModel
             };
         }
 
-        public async Task<UserManagementResult> GetById(Guid id)
+        public async Task<UserServiceResult> GetById(Guid id)
         {
             var user = await _userRepository.FindByIdAsync(id);
             if (user == null)
             {
-                return new UserManagementResult()
+                return new UserServiceResult()
                 {
                     Success = false,
                     Errors = new[]
@@ -90,19 +90,19 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             UserModel userModel = _mapper.Map<UserModel>(user);
 
-            return new UserManagementResult()
+            return new UserServiceResult()
             {
                 Success = true,
                 UserModel = userModel
             };
         }
 
-        public async Task<UserManagementResult> CreateUser(UserModel userModel)
+        public async Task<UserServiceResult> CreateUser(UserModel userModel)
         {
             var userExist = await _userRepository.FirstOrDefaultAsync(x => x.Name == userModel.Name);
             if (userExist != null)
             {
-                return new UserManagementResult()
+                return new UserServiceResult()
                 {
                     Success = false,
                     Errors = new[]
@@ -117,7 +117,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var role = await _roleRepository.FirstOrDefaultAsync(role => role.Name == userModel.RoleModel.Name);
             if (role == null)
             {
-                return new UserManagementResult()
+                return new UserServiceResult()
                 {
                     Success = false,
                     Errors = new[]
@@ -130,7 +130,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             user.Role = role;
             if (!await _userRepository.CreateAsync(user))
             {
-                return new UserManagementResult()
+                return new UserServiceResult()
                 {
                     Success = false,
                     Errors = new[]
@@ -142,18 +142,18 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             UserModel newUserModel = _mapper.Map<UserModel>(user);
 
-            return new UserManagementResult()
+            return new UserServiceResult()
             {
                 Success = true,
                 UserModel = newUserModel
             };
         }
 
-        public async Task<UserManagementResult> UpdateUser(Guid id, UserModel userModel)
+        public async Task<UserServiceResult> UpdateUser(Guid id, UserModel userModel)
         {
             if (await _userRepository.FirstOrDefaultAsync(x => x.Name == userModel.Name) != null)
             {
-                return new UserManagementResult()
+                return new UserServiceResult()
                 {
                     Success = false,
                     Errors = new[]
@@ -166,7 +166,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var userExist = await _userRepository.FindByIdAsync(id);
             if (userExist == null)
             {
-                return new UserManagementResult()
+                return new UserServiceResult()
                 {
                     Success = false,
                     Errors = new[]
@@ -179,7 +179,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var roleExist = await _roleRepository.FirstOrDefaultAsync(role => role.Name == userModel.RoleModel.Name);
             if (roleExist == null)
             {
-                return new UserManagementResult()
+                return new UserServiceResult()
                 {
                     Success = false,
                     Errors = new[]
@@ -195,7 +195,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _userRepository.UpdateAsync(userExist))
             {
-                return new UserManagementResult()
+                return new UserServiceResult()
                 {
                     Success = false,
                     Errors = new[]
@@ -207,19 +207,19 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             UserModel newUserModel = _mapper.Map<UserModel>(userExist);
 
-            return new UserManagementResult()
+            return new UserServiceResult()
             {
                 Success = true,
                 UserModel = newUserModel
             };
         }
 
-        public async Task<UserManagementRemoveResult> DeleteUser(Guid id)
+        public async Task<UserServiceRemoveResult> DeleteUser(Guid id)
         {
             var userExist = await _userRepository.FindByIdAsync(id);
             if (userExist == null)
             {
-                return new UserManagementRemoveResult()
+                return new UserServiceRemoveResult()
                 {
                     Success = false,
                     Errors = new[]
@@ -231,7 +231,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _userRepository.RemoveAsync(userExist))
             {
-                return new UserManagementRemoveResult()
+                return new UserServiceRemoveResult()
                 {
                     Success = false,
                     Errors = new[]
@@ -241,7 +241,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            return new UserManagementRemoveResult()
+            return new UserServiceRemoveResult()
             {
                 Success = true,
                 Id = id
