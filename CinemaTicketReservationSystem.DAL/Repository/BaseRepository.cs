@@ -26,11 +26,6 @@ namespace CinemaTicketReservationSystem.DAL.Repository
 
         public virtual async Task<bool> CreateAsync(TEntity entity)
         {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
             EntityEntry<TEntity> result = null;
             try
             {
@@ -51,11 +46,6 @@ namespace CinemaTicketReservationSystem.DAL.Repository
 
         public virtual async Task<TEntity> FindByIdAsync(Guid? id)
         {
-            if (id == null)
-            {
-                throw new ArgumentNullException(nameof(id));
-            }
-
             TEntity entity = null;
             try
             {
@@ -107,22 +97,12 @@ namespace CinemaTicketReservationSystem.DAL.Repository
 
         public virtual async Task<bool> UpdateAsync(TEntity entity)
         {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
             _context.Entry(entity).State = EntityState.Modified;
             return await SaveAsync();
         }
 
         public virtual async Task<bool> RemoveAsync(TEntity entity)
         {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
             try
             {
                 _context.Set<TEntity>().Remove(entity);
