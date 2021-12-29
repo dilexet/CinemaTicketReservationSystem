@@ -43,7 +43,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateHall(Guid id, HallRequest hallRequest)
         {
             var hallResult = await _hallService.UpdateHall(
@@ -61,7 +61,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveCinema(Guid id)
         {
             var hallResult = await _hallService.RemoveHall(id);

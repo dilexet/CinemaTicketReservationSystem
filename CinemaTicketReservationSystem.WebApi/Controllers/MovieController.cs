@@ -61,7 +61,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateMovieInfo(Guid id, MovieRequest movieRequest)
         {
             var movieResult = await _movieService.UpdateMovieInfo(id, _mapper.Map<MovieModel>(movieRequest));
@@ -76,7 +76,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveMovie(Guid id)
         {
             var movieResult = await _movieService.RemoveMovie(id);
