@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaTicketReservationSystem.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211229091703_InitialDb")]
+    [Migration("20211229120633_InitialDb")]
     partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,17 +71,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f06f7958-2a34-43b8-a59f-2b3dfac43d9c"),
+                            Id = new Guid("7cada651-efd5-4cbd-8ba5-909b7ca97b86"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("200756d8-b182-4413-a0e6-1990c3dbd879"),
+                            Id = new Guid("456202dd-5334-4842-bd4a-25422844e4b1"),
                             Name = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("78d3b917-ca33-41ea-89a3-077bdd52a9ec"),
+                            Id = new Guid("e8e1a1fa-268d-45d3-b8b2-4da6a4a4d0b5"),
                             Name = "User"
                         });
                 });
@@ -231,57 +231,6 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasIndex("RowId");
 
                     b.ToTable("Seats");
-                });
-
-            modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.CinemaEntity.SeatType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SeatTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("d1f983fe-6bc2-40af-acc2-3542b5ac8421"),
-                            Name = "Love Seat"
-                        },
-                        new
-                        {
-                            Id = new Guid("ea2110e7-fe4e-45fe-a260-6dc50ef6d4db"),
-                            Name = "Rest Sofa"
-                        },
-                        new
-                        {
-                            Id = new Guid("8201b31f-ad0f-4678-baf0-1dcb5547b7c8"),
-                            Name = "Premiere Sofa"
-                        },
-                        new
-                        {
-                            Id = new Guid("542c7034-e806-452a-826d-835bd8780ed2"),
-                            Name = "Private Suite"
-                        },
-                        new
-                        {
-                            Id = new Guid("1fe7c475-6608-4839-9bc8-c9b588b263a0"),
-                            Name = "Bag Chair"
-                        },
-                        new
-                        {
-                            Id = new Guid("ea8514e9-5f76-44f7-a1d5-d904a043a482"),
-                            Name = "VIP"
-                        },
-                        new
-                        {
-                            Id = new Guid("e5e7d573-7927-4890-a33d-85c333d7f938"),
-                            Name = "Regular"
-                        });
                 });
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.MovieEntity.Movie", b =>

@@ -4,7 +4,6 @@ using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
 using CinemaTicketReservationSystem.BLL.Domain.CinemaModels;
 using CinemaTicketReservationSystem.BLL.Domain.HallModels;
 using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
-using CinemaTicketReservationSystem.BLL.Domain.SeatTypeModels;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Domain.UserModels;
 using CinemaTicketReservationSystem.BLL.Filters;
@@ -279,13 +278,11 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                     source =>
                         source.MapFrom(res => res.CinemaModels));
 
-            CreateMap<SeatType, SeatTypeModel>();
-            CreateMap<SeatTypeModel, SeatTypeViewModel>();
             CreateMap<SeatTypeServiceGetAllResult, SeatTypeGetAllResponse>()
                 .ForMember(
                     dest => dest.SeatTypes,
                     source =>
-                        source.MapFrom(res => res.SeatTypeModels));
+                        source.MapFrom(res => res.SeatTypesList));
 
             CreateMap<AdditionalServiceGetAllResult, AdditionalServiceGetAllResponse>()
                 .ForMember(

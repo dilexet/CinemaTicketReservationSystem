@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CinemaTicketReservationSystem.DAL.Migrations
 {
-#pragma warning disable SA1118 // ParameterMustNotSpanMultipleLines
     public partial class InitialDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -45,18 +44,6 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SeatTypes",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SeatTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -334,26 +321,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { new Guid("f06f7958-2a34-43b8-a59f-2b3dfac43d9c"), "Admin" },
-                    { new Guid("200756d8-b182-4413-a0e6-1990c3dbd879"), "Manager" },
-                    { new Guid("78d3b917-ca33-41ea-89a3-077bdd52a9ec"), "User" }
-                });
+                values: new object[] { new Guid("7cada651-efd5-4cbd-8ba5-909b7ca97b86"), "Admin" });
 
             migrationBuilder.InsertData(
-                table: "SeatTypes",
+                table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { new Guid("d1f983fe-6bc2-40af-acc2-3542b5ac8421"), "Love Seat" },
-                    { new Guid("ea2110e7-fe4e-45fe-a260-6dc50ef6d4db"), "Rest Sofa" },
-                    { new Guid("8201b31f-ad0f-4678-baf0-1dcb5547b7c8"), "Premiere Sofa" },
-                    { new Guid("542c7034-e806-452a-826d-835bd8780ed2"), "Private Suite" },
-                    { new Guid("1fe7c475-6608-4839-9bc8-c9b588b263a0"), "Bag Chair" },
-                    { new Guid("ea8514e9-5f76-44f7-a1d5-d904a043a482"), "VIP" },
-                    { new Guid("e5e7d573-7927-4890-a33d-85c333d7f938"), "Regular" }
-                });
+                values: new object[] { new Guid("456202dd-5334-4842-bd4a-25422844e4b1"), "Manager" });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { new Guid("e8e1a1fa-268d-45d3-b8b2-4da6a4a4d0b5"), "User" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdditionalServices_CinemaId",
@@ -452,9 +430,6 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");
-
-            migrationBuilder.DropTable(
-                name: "SeatTypes");
 
             migrationBuilder.DropTable(
                 name: "SessionAdditionalServices");
