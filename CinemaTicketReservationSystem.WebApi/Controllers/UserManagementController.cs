@@ -17,19 +17,19 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
     [ApiController]
     public class UserManagementController : ControllerBase
     {
-        private readonly IUserManagement _userManagement;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public UserManagementController(IUserManagement userManagement, IMapper mapper)
+        public UserManagementController(IUserService userService, IMapper mapper)
         {
-            _userManagement = userManagement;
+            _userService = userService;
             _mapper = mapper;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateUser(UserCreateRequest userCreateRequest)
         {
-            var usersResult = await _userManagement.CreateUser(_mapper.Map<UserModel>(userCreateRequest));
+            var usersResult = await _userService.CreateUser(_mapper.Map<UserModel>(userCreateRequest));
             var response = _mapper.Map<UserManagementResponse>(usersResult);
             if (!response.Success)
             {
@@ -44,7 +44,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateUser(Guid id, UserUpdateRequest userUpdateRequest)
         {
-            var usersResult = await _userManagement.UpdateUser(id, _mapper.Map<UserModel>(userUpdateRequest));
+            var usersResult = await _userService.UpdateUser(id, _mapper.Map<UserModel>(userUpdateRequest));
             var response = _mapper.Map<UserManagementResponse>(usersResult);
             if (!response.Success)
             {
@@ -59,7 +59,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
-            var usersResult = await _userManagement.DeleteUser(id);
+            var usersResult = await _userService.DeleteUser(id);
             var response = _mapper.Map<UserManagementRemoveResponse>(usersResult);
             if (!response.Success)
             {
@@ -74,7 +74,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUsers([FromQuery] FilterParameters filter)
         {
-            var usersResult = await _userManagement.GetUsers(_mapper.Map<FilterParametersModel>(filter));
+            var usersResult = await _userService.GetUsers(_mapper.Map<FilterParametersModel>(filter));
             var response = _mapper.Map<UserManagementGetUsersResponse>(usersResult);
             if (!response.Success)
             {
@@ -89,7 +89,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var usersResult = await _userManagement.GetById(id);
+            var usersResult = await _userService.GetById(id);
             var response = _mapper.Map<UserManagementResponse>(usersResult);
             if (!response.Success)
             {
