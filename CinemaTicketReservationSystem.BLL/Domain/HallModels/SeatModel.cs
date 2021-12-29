@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CinemaTicketReservationSystem.BLL.Domain.CinemaModels
+namespace CinemaTicketReservationSystem.BLL.Domain.HallModels
 {
     public class SeatModel
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CinemaTicketReservationSystem.BLL.Domain.CinemaModels
+namespace CinemaTicketReservationSystem.BLL.Domain.HallModels
 {
     public class RowModel
     {
