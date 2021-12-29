@@ -1,8 +1,8 @@
 ﻿using CinemaTicketReservationSystem.BLL.Domain.UserModels;
 
-namespace CinemaTicketReservationSystem.BLL.Results.UserManagement
+namespace CinemaTicketReservationSystem.BLL.Results.User
 {
-    public class UserManagementResult : Result
+    public class UserServiceResult : Result
     {
         public UserModel UserModel { get; set; }
     }
