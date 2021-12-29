@@ -1,16 +1,20 @@
 ﻿using AutoMapper;
+using CinemaTicketReservationSystem.BLL.Domain.AdditionalServiceModels;
 using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
 using CinemaTicketReservationSystem.BLL.Domain.CinemaModels;
+using CinemaTicketReservationSystem.BLL.Domain.HallModels;
 using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
 using CinemaTicketReservationSystem.BLL.Domain.SeatTypeModels;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Domain.UserModels;
 using CinemaTicketReservationSystem.BLL.Filters;
+using CinemaTicketReservationSystem.BLL.Results.AdditionalService;
 using CinemaTicketReservationSystem.BLL.Results.Authorize;
 using CinemaTicketReservationSystem.BLL.Results.Cinema;
+using CinemaTicketReservationSystem.BLL.Results.Hall;
 using CinemaTicketReservationSystem.BLL.Results.Movie;
 using CinemaTicketReservationSystem.BLL.Results.SeatType;
-using CinemaTicketReservationSystem.BLL.Results.UserManagement;
+using CinemaTicketReservationSystem.BLL.Results.User;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
@@ -19,8 +23,10 @@ using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.User;
+using CinemaTicketReservationSystem.WebApi.Models.Response.AdditionalService;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Authorize;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Cinema;
+using CinemaTicketReservationSystem.WebApi.Models.Response.Hall;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Response.UserManagement;
 using CinemaTicketReservationSystem.WebApi.Models.ViewModels;
@@ -68,17 +74,17 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                     Name = res.Role.Name
                 }));
 
-            CreateMap<UserManagementGetUsersResult, UserManagementGetUsersResponse>().ForMember(
+            CreateMap<UserServiceGetUsersResult, UserManagementGetUsersResponse>().ForMember(
                 dest => dest.Users,
                 source => source.MapFrom(
                     res => res.UserModels));
 
-            CreateMap<UserManagementResult, UserManagementResponse>().ForMember(
+            CreateMap<UserServiceResult, UserManagementResponse>().ForMember(
                 dest => dest.User,
                 source => source.MapFrom(
                     res => res.UserModel));
 
-            CreateMap<UserManagementRemoveResult, UserManagementRemoveResponse>();
+            CreateMap<UserServiceRemoveResult, UserManagementRemoveResponse>();
 
             CreateMap<MovieRequest, MovieModel>().ForMember(
                 dest => dest.MovieDescriptionModel,
@@ -280,6 +286,34 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                     dest => dest.SeatTypes,
                     source =>
                         source.MapFrom(res => res.SeatTypeModels));
+
+            CreateMap<AdditionalServiceGetAllResult, AdditionalServiceGetAllResponse>()
+                .ForMember(
+                    dest => dest.AdditionalServices,
+                    source =>
+                        source.MapFrom(res => res.AdditionalServices));
+
+            CreateMap<AdditionalServiceResult, AdditionalServiceResponse>()
+                .ForMember(
+                    dest => dest.AdditionalService,
+                    source =>
+                        source.MapFrom(res => res.AdditionalServiceModel));
+
+            CreateMap<AdditionalServiceRemoveResult, AdditionalServiceRemoveResponse>();
+
+            CreateMap<HallServiceGetAllResult, HallGetAllResponse>()
+                .ForMember(
+                    dest => dest.Halls,
+                    source =>
+                        source.MapFrom(res => res.HallModels));
+
+            CreateMap<HallServiceResult, HallResponse>()
+                .ForMember(
+                    dest => dest.Hall,
+                    source =>
+                        source.MapFrom(res => res.HallModel));
+
+            CreateMap<HallServiceRemoveResult, HallRemoveResponse>();
         }
     }
 }
