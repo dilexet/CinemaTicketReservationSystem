@@ -77,7 +77,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             if (!response.Success)
             {
                 response.Code = StatusCodes.Status404NotFound;
-                return BadRequest(response);
+                return NotFound(response);
             }
 
             response.Code = StatusCodes.Status200OK;
@@ -92,7 +92,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             if (!response.Success)
             {
                 response.Code = StatusCodes.Status404NotFound;
-                return BadRequest(response);
+                return NotFound(response);
             }
 
             response.Code = StatusCodes.Status200OK;
