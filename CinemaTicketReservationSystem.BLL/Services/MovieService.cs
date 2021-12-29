@@ -7,7 +7,7 @@ using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
 using CinemaTicketReservationSystem.BLL.Filters;
 using CinemaTicketReservationSystem.BLL.Results.Movie;
-using CinemaTicketReservationSystem.DAL.Abstract.Movie;
+using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,10 +15,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
 {
     public class MovieService : IMovieService
     {
-        private readonly IMovieRepository _movieRepository;
+        private readonly IRepository<Movie> _movieRepository;
         private readonly IMapper _mapper;
 
-        public MovieService(IMovieRepository movieRepository, IMapper mapper)
+        public MovieService(IRepository<Movie> movieRepository, IMapper mapper)
         {
             _movieRepository = movieRepository;
             _mapper = mapper;

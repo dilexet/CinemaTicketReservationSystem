@@ -19,7 +19,6 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
                     {
                         context.Database.Migrate();
                         RoleInitialize.Seed(context);
-                        SeatTypesInitialize.Seed(context);
                     }
                 }
             }

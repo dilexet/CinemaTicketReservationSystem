@@ -4,9 +4,10 @@ using CinemaTicketReservationSystem.BLL.Abstract.Utils;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Services;
 using CinemaTicketReservationSystem.BLL.Utils;
-using CinemaTicketReservationSystem.DAL.Abstract.Authorize;
-using CinemaTicketReservationSystem.DAL.Abstract.Cinema;
-using CinemaTicketReservationSystem.DAL.Abstract.Movie;
+using CinemaTicketReservationSystem.DAL.Abstract;
+using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
+using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
+using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -30,46 +31,43 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
             services.AddScoped<ITokenService>(provider => new TokenService(
                 provider.GetService<IJwtService>(),
                 provider.GetService<IRefreshTokenService>(),
-                provider.GetService<IRefreshTokenRepository>()));
+                provider.GetService<IRepository<RefreshToken>>()));
 
             services.AddScoped<IAuthorizeService>(provider =>
                 new AuthorizeService(
                     provider.GetService<IUserRepository>(),
-                    provider.GetService<IRoleRepository>(),
+                    provider.GetService<IRepository<Role>>(),
                     provider.GetService<ITokenService>(),
                     provider.GetService<IMapper>()));
 
             services.AddScoped<IUserService>(provider =>
                 new UserService(
                     provider.GetService<IUserRepository>(),
-                    provider.GetService<IRoleRepository>(),
+                    provider.GetService<IRepository<Role>>(),
                     provider.GetService<IMapper>()));
 
             services.AddScoped<IMovieService>(provider =>
                 new MovieService(
-                    provider.GetService<IMovieRepository>(),
+                    provider.GetService<IRepository<Movie>>(),
                     provider.GetService<IMapper>()));
 
             services.AddScoped<ICinemaService>(provider =>
                 new CinemaService(
-                    provider.GetService<ICinemaRepository>(),
+                    provider.GetService<IRepository<Cinema>>(),
                     provider.GetService<IMapper>()));
 
-            services.AddScoped<ISeatTypeService>(provider =>
-                new SeatTypeService(
-                    provider.GetService<ISeatTypeRepository>(),
-                    provider.GetService<IMapper>()));
+            services.AddScoped<ISeatTypeService, SeatTypeService>();
 
             services.AddScoped<IAdditionalServiceManagement>(provider =>
                 new AdditionalServiceManagement(
-                    provider.GetService<IAdditionalRepository>(),
-                    provider.GetService<ICinemaRepository>(),
+                    provider.GetService<IRepository<AdditionalService>>(),
+                    provider.GetService<IRepository<Cinema>>(),
                     provider.GetService<IMapper>()));
 
             services.AddScoped<IHallService>(provider =>
                 new HallService(
-                    provider.GetService<IHallRepository>(),
-                    provider.GetService<ICinemaRepository>(),
+                    provider.GetService<IRepository<Hall>>(),
+                    provider.GetService<IRepository<Cinema>>(),
                     provider.GetService<IMapper>()));
         }
     }

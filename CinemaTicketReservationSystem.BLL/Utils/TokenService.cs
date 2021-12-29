@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using CinemaTicketReservationSystem.BLL.Abstract.Utils;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Results.Authorize;
-using CinemaTicketReservationSystem.DAL.Abstract.Authorize;
+using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 
 namespace CinemaTicketReservationSystem.BLL.Utils
@@ -13,9 +13,9 @@ namespace CinemaTicketReservationSystem.BLL.Utils
     {
         private readonly IJwtService _jwtService;
         private readonly IRefreshTokenService _refreshTokenService;
-        private readonly IRefreshTokenRepository _repository;
+        private readonly IRepository<RefreshToken> _repository;
 
-        public TokenService(IJwtService jwtService, IRefreshTokenService refreshTokenService, IRefreshTokenRepository repository)
+        public TokenService(IJwtService jwtService, IRefreshTokenService refreshTokenService, IRepository<RefreshToken> repository)
         {
             _jwtService = jwtService;
             _refreshTokenService = refreshTokenService;

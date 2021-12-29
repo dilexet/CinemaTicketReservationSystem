@@ -7,7 +7,7 @@ using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Domain.UserModels;
 using CinemaTicketReservationSystem.BLL.Filters;
 using CinemaTicketReservationSystem.BLL.Results.User;
-using CinemaTicketReservationSystem.DAL.Abstract.Authorize;
+using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,10 +16,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IRoleRepository _roleRepository;
+        private readonly IRepository<Role> _roleRepository;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository, IRoleRepository roleRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IRepository<Role> roleRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;

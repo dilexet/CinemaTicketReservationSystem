@@ -6,7 +6,7 @@ using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Domain.AdditionalServiceModels;
 using CinemaTicketReservationSystem.BLL.Results.AdditionalService;
-using CinemaTicketReservationSystem.DAL.Abstract.Cinema;
+using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,12 +14,12 @@ namespace CinemaTicketReservationSystem.BLL.Services
 {
     public class AdditionalServiceManagement : IAdditionalServiceManagement
     {
-        private readonly ICinemaRepository _cinemaRepository;
-        private readonly IAdditionalRepository _additionalServiceRepository;
+        private readonly IRepository<Cinema> _cinemaRepository;
+        private readonly IRepository<AdditionalService> _additionalServiceRepository;
         private readonly IMapper _mapper;
 
         public AdditionalServiceManagement(
-            IAdditionalRepository additionalServiceRepository, ICinemaRepository cinemaRepository, IMapper mapper)
+            IRepository<AdditionalService> additionalServiceRepository, IRepository<Cinema> cinemaRepository, IMapper mapper)
         {
             _additionalServiceRepository = additionalServiceRepository;
             _mapper = mapper;

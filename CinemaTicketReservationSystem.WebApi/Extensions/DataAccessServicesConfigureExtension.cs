@@ -1,12 +1,10 @@
-﻿using CinemaTicketReservationSystem.DAL.Abstract.Authorize;
-using CinemaTicketReservationSystem.DAL.Abstract.Cinema;
-using CinemaTicketReservationSystem.DAL.Abstract.Movie;
-using CinemaTicketReservationSystem.DAL.Abstract.Session;
+﻿using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Context;
-using CinemaTicketReservationSystem.DAL.Repository.Authorize;
-using CinemaTicketReservationSystem.DAL.Repository.Cinema;
-using CinemaTicketReservationSystem.DAL.Repository.Movie;
-using CinemaTicketReservationSystem.DAL.Repository.Session;
+using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
+using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
+using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
+using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
+using CinemaTicketReservationSystem.DAL.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,45 +28,40 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
                     provider.GetService<ApplicationDbContext>(),
                     provider.GetService<ILogger<UserRepository>>()));
 
-            services.AddScoped<IRoleRepository>(provider =>
-                new RoleRepository(
+            services.AddScoped<IRepository<Role>>(provider =>
+                new BaseRepository<Role>(
                     provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<RoleRepository>>()));
+                    provider.GetService<ILogger<BaseRepository<Role>>>()));
 
-            services.AddScoped<IRefreshTokenRepository>(provider =>
-                new RefreshTokenRepository(
+            services.AddScoped<IRepository<RefreshToken>>(provider =>
+                new BaseRepository<RefreshToken>(
                     provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<RefreshTokenRepository>>()));
+                    provider.GetService<ILogger<BaseRepository<RefreshToken>>>()));
 
-            services.AddScoped<ICinemaRepository>(provider =>
-                new CinemaRepository(
+            services.AddScoped<IRepository<Cinema>>(provider =>
+                new BaseRepository<Cinema>(
                     provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<CinemaRepository>>()));
+                    provider.GetService<ILogger<BaseRepository<Cinema>>>()));
 
-            services.AddScoped<IMovieRepository>(provider =>
-                new MovieRepository(
+            services.AddScoped<IRepository<Movie>>(provider =>
+                new BaseRepository<Movie>(
                     provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<MovieRepository>>()));
+                    provider.GetService<ILogger<BaseRepository<Movie>>>()));
 
-            services.AddScoped<ISessionRepository>(provider =>
-                new SessionRepository(
+            services.AddScoped<IRepository<Session>>(provider =>
+                new BaseRepository<Session>(
                     provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<SessionRepository>>()));
+                    provider.GetService<ILogger<BaseRepository<Session>>>()));
 
-            services.AddScoped<ISeatTypeRepository>(provider =>
-                new SeatTypeRepository(
+            services.AddScoped<IRepository<AdditionalService>>(provider =>
+                new BaseRepository<AdditionalService>(
                     provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<SeatTypeRepository>>()));
+                    provider.GetService<ILogger<BaseRepository<AdditionalService>>>()));
 
-            services.AddScoped<IAdditionalRepository>(provider =>
-                new AdditionalServiceRepository(
+            services.AddScoped<IRepository<Hall>>(provider =>
+                new BaseRepository<Hall>(
                     provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<AdditionalServiceRepository>>()));
-
-            services.AddScoped<IHallRepository>(provider =>
-                new HallRepository(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<HallRepository>>()));
+                    provider.GetService<ILogger<BaseRepository<Hall>>>()));
         }
     }
 }

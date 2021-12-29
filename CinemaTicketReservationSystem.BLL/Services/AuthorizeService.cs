@@ -6,7 +6,7 @@ using CinemaTicketReservationSystem.BLL.Abstract.Utils;
 using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
 using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Results.Authorize;
-using CinemaTicketReservationSystem.DAL.Abstract.Authorize;
+using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using CinemaTicketReservationSystem.DAL.Enums;
 
@@ -15,11 +15,11 @@ namespace CinemaTicketReservationSystem.BLL.Services
     public class AuthorizeService : IAuthorizeService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IRoleRepository _roleRepository;
+        private readonly IRepository<Role> _roleRepository;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
 
-        public AuthorizeService(IUserRepository userRepository, IRoleRepository roleRepository, ITokenService tokenService, IMapper mapper)
+        public AuthorizeService(IUserRepository userRepository, IRepository<Role> roleRepository, ITokenService tokenService, IMapper mapper)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
