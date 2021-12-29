@@ -6,8 +6,6 @@ namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema
     {
         public string Name { get; set; }
 
-        public uint NumberOfHalls { get; set; }
-
         public string CityName { get; set; }
 
         public string Street { get; set; }
