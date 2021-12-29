@@ -9,8 +9,6 @@ namespace CinemaTicketReservationSystem.WebApi.Validators.Cinema
         public CinemaRequestValidator()
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage("Hall name can't be empty");
-            RuleFor(x => x.NumberOfHalls).NotEqual(0U).NotEmpty()
-                .WithMessage("Number of halls can't be empty or equals 0");
 
             RuleFor(x => x.CityName).NotEmpty().WithMessage("City name can't be empty");
             RuleFor(x => x.Street).NotEmpty().WithMessage("Street can't be empty");
@@ -18,9 +16,17 @@ namespace CinemaTicketReservationSystem.WebApi.Validators.Cinema
             RuleFor(x => x.AdditionalServices).NotNull().WithMessage("Additional services can't be null");
 
             RuleFor(x => x.Halls).NotNull().WithMessage("Additional services can't be null");
+            RuleFor(x => x.Halls).Must(x =>
+            {
+                var halls = x.ToList();
+                return halls.Select(hall => hall.Name).Distinct().Count() == halls.Count();
+            }).WithMessage("Halls name must be unique");
 
-            RuleFor(x => x).Must(cinema => cinema.Halls.Count() == cinema.NumberOfHalls)
-                .WithMessage("The number of halls does not match the number of halls on the list");
+            RuleFor(x => x.Halls)
+                .ForEach(x => x.SetValidator(new HallRequestValidator()));
+
+            RuleFor(x => x.AdditionalServices)
+                .ForEach(x => x.SetValidator(new AdditionalServiceRequestValidator()));
         }
     }
 }

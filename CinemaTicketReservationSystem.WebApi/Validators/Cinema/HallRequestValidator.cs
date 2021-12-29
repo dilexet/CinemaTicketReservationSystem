@@ -16,6 +16,15 @@ namespace CinemaTicketReservationSystem.WebApi.Validators.Cinema
 
             RuleFor(x => x).Must(hall => hall.Rows.Sum(row => row.NumberOfSeats) == hall.NumberOfSeats)
                 .WithMessage("The number of seats does not match the number of seats on the list");
+
+            RuleFor(x => x.Rows)
+                .ForEach(x => x.SetValidator(new RowRequestValidator()));
+
+            RuleFor(x => x.Rows).Must(x =>
+            {
+                var rows = x.ToList();
+                return rows.Select(row => row.NumberRow).Distinct().Count() == rows.Count();
+            }).WithMessage("Rows number must be unique");
         }
     }
 }
