@@ -13,7 +13,7 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.SessionConfigura
             builder
                 .HasOne(x => x.SessionSeatType)
                 .WithOne(x => x.SessionSeat)
-                .HasForeignKey<SessionSeat>(x => x.SessionSeatTypeId);
+                .HasForeignKey<SessionSeatType>(x => x.SessionSeatId);
 
             builder
                 .HasOne(x => x.Session)
