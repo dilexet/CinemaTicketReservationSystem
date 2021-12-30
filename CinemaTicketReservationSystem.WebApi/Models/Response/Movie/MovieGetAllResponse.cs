@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CinemaTicketReservationSystem.WebApi.Models.ViewModels;
+using CinemaTicketReservationSystem.WebApi.Models.ViewModels.Movie;
 
 namespace CinemaTicketReservationSystem.WebApi.Models.Response.Movie
 {
