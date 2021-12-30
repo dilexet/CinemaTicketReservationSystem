@@ -1,21 +1,21 @@
 ﻿using System;
 using AutoMapper;
-using CinemaTicketReservationSystem.BLL.Domain.AdditionalServiceModels;
-using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
-using CinemaTicketReservationSystem.BLL.Domain.CinemaModels;
-using CinemaTicketReservationSystem.BLL.Domain.HallModels;
-using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
-using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
-using CinemaTicketReservationSystem.BLL.Domain.UserModels;
-using CinemaTicketReservationSystem.BLL.Filters;
-using CinemaTicketReservationSystem.BLL.Results.AdditionalService;
-using CinemaTicketReservationSystem.BLL.Results.Authorize;
-using CinemaTicketReservationSystem.BLL.Results.Cinema;
-using CinemaTicketReservationSystem.BLL.Results.File;
-using CinemaTicketReservationSystem.BLL.Results.Hall;
-using CinemaTicketReservationSystem.BLL.Results.Movie;
-using CinemaTicketReservationSystem.BLL.Results.SeatType;
-using CinemaTicketReservationSystem.BLL.Results.User;
+using CinemaTicketReservationSystem.BLL.Models.Domain.AdditionalServiceModels;
+using CinemaTicketReservationSystem.BLL.Models.Domain.AuthModels;
+using CinemaTicketReservationSystem.BLL.Models.Domain.CinemaModels;
+using CinemaTicketReservationSystem.BLL.Models.Domain.HallModels;
+using CinemaTicketReservationSystem.BLL.Models.Domain.MovieModels;
+using CinemaTicketReservationSystem.BLL.Models.Domain.TokenModels;
+using CinemaTicketReservationSystem.BLL.Models.Domain.UserModels;
+using CinemaTicketReservationSystem.BLL.Models.FilterModel;
+using CinemaTicketReservationSystem.BLL.Models.Results.AdditionalService;
+using CinemaTicketReservationSystem.BLL.Models.Results.Authorize;
+using CinemaTicketReservationSystem.BLL.Models.Results.Cinema;
+using CinemaTicketReservationSystem.BLL.Models.Results.File;
+using CinemaTicketReservationSystem.BLL.Models.Results.Hall;
+using CinemaTicketReservationSystem.BLL.Models.Results.Movie;
+using CinemaTicketReservationSystem.BLL.Models.Results.SeatType;
+using CinemaTicketReservationSystem.BLL.Models.Results.User;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
@@ -31,8 +31,9 @@ using CinemaTicketReservationSystem.WebApi.Models.Response.File;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Hall;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Response.UserManagement;
-using CinemaTicketReservationSystem.WebApi.Models.ViewModels;
 using CinemaTicketReservationSystem.WebApi.Models.ViewModels.Cinema;
+using CinemaTicketReservationSystem.WebApi.Models.ViewModels.Movie;
+using CinemaTicketReservationSystem.WebApi.Models.ViewModels.User;
 
 namespace CinemaTicketReservationSystem.WebApi.Configuration
 {
@@ -121,11 +122,11 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                 source =>
                     source.MapFrom(res => res.MovieDescription));
 
-            CreateMap<MovieDescriptionModel, ModelDescriptionViewModel>();
+            CreateMap<MovieDescriptionModel, MovieDescriptionViewModel>();
 
             CreateMap<MovieModel, MovieViewModel>()
                 .ForMember(
-                    dest => dest.ModelDescriptionViewModel,
+                    dest => dest.MovieDescriptionViewModel,
                     source => source.MapFrom(res => res.MovieDescriptionModel))
                 .ForMember(
                     dest => dest.PosterUrl,

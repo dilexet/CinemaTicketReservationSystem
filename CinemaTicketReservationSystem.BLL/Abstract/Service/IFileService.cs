@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using CinemaTicketReservationSystem.BLL.Results.File;
+using CinemaTicketReservationSystem.BLL.Models.Results.File;
 using Microsoft.AspNetCore.Http;
 
 namespace CinemaTicketReservationSystem.BLL.Abstract.Service

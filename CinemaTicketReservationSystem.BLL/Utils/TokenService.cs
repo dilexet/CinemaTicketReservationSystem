@@ -2,8 +2,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using CinemaTicketReservationSystem.BLL.Abstract.Utils;
-using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
-using CinemaTicketReservationSystem.BLL.Results.Authorize;
+using CinemaTicketReservationSystem.BLL.Models.Domain.TokenModels;
+using CinemaTicketReservationSystem.BLL.Models.Results.Authorize;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 

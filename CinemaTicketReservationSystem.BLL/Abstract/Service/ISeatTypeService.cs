@@ -1,4 +1,4 @@
-﻿using CinemaTicketReservationSystem.BLL.Results.SeatType;
+﻿using CinemaTicketReservationSystem.BLL.Models.Results.SeatType;
 
 namespace CinemaTicketReservationSystem.BLL.Abstract.Service
 {

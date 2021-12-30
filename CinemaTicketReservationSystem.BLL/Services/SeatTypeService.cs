@@ -4,7 +4,7 @@ using System.Linq;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Enums;
 using CinemaTicketReservationSystem.BLL.Extensions;
-using CinemaTicketReservationSystem.BLL.Results.SeatType;
+using CinemaTicketReservationSystem.BLL.Models.Results.SeatType;
 
 namespace CinemaTicketReservationSystem.BLL.Services
 {

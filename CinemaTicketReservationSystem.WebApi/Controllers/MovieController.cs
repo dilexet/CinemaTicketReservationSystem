@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
-using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
-using CinemaTicketReservationSystem.BLL.Filters;
+using CinemaTicketReservationSystem.BLL.Models.Domain.MovieModels;
+using CinemaTicketReservationSystem.BLL.Models.FilterModel;
 using CinemaTicketReservationSystem.WebApi.Models.Filters;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;

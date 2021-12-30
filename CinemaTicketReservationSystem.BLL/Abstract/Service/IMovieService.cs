@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CinemaTicketReservationSystem.BLL.Domain.MovieModels;
-using CinemaTicketReservationSystem.BLL.Filters;
-using CinemaTicketReservationSystem.BLL.Results.Movie;
+using CinemaTicketReservationSystem.BLL.Models.Domain.MovieModels;
+using CinemaTicketReservationSystem.BLL.Models.FilterModel;
+using CinemaTicketReservationSystem.BLL.Models.Results.Movie;
 
 namespace CinemaTicketReservationSystem.BLL.Abstract.Service
 {

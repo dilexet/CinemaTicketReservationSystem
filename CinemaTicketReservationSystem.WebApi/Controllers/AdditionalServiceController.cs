@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
-using CinemaTicketReservationSystem.BLL.Domain.AdditionalServiceModels;
+using CinemaTicketReservationSystem.BLL.Models.Domain.AdditionalServiceModels;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema;
 using CinemaTicketReservationSystem.WebApi.Models.Response.AdditionalService;
 using Microsoft.AspNetCore.Http;

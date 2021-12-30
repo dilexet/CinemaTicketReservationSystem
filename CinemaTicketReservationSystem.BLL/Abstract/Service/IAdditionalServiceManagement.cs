@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CinemaTicketReservationSystem.BLL.Domain.AdditionalServiceModels;
-using CinemaTicketReservationSystem.BLL.Results.AdditionalService;
+using CinemaTicketReservationSystem.BLL.Models.Domain.AdditionalServiceModels;
+using CinemaTicketReservationSystem.BLL.Models.Results.AdditionalService;
 
 namespace CinemaTicketReservationSystem.BLL.Abstract.Service
 {

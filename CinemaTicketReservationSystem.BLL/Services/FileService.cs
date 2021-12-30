@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
-using CinemaTicketReservationSystem.BLL.Results.File;
+using CinemaTicketReservationSystem.BLL.Models.Results.File;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 
