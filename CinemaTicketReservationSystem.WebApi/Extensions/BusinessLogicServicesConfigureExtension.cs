@@ -75,6 +75,8 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
             services.AddScoped<ISessionService>(provider =>
                 new SessionService(
                     provider.GetService<IRepository<Session>>(),
+                    provider.GetService<IRepository<Movie>>(),
+                    provider.GetService<IRepository<Cinema>>(),
                     provider.GetService<IMapper>()));
 
             services.AddScoped<IFileService>(provider =>
