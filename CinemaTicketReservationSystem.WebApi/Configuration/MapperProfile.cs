@@ -16,6 +16,7 @@ using CinemaTicketReservationSystem.BLL.Models.Results.File;
 using CinemaTicketReservationSystem.BLL.Models.Results.Hall;
 using CinemaTicketReservationSystem.BLL.Models.Results.Movie;
 using CinemaTicketReservationSystem.BLL.Models.Results.SeatType;
+using CinemaTicketReservationSystem.BLL.Models.Results.Session;
 using CinemaTicketReservationSystem.BLL.Models.Results.User;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
@@ -33,9 +34,11 @@ using CinemaTicketReservationSystem.WebApi.Models.Response.Cinema;
 using CinemaTicketReservationSystem.WebApi.Models.Response.File;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Hall;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;
+using CinemaTicketReservationSystem.WebApi.Models.Response.Session;
 using CinemaTicketReservationSystem.WebApi.Models.Response.UserManagement;
 using CinemaTicketReservationSystem.WebApi.Models.ViewModels.Cinema;
 using CinemaTicketReservationSystem.WebApi.Models.ViewModels.Movie;
+using CinemaTicketReservationSystem.WebApi.Models.ViewModels.Session;
 using CinemaTicketReservationSystem.WebApi.Models.ViewModels.User;
 
 namespace CinemaTicketReservationSystem.WebApi.Configuration
@@ -433,6 +436,56 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                     dest => dest.SessionSeats,
                     source =>
                         source.MapFrom(res => res.SessionSeats));
+
+            CreateMap<SessionAdditionalServiceModel, SessionAdditionalServiceViewModel>()
+                .ForMember(
+                    dest => dest.AdditionalService,
+                    source =>
+                        source.MapFrom(res => res.AdditionalService));
+
+            CreateMap<SessionSeatTypeModel, SessionSeatTypeViewModel>();
+
+            CreateMap<SessionSeatModel, SessionSeatViewModel>()
+                .ForMember(
+                    dest => dest.Seat,
+                    source =>
+                        source.MapFrom(res => res.Seat))
+                .ForMember(
+                    dest => dest.SessionSeatType,
+                    source =>
+                        source.MapFrom(res => res.SessionSeatType));
+
+            CreateMap<SessionModel, SessionViewModel>()
+                .ForMember(
+                    dest => dest.Movie,
+                    source =>
+                        source.MapFrom(res => res.Movie))
+                .ForMember(
+                    dest => dest.Hall,
+                    source =>
+                        source.MapFrom(res => res.Hall))
+                .ForMember(
+                    dest => dest.SessionAdditionalServices,
+                    source =>
+                        source.MapFrom(res => res.SessionAdditionalServices))
+                .ForMember(
+                    dest => dest.SessionSeats,
+                    source =>
+                        source.MapFrom(res => res.SessionSeats));
+
+            CreateMap<SessionServiceGetAllResult, SessionGetAllResponse>()
+                .ForMember(
+                    dest => dest.Sessions,
+                    source =>
+                        source.MapFrom(res => res.Sessions));
+
+            CreateMap<SessionServiceResult, SessionResponse>()
+                .ForMember(
+                    dest => dest.Session,
+                    source =>
+                        source.MapFrom(res => res.Session));
+
+            CreateMap<SessionServiceRemoveResult, SessionRemoveResponse>();
         }
     }
 }
