@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
@@ -9,7 +7,6 @@ using CinemaTicketReservationSystem.BLL.Filters;
 using CinemaTicketReservationSystem.WebApi.Models.Filters;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,35 +17,19 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
     [ApiController]
     public class MovieController : ControllerBase
     {
-        private readonly IWebHostEnvironment _environment;
         private readonly IMovieService _movieService;
         private readonly IMapper _mapper;
 
-        public MovieController(IMovieService movieService, IMapper mapper, IWebHostEnvironment environment)
+        public MovieController(IMovieService movieService, IMapper mapper)
         {
             _movieService = movieService;
             _mapper = mapper;
-            _environment = environment;
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddMovie([FromHeader] MovieRequest movieRequest, [FromForm] IFormFile file)
+        public async Task<IActionResult> AddMovie(MovieRequest movieRequest)
         {
-            var uploadFileResult = await UploadFile(file);
-            if (uploadFileResult == null)
-            {
-                return BadRequest(new MovieResponse()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Can not upload file"
-                    }
-                });
-            }
-
             var movieModel = _mapper.Map<MovieModel>(movieRequest);
-            movieModel.PosterUrl = uploadFileResult;
             var movieResult = await _movieService.AddMovie(movieModel);
             var response = _mapper.Map<MovieResponse>(movieResult);
             if (!response.Success)
@@ -119,37 +100,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);
-        }
-
-        private async Task<string> UploadFile(IFormFile file)
-        {
-            try
-            {
-                if (file.Length > 0)
-                {
-                    var directory = "/Files/";
-                    if (!Directory.Exists(_environment.WebRootPath + directory))
-                    {
-                        Directory.CreateDirectory(_environment.WebRootPath + directory);
-                    }
-
-                    var fileType = file.FileName.Split('.').Last();
-                    var path = directory + Guid.NewGuid() + '.' + fileType;
-                    using (FileStream fileStream = new FileStream(_environment.WebRootPath + path, FileMode.Create))
-                    {
-                        await file.CopyToAsync(fileStream);
-                        fileStream.Flush();
-                        return path;
-                    }
-                }
-            }
-            catch (IOException)
-            {
-                // TODO: logger
-                return null;
-            }
-
-            return null;
         }
     }
 }
