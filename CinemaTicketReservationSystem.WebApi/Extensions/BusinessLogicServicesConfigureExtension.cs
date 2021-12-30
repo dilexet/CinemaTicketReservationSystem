@@ -8,6 +8,7 @@ using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -69,6 +70,10 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
                     provider.GetService<IRepository<Hall>>(),
                     provider.GetService<IRepository<Cinema>>(),
                     provider.GetService<IMapper>()));
+
+            services.AddScoped<IFileService>(provider =>
+                new FileService(
+                    provider.GetService<IWebHostEnvironment>()));
         }
     }
 }
