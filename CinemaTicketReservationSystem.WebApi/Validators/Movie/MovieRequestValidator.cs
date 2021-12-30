@@ -12,9 +12,9 @@ namespace CinemaTicketReservationSystem.WebApi.Validators.Movie
 
             RuleFor(x => x.PosterUrl).NotEmpty().WithMessage("Poster url can't be empty");
             RuleFor(x => x.PosterUrl)
-                .Must(url => Uri.TryCreate(url, UriKind.Absolute, out var uriResult)
-                             && (uriResult.Scheme == Uri.UriSchemeHttp ||
-                                 uriResult.Scheme == Uri.UriSchemeHttps))
+                .Must(url => Uri.TryCreate(url, UriKind.Absolute, out var uriResult) &&
+                             (uriResult.Scheme == Uri.UriSchemeHttp ||
+                              uriResult.Scheme == Uri.UriSchemeHttps))
                 .WithMessage("Poster url doesn't match URL format");
 
             RuleFor(x => x.StartDate).NotNull().NotEmpty().WithMessage("Movie start date can't be empty");

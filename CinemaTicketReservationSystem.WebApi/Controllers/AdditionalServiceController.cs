@@ -62,7 +62,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveCinema(Guid id)
+        public async Task<IActionResult> RemoveAdditionalService(Guid id)
         {
             var additionalServiceResult = await _additionalServiceManagement.RemoveAdditionalService(id);
             var response = _mapper.Map<AdditionalServiceRemoveResponse>(additionalServiceResult);
@@ -77,7 +77,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCinemaById(Guid id)
+        public async Task<IActionResult> GetAdditionalServiceById(Guid id)
         {
             var additionalServiceResult = await _additionalServiceManagement.GetAdditionalServiceById(id);
             var response = _mapper.Map<AdditionalServiceResponse>(additionalServiceResult);
@@ -92,7 +92,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCinemas()
+        public async Task<IActionResult> GetAdditionalServices()
         {
             var additionalServicesResult = await _additionalServiceManagement.GetAdditionalServices();
             var response = _mapper.Map<AdditionalServiceGetAllResponse>(additionalServicesResult);
