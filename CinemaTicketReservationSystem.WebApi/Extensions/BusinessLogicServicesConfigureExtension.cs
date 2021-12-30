@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Abstract.Utils;
-using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
+using CinemaTicketReservationSystem.BLL.Models.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Services;
 using CinemaTicketReservationSystem.BLL.Utils;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
+using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -69,6 +70,11 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
                 new HallService(
                     provider.GetService<IRepository<Hall>>(),
                     provider.GetService<IRepository<Cinema>>(),
+                    provider.GetService<IMapper>()));
+
+            services.AddScoped<ISessionService>(provider =>
+                new SessionService(
+                    provider.GetService<IRepository<Session>>(),
                     provider.GetService<IMapper>()));
 
             services.AddScoped<IFileService>(provider =>
