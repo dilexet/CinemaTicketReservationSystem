@@ -10,7 +10,6 @@ using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
-using CinemaTicketReservationSystem.DAL.Enums;
 
 namespace CinemaTicketReservationSystem.BLL.Services
 {
@@ -90,23 +89,13 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 });
             }
 
-            List<SessionSeat> sessionSeats = new List<SessionSeat>();
-            foreach (var sessionSeatType in sessionModel.SessionSeatTypes)
-            {
-                sessionSeats.Add(new SessionSeat()
-                {
-                    TicketState = TicketState.Free,
-                    SessionSeatType = _mapper.Map<SessionSeatType>(sessionSeatType)
-                });
-            }
-
             Session session = new Session
             {
                 StartDate = sessionModel.StartDate,
                 Movie = movieExist,
                 Hall = hallExist,
                 SessionAdditionalServices = sessionAdditionalServices,
-                SessionSeats = sessionSeats
+                SessionSeatType = _mapper.Map<IEnumerable<SessionSeatType>>(sessionModel.SessionSeatTypes)
             };
 
             if (!await _sessionRepository.CreateAsync(session))
