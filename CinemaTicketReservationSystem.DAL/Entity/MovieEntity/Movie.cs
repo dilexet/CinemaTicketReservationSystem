@@ -7,7 +7,7 @@ namespace CinemaTicketReservationSystem.DAL.Entity.MovieEntity
     {
         public string Name { get; set; }
 
-        public string PosterUrl { get; set; }
+        public Uri PosterUrl { get; set; }
 
         public DateTime StartDate { get; set; }
 

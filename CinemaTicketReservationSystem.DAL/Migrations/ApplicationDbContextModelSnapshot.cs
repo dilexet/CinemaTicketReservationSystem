@@ -69,17 +69,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7cada651-efd5-4cbd-8ba5-909b7ca97b86"),
+                            Id = new Guid("058501e6-f775-490a-9a38-309997d7aa69"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("456202dd-5334-4842-bd4a-25422844e4b1"),
+                            Id = new Guid("f84ef33e-f31e-4c06-b787-9f63bea98c0b"),
                             Name = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("e8e1a1fa-268d-45d3-b8b2-4da6a4a4d0b5"),
+                            Id = new Guid("9e76b851-da74-439f-9290-a2ca17675112"),
                             Name = "User"
                         });
                 });

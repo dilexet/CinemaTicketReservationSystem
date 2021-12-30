@@ -321,17 +321,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("7cada651-efd5-4cbd-8ba5-909b7ca97b86"), "Admin" });
+                values: new object[] { new Guid("058501e6-f775-490a-9a38-309997d7aa69"), "Admin" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("456202dd-5334-4842-bd4a-25422844e4b1"), "Manager" });
+                values: new object[] { new Guid("f84ef33e-f31e-4c06-b787-9f63bea98c0b"), "Manager" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("e8e1a1fa-268d-45d3-b8b2-4da6a4a4d0b5"), "User" });
+                values: new object[] { new Guid("9e76b851-da74-439f-9290-a2ca17675112"), "User" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdditionalServices_CinemaId",
