@@ -7,9 +7,9 @@ namespace CinemaTicketReservationSystem.BLL.Abstract.Service
 {
     public interface ISessionService
     {
-        Task<SessionServiceResult> AddSession(SessionModel sessionModel);
+        Task<SessionServiceResult> AddSession(SessionRequestModel sessionModel);
 
-        Task<SessionServiceResult> UpdateSessionInfo(Guid id, SessionModel sessionModel);
+        Task<SessionServiceResult> UpdateSessionInfo(Guid id, SessionRequestModel sessionModel);
 
         Task<SessionServiceRemoveResult> RemoveSession(Guid id);
 
