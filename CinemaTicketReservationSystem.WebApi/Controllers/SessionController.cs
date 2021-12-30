@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Policy = "AdminRole")]
+    // [Authorize(Policy = "AdminRole")]
     [ApiController]
     public class SessionController : ControllerBase
     {
@@ -28,7 +28,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> AddSession(SessionRequest sessionRequest)
         {
-            var result = await _sessionService.AddSession(_mapper.Map<SessionModel>(sessionRequest));
+            var result = await _sessionService.AddSession(_mapper.Map<SessionRequestModel>(sessionRequest));
             var response = _mapper.Map<SessionResponse>(result);
             if (!response.Success)
             {
@@ -43,7 +43,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSessionInfo(Guid id, SessionRequest sessionRequest)
         {
-            var result = await _sessionService.UpdateSessionInfo(id, _mapper.Map<SessionModel>(sessionRequest));
+            var result = await _sessionService.UpdateSessionInfo(id, _mapper.Map<SessionRequestModel>(sessionRequest));
             var response = _mapper.Map<SessionResponse>(result);
             if (!response.Success)
             {
