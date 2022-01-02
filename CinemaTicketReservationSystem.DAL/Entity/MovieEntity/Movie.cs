@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 
 namespace CinemaTicketReservationSystem.DAL.Entity.MovieEntity
@@ -13,7 +14,7 @@ namespace CinemaTicketReservationSystem.DAL.Entity.MovieEntity
 
         public DateTime EndDate { get; set; }
 
-        public virtual Session Session { get; set; }
+        public virtual IEnumerable<Session> Sessions { get; set; }
 
         public virtual MovieDescription MovieDescription { get; set; }
     }

@@ -11,6 +11,11 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.MovieConfigurati
             builder.HasKey(x => x.Id);
 
             builder
+                .HasMany(x => x.Sessions)
+                .WithOne(x => x.Movie)
+                .HasForeignKey(x => x.MovieId);
+
+            builder
                 .HasOne(x => x.MovieDescription)
                 .WithOne(x => x.Movie)
                 .HasForeignKey<MovieDescription>(x => x.MovieId)
