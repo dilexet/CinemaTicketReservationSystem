@@ -89,13 +89,30 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 });
             }
 
+            List<SessionSeatType> sessionSeatTypes =
+                _mapper.Map<List<SessionSeatType>>(sessionModel.SessionSeatTypes);
+
+            List<SessionSeat> sessionSeats = new List<SessionSeat>();
+            foreach (var row in hallExist.Rows)
+            {
+                foreach (var seat in row.Seats)
+                {
+                    sessionSeats.Add(new SessionSeat()
+                    {
+                        Seat = seat,
+                        SessionSeatType = sessionSeatTypes.FirstOrDefault(x => x.SeatType.Equals(seat.SeatType))
+                    });
+                }
+            }
+
             Session session = new Session
             {
                 StartDate = sessionModel.StartDate,
                 Movie = movieExist,
                 Hall = hallExist,
                 SessionAdditionalServices = sessionAdditionalServices,
-                SessionSeatType = _mapper.Map<IEnumerable<SessionSeatType>>(sessionModel.SessionSeatTypes)
+                SessionSeatType = sessionSeatTypes,
+                SessionSeats = sessionSeats
             };
 
             if (!await _sessionRepository.CreateAsync(session))
