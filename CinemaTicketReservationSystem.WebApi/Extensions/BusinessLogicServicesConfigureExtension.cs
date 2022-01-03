@@ -42,8 +42,8 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
                     provider.GetService<ITokenService>(),
                     provider.GetService<IMapper>()));
 
-            services.AddScoped<IUserService>(provider =>
-                new UserService(
+            services.AddScoped<IUserManagementService>(provider =>
+                new UserManagementService(
                     provider.GetService<IUserRepository>(),
                     provider.GetService<IRepository<Role>>(),
                     provider.GetService<IMapper>()));
