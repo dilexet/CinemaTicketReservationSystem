@@ -68,7 +68,7 @@ namespace CinemaTicketReservationSystem.BLL.Utils
         {
             if (!_refreshTokenService.Validate(refreshToken))
             {
-                await _repository.RemoveAsync(refreshToken);
+                await _repository.RemoveAndSaveAsync(refreshToken);
                 return new TokenResult()
                 {
                     Success = false,

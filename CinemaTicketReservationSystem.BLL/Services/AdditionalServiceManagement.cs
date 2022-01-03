@@ -130,7 +130,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            if (!await _additionalServiceRepository.RemoveAsync(additionalServiceExist))
+            if (!await _additionalServiceRepository.RemoveAndSaveAsync(additionalServiceExist))
             {
                 return new AdditionalServiceRemoveResult()
                 {

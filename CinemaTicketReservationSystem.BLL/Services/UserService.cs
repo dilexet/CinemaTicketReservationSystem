@@ -229,7 +229,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            if (!await _userRepository.RemoveAsync(userExist))
+            if (!await _userRepository.RemoveAndSaveAsync(userExist))
             {
                 return new UserServiceRemoveResult()
                 {

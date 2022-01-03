@@ -92,7 +92,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             }
 
             var cinema = hallExist.Cinema;
-            if (!await _hallRepository.RemoveAsync(hallExist))
+            if (!await _hallRepository.RemoveAndSaveAsync(hallExist))
             {
                 return new HallServiceResult()
                 {
@@ -143,7 +143,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            if (!await _hallRepository.RemoveAsync(hallExist))
+            if (!await _hallRepository.RemoveAndSaveAsync(hallExist))
             {
                 return new HallServiceRemoveResult()
                 {
