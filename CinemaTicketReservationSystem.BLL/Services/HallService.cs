@@ -55,6 +55,11 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var hall = _mapper.Map<Hall>(hallModel);
             hall.Cinema = cinemaExist;
 
+            List<string> seatTypes = new List<string>();
+            hall.Rows.ToList()
+                .ForEach(row => row.Seats.ToList().ForEach(seat => seatTypes.Add(seat.SeatType)));
+            hall.SeatTypes = seatTypes.Distinct();
+
             if (!await _hallRepository.CreateAsync(hall))
             {
                 return new HallServiceResult()
@@ -106,6 +111,11 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var newHall = _mapper.Map<Hall>(hallModel);
             newHall.Cinema = cinema;
+
+            List<string> seatTypes = new List<string>();
+            newHall.Rows.ToList()
+                .ForEach(row => row.Seats.ToList().ForEach(seat => seatTypes.Add(seat.SeatType)));
+            newHall.SeatTypes = seatTypes.Distinct();
 
             if (!await _hallRepository.CreateAsync(newHall))
             {
