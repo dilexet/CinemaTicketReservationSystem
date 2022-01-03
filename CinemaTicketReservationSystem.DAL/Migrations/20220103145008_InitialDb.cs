@@ -92,6 +92,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NumberOfSeats = table.Column<long>(type: "bigint", nullable: false),
+                    SeatTypesString = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CinemaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -328,17 +329,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("ed71c829-8bc6-4cff-8d14-833b2adf5887"), "Admin" });
+                values: new object[] { new Guid("5d5c84d7-4200-43ba-8838-06d57eaea55d"), "Admin" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("91b19317-0ed4-428d-b6cf-a136fd6193e7"), "Manager" });
+                values: new object[] { new Guid("60869ae5-e9ac-4143-a0db-f6785b2ce490"), "Manager" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("9be8b624-2500-46b9-8afd-9b5848611cb4"), "User" });
+                values: new object[] { new Guid("b31b685f-c80f-4256-bf1a-a9d93690967b"), "User" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdditionalServices_CinemaId",
