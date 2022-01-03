@@ -1,5 +1,5 @@
 ﻿using System;
-using CinemaTicketReservationSystem.DAL.Entity;
+using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 
 namespace CinemaTicketReservationSystem.BLL.Abstract.Utils
 {

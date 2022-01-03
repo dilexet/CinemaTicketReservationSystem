@@ -1,7 +1,9 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using CinemaTicketReservationSystem.WebApi.Models.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 
 namespace CinemaTicketReservationSystem.WebApi.CustomFilters
@@ -14,6 +16,33 @@ namespace CinemaTicketReservationSystem.WebApi.CustomFilters
 
             var exceptionType = context.Exception.GetType();
             if (exceptionType == typeof(AutoMapperMappingException))
+            {
+                response.Code = StatusCodes.Status500InternalServerError;
+                response.Success = false;
+                response.Errors = new[]
+                {
+                    context.Exception.Message
+                };
+            }
+            else if (exceptionType == typeof(ArgumentNullException))
+            {
+                response.Code = StatusCodes.Status500InternalServerError;
+                response.Success = false;
+                response.Errors = new[]
+                {
+                    context.Exception.Message
+                };
+            }
+            else if (exceptionType == typeof(SqlException))
+            {
+                response.Code = StatusCodes.Status500InternalServerError;
+                response.Success = false;
+                response.Errors = new[]
+                {
+                    context.Exception.Message
+                };
+            }
+            else
             {
                 response.Code = StatusCodes.Status500InternalServerError;
                 response.Success = false;

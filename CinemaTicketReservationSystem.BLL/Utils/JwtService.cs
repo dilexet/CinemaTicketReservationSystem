@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using CinemaTicketReservationSystem.BLL.Abstract.Utils;
-using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
+using CinemaTicketReservationSystem.BLL.Models.Domain.TokenModels;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 

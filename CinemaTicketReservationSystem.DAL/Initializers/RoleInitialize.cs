@@ -1,7 +1,7 @@
-﻿using CinemaTicketReservationSystem.DAL.Context;
-using CinemaTicketReservationSystem.DAL.Entity;
+﻿using System.Linq;
+using CinemaTicketReservationSystem.DAL.Context;
+using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using CinemaTicketReservationSystem.DAL.Enums;
-using System.Linq;
 
 namespace CinemaTicketReservationSystem.DAL.Initializers
 {
@@ -29,17 +29,17 @@ namespace CinemaTicketReservationSystem.DAL.Initializers
             }
             else
             {
-                if (context.Roles.SingleOrDefault(x => x.Name.Equals(RoleTypes.Admin.ToString())) == null)
+                if (context.Roles.FirstOrDefault(x => x.Name.Equals(RoleTypes.Admin.ToString())) == null)
                 {
                     context.Roles.Add(new Role() { Name = RoleTypes.Admin.ToString() });
                 }
 
-                if (context.Roles.SingleOrDefault(x => x.Name.Equals(RoleTypes.Manager.ToString())) == null)
+                if (context.Roles.FirstOrDefault(x => x.Name.Equals(RoleTypes.Manager.ToString())) == null)
                 {
                     context.Roles.Add(new Role() { Name = RoleTypes.Manager.ToString() });
                 }
 
-                if (context.Roles.SingleOrDefault(x => x.Name.Equals(RoleTypes.User.ToString())) == null)
+                if (context.Roles.FirstOrDefault(x => x.Name.Equals(RoleTypes.User.ToString())) == null)
                 {
                     context.Roles.Add(new Role() { Name = RoleTypes.User.ToString() });
                 }

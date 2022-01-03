@@ -1,4 +1,4 @@
-﻿using CinemaTicketReservationSystem.DAL.Entity;
+﻿using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 
 namespace CinemaTicketReservationSystem.DAL.Abstract
 {

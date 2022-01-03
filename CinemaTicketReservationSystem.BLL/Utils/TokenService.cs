@@ -2,10 +2,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using CinemaTicketReservationSystem.BLL.Abstract.Utils;
-using CinemaTicketReservationSystem.BLL.Domain.TokenModels;
-using CinemaTicketReservationSystem.BLL.Results;
+using CinemaTicketReservationSystem.BLL.Models.Domain.TokenModels;
+using CinemaTicketReservationSystem.BLL.Models.Results.Authorize;
 using CinemaTicketReservationSystem.DAL.Abstract;
-using CinemaTicketReservationSystem.DAL.Entity;
+using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 
 namespace CinemaTicketReservationSystem.BLL.Utils
 {
@@ -13,9 +13,9 @@ namespace CinemaTicketReservationSystem.BLL.Utils
     {
         private readonly IJwtService _jwtService;
         private readonly IRefreshTokenService _refreshTokenService;
-        private readonly IRefreshTokenRepository _repository;
+        private readonly IRepository<RefreshToken> _repository;
 
-        public TokenService(IJwtService jwtService, IRefreshTokenService refreshTokenService, IRefreshTokenRepository repository)
+        public TokenService(IJwtService jwtService, IRefreshTokenService refreshTokenService, IRepository<RefreshToken> repository)
         {
             _jwtService = jwtService;
             _refreshTokenService = refreshTokenService;
@@ -68,7 +68,7 @@ namespace CinemaTicketReservationSystem.BLL.Utils
         {
             if (!_refreshTokenService.Validate(refreshToken))
             {
-                await _repository.RemoveAsync(refreshToken);
+                await _repository.RemoveAndSaveAsync(refreshToken);
                 return new TokenResult()
                 {
                     Success = false,

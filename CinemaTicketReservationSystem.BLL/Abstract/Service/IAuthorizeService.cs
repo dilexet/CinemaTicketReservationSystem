@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using CinemaTicketReservationSystem.BLL.Domain.AuthModels;
-using CinemaTicketReservationSystem.BLL.Results;
+using CinemaTicketReservationSystem.BLL.Models.Domain.AuthModels;
+using CinemaTicketReservationSystem.BLL.Models.Results.Authorize;
 
 namespace CinemaTicketReservationSystem.BLL.Abstract.Service
 {
