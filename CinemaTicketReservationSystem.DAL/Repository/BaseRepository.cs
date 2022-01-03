@@ -97,11 +97,34 @@ namespace CinemaTicketReservationSystem.DAL.Repository
 
         public virtual async Task<bool> UpdateAsync(TEntity entity)
         {
-            _context.Entry(entity).State = EntityState.Modified;
-            return await SaveAsync();
+            try
+            {
+                _context.Entry(entity).State = EntityState.Modified;
+                return await SaveAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                _log.LogError(e, "Error while updating model");
+                return false;
+            }
         }
 
-        public virtual async Task<bool> RemoveAsync(TEntity entity)
+        public virtual bool Remove(TEntity entity)
+        {
+            try
+            {
+                _context.Set<TEntity>().Remove(entity);
+            }
+            catch (SqlException e)
+            {
+                _log.LogError(e, "Error while removing model");
+                return false;
+            }
+
+            return true;
+        }
+
+        public virtual async Task<bool> RemoveAndSaveAsync(TEntity entity)
         {
             try
             {

@@ -18,7 +18,9 @@ namespace CinemaTicketReservationSystem.DAL.Abstract
 
         Task<bool> UpdateAsync(TEntity entity);
 
-        Task<bool> RemoveAsync(TEntity entity);
+        bool Remove(TEntity entity);
+
+        Task<bool> RemoveAndSaveAsync(TEntity entity);
 
         Task<bool> SaveAsync();
     }
