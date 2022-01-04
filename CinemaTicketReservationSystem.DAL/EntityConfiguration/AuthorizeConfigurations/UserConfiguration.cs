@@ -1,4 +1,5 @@
 ﻿using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
+using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -20,6 +21,12 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.AuthorizeConfigu
                 .HasOne(x => x.Role)
                 .WithMany(x => x.Users)
                 .HasForeignKey(x => x.RoleId);
+
+            builder
+                .HasOne(x => x.UserProfile)
+                .WithOne(x => x.User)
+                .HasForeignKey<UserProfile>(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

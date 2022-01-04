@@ -8,6 +8,7 @@ using CinemaTicketReservationSystem.BLL.Models.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Models.Results.Authorize;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
+using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 using CinemaTicketReservationSystem.DAL.Enums;
 
 namespace CinemaTicketReservationSystem.BLL.Services
@@ -19,7 +20,11 @@ namespace CinemaTicketReservationSystem.BLL.Services
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
 
-        public AuthorizeService(IUserRepository userRepository, IRepository<Role> roleRepository, ITokenService tokenService, IMapper mapper)
+        public AuthorizeService(
+            IUserRepository userRepository,
+            IRepository<Role> roleRepository,
+            ITokenService tokenService,
+            IMapper mapper)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
@@ -93,6 +98,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
             }
 
             User user = _mapper.Map<User>(registerModel);
+            user.UserProfile = new UserProfile
+            {
+                Name = user.Name
+            };
             user.PasswordHash = _userRepository.HashPassword(registerModel.Password);
 
             if (await _userRepository.FirstOrDefaultAsync() == null)

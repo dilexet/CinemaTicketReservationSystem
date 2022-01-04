@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
+using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 using CinemaTicketReservationSystem.DAL.Enums;
 
 namespace CinemaTicketReservationSystem.DAL.Entity.SessionEntity
@@ -16,6 +17,10 @@ namespace CinemaTicketReservationSystem.DAL.Entity.SessionEntity
         public Guid SeatId { get; set; }
 
         public Guid SessionSeatTypeId { get; set; }
+
+        public Guid UserProfileId { get; set; }
+
+        public virtual UserProfile UserProfile { get; set; }
 
         public virtual Session Session { get; set; }
 
