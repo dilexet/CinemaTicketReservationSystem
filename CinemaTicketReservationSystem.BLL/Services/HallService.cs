@@ -56,8 +56,15 @@ namespace CinemaTicketReservationSystem.BLL.Services
             hall.Cinema = cinemaExist;
 
             List<string> seatTypes = new List<string>();
-            hall.Rows.ToList()
-                .ForEach(row => row.Seats.ToList().ForEach(seat => seatTypes.Add(seat.SeatType)));
+
+            foreach (var row in hall.Rows)
+            {
+                foreach (var seat in row.Seats)
+                {
+                    seatTypes.Add(seat.SeatType);
+                }
+            }
+
             hall.SeatTypes = seatTypes.Distinct();
 
             if (!await _hallRepository.CreateAsync(hall))
@@ -113,8 +120,15 @@ namespace CinemaTicketReservationSystem.BLL.Services
             newHall.Cinema = cinema;
 
             List<string> seatTypes = new List<string>();
-            newHall.Rows.ToList()
-                .ForEach(row => row.Seats.ToList().ForEach(seat => seatTypes.Add(seat.SeatType)));
+
+            foreach (var row in newHall.Rows)
+            {
+                foreach (var seat in row.Seats)
+                {
+                    seatTypes.Add(seat.SeatType);
+                }
+            }
+
             newHall.SeatTypes = seatTypes.Distinct();
 
             if (!await _hallRepository.CreateAsync(newHall))

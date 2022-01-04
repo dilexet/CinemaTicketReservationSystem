@@ -43,8 +43,14 @@ namespace CinemaTicketReservationSystem.BLL.Services
             foreach (var hall in cinema.Halls)
             {
                 List<string> seatTypes = new List<string>();
-                hall.Rows.ToList()
-                    .ForEach(row => row.Seats.ToList().ForEach(seat => seatTypes.Add(seat.SeatType)));
+                foreach (var row in hall.Rows)
+                {
+                    foreach (var seat in row.Seats)
+                    {
+                        seatTypes.Add(seat.SeatType);
+                    }
+                }
+
                 hall.SeatTypes = seatTypes.Distinct();
             }
 
@@ -103,8 +109,14 @@ namespace CinemaTicketReservationSystem.BLL.Services
             foreach (var hall in cinemaExist.Halls)
             {
                 List<string> seatTypes = new List<string>();
-                hall.Rows.ToList()
-                    .ForEach(row => row.Seats.ToList().ForEach(seat => seatTypes.Add(seat.SeatType)));
+                foreach (var row in hall.Rows)
+                {
+                    foreach (var seat in row.Seats)
+                    {
+                        seatTypes.Add(seat.SeatType);
+                    }
+                }
+
                 hall.SeatTypes = seatTypes.Distinct();
             }
 
