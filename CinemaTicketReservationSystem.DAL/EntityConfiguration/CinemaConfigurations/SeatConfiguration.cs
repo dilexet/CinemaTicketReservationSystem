@@ -1,5 +1,4 @@
 ﻿using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
-using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
