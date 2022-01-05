@@ -10,6 +10,7 @@ using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
+using CinemaTicketReservationSystem.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicketReservationSystem.BLL.Services
@@ -77,6 +78,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                     var sessionSeatTypeExist = sessionSeatTypes.FirstOrDefault(x => x.SeatType.Equals(seat.SeatType));
                     sessionSeats.Add(new SessionSeat()
                     {
+                        TicketState = TicketState.Free,
                         Seat = seat,
                         SessionSeatType = sessionSeatTypeExist
                     });
@@ -176,6 +178,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                     var sessionSeatTypeExist = sessionSeatTypes.FirstOrDefault(x => x.SeatType.Equals(seat.SeatType));
                     sessionSeats.Add(new SessionSeat()
                     {
+                        TicketState = TicketState.Free,
                         Seat = seat,
                         SessionSeatType = sessionSeatTypeExist
                     });
