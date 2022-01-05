@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using CinemaTicketReservationSystem.DAL.Entity.BookingEntity;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 
 namespace CinemaTicketReservationSystem.DAL.Entity.SessionEntity
@@ -14,5 +16,7 @@ namespace CinemaTicketReservationSystem.DAL.Entity.SessionEntity
         public Guid SessionId { get; set; }
 
         public virtual Session Session { get; set; }
+
+        public virtual IEnumerable<BookedOrder> BookedOrders { get; set; }
     }
 }

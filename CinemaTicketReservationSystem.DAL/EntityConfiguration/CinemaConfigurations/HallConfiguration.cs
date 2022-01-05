@@ -21,7 +21,7 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.CinemaConfigurat
                 .HasMany(x => x.Sessions)
                 .WithOne(x => x.Hall)
                 .HasForeignKey(x => x.HallId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .HasMany(x => x.Rows)

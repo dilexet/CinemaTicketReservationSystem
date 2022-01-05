@@ -3,7 +3,6 @@
     public enum TicketState
     {
         Free,
-        TemporarilyBusy,
         Booked,
     }
 }

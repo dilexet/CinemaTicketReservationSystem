@@ -8,7 +8,18 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.UserConfiguratio
     {
         public void Configure(EntityTypeBuilder<UserProfile> builder)
         {
-            throw new System.NotImplementedException();
+            builder.HasKey(x => x.Id);
+
+            builder
+                .HasOne(x => x.User)
+                .WithOne(x => x.UserProfile)
+                .HasForeignKey<UserProfile>(x => x.UserId);
+
+            builder
+                .HasMany(x => x.Tickets)
+                .WithOne(x => x.UserProfile)
+                .HasForeignKey(x => x.UserProfileId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

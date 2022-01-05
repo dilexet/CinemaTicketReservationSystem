@@ -66,7 +66,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Address",
+                name: "Addresses",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -76,9 +76,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Address_Cinemas_CinemaId",
+                        name: "FK_Addresses_Cinemas_CinemaId",
                         column: x => x.CinemaId,
                         principalTable: "Cinemas",
                         principalColumn: "Id",
@@ -186,7 +186,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         column: x => x.HallId,
                         principalTable: "Halls",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Sessions_Movies_MovieId",
                         column: x => x.MovieId,
@@ -220,6 +220,26 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserProfiles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserProfiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserProfiles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Seats",
                 columns: table => new
                 {
@@ -237,6 +257,31 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         principalTable: "Rows",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SessionAdditionalServices",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    AdditionalServiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SessionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SessionAdditionalServices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SessionAdditionalServices_AdditionalServices_AdditionalServiceId",
+                        column: x => x.AdditionalServiceId,
+                        principalTable: "AdditionalServices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SessionAdditionalServices_Sessions_SessionId",
+                        column: x => x.SessionId,
+                        principalTable: "Sessions",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -260,19 +305,68 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SessionSeats",
+                name: "BookedOrders",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TotalPrice = table.Column<double>(type: "float", nullable: false),
+                    UserProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BookedOrders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BookedOrders_UserProfiles_UserProfileId",
+                        column: x => x.UserProfileId,
+                        principalTable: "UserProfiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BookedOrderSessionAdditionalService",
+                columns: table => new
+                {
+                    BookedOrdersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SelectedSessionAdditionalServicesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BookedOrderSessionAdditionalService", x => new { x.BookedOrdersId, x.SelectedSessionAdditionalServicesId });
+                    table.ForeignKey(
+                        name: "FK_BookedOrderSessionAdditionalService_BookedOrders_BookedOrdersId",
+                        column: x => x.BookedOrdersId,
+                        principalTable: "BookedOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BookedOrderSessionAdditionalService_SessionAdditionalServices_SelectedSessionAdditionalServicesId",
+                        column: x => x.SelectedSessionAdditionalServicesId,
+                        principalTable: "SessionAdditionalServices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SessionSeats",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TicketState = table.Column<int>(type: "int", nullable: false),
                     SessionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SeatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SessionSeatTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    SessionSeatTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BookedOrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SessionSeats", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SessionSeats_BookedOrders_BookedOrderId",
+                        column: x => x.BookedOrderId,
+                        principalTable: "BookedOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SessionSeats_Seats_SeatId",
                         column: x => x.SeatId,
@@ -283,63 +377,28 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         name: "FK_SessionSeats_Sessions_SessionId",
                         column: x => x.SessionId,
                         principalTable: "Sessions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_SessionSeats_SessionSeatTypes_SessionSeatTypeId",
                         column: x => x.SessionSeatTypeId,
                         principalTable: "SessionSeatTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SessionAdditionalServices",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    AdditionalServiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SessionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SessionSeatId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SessionAdditionalServices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SessionAdditionalServices_AdditionalServices_AdditionalServiceId",
-                        column: x => x.AdditionalServiceId,
-                        principalTable: "AdditionalServices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SessionAdditionalServices_Sessions_SessionId",
-                        column: x => x.SessionId,
-                        principalTable: "Sessions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SessionAdditionalServices_SessionSeats_SessionSeatId",
-                        column: x => x.SessionSeatId,
-                        principalTable: "SessionSeats",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("5d5c84d7-4200-43ba-8838-06d57eaea55d"), "Admin" });
+                values: new object[] { new Guid("0a163d28-48bb-42a7-b143-05caf6dbd263"), "Admin" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("60869ae5-e9ac-4143-a0db-f6785b2ce490"), "Manager" });
+                values: new object[] { new Guid("b248c363-caf9-4718-9d2d-61664e052ee8"), "Manager" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("b31b685f-c80f-4256-bf1a-a9d93690967b"), "User" });
+                values: new object[] { new Guid("8d81bdc8-2f39-42c5-b8e0-4e5fa569d344"), "User" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdditionalServices_CinemaId",
@@ -347,10 +406,20 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 column: "CinemaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Address_CinemaId",
-                table: "Address",
+                name: "IX_Addresses_CinemaId",
+                table: "Addresses",
                 column: "CinemaId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookedOrders_UserProfileId",
+                table: "BookedOrders",
+                column: "UserProfileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookedOrderSessionAdditionalService_SelectedSessionAdditionalServicesId",
+                table: "BookedOrderSessionAdditionalService",
+                column: "SelectedSessionAdditionalServicesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Halls_CinemaId",
@@ -389,11 +458,6 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 column: "SessionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SessionAdditionalServices_SessionSeatId",
-                table: "SessionAdditionalServices",
-                column: "SessionSeatId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Sessions_HallId",
                 table: "Sessions",
                 column: "HallId");
@@ -402,6 +466,11 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "IX_Sessions_MovieId",
                 table: "Sessions",
                 column: "MovieId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SessionSeats_BookedOrderId",
+                table: "SessionSeats",
+                column: "BookedOrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SessionSeats_SeatId",
@@ -424,6 +493,12 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 column: "SessionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserProfiles_UserId",
+                table: "UserProfiles",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
@@ -432,7 +507,10 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Address");
+                name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "BookedOrderSessionAdditionalService");
 
             migrationBuilder.DropTable(
                 name: "MovieDescriptions");
@@ -441,19 +519,13 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
-                name: "SessionAdditionalServices");
-
-            migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "AdditionalServices");
-
-            migrationBuilder.DropTable(
                 name: "SessionSeats");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "SessionAdditionalServices");
+
+            migrationBuilder.DropTable(
+                name: "BookedOrders");
 
             migrationBuilder.DropTable(
                 name: "Seats");
@@ -462,16 +534,28 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "SessionSeatTypes");
 
             migrationBuilder.DropTable(
+                name: "AdditionalServices");
+
+            migrationBuilder.DropTable(
+                name: "UserProfiles");
+
+            migrationBuilder.DropTable(
                 name: "Rows");
 
             migrationBuilder.DropTable(
                 name: "Sessions");
 
             migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
                 name: "Halls");
 
             migrationBuilder.DropTable(
                 name: "Movies");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Cinemas");

@@ -1,7 +1,9 @@
 ﻿using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
+using CinemaTicketReservationSystem.DAL.Entity.BookingEntity;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
+using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicketReservationSystem.DAL.Context
@@ -17,6 +19,8 @@ namespace CinemaTicketReservationSystem.DAL.Context
         public DbSet<AdditionalService> AdditionalServices { get; set; }
 
         public DbSet<Cinema> Cinemas { get; set; }
+
+        public DbSet<Address> Addresses { get; set; }
 
         public DbSet<Hall> Halls { get; set; }
 
@@ -35,6 +39,10 @@ namespace CinemaTicketReservationSystem.DAL.Context
         public DbSet<SessionSeatType> SessionSeatTypes { get; set; }
 
         public DbSet<SessionSeat> SessionSeats { get; set; }
+
+        public DbSet<UserProfile> UserProfiles { get; set; }
+
+        public DbSet<BookedOrder> BookedOrders { get; set; }
 
 #pragma warning disable SA1201
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

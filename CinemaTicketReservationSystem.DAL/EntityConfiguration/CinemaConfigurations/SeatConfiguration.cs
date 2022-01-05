@@ -18,7 +18,8 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.CinemaConfigurat
             builder
                 .HasMany(x => x.SessionSeats)
                 .WithOne(x => x.Seat)
-                .HasForeignKey(x => x.SeatId);
+                .HasForeignKey(x => x.SeatId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

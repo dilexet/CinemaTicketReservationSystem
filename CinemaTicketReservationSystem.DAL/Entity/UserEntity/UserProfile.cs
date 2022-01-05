@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
-using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
+using CinemaTicketReservationSystem.DAL.Entity.BookingEntity;
 
 namespace CinemaTicketReservationSystem.DAL.Entity.UserEntity
 {
@@ -15,6 +15,6 @@ namespace CinemaTicketReservationSystem.DAL.Entity.UserEntity
 
         public virtual User User { get; set; }
 
-        public virtual IEnumerable<SessionSeat> Tickets { get; set; }
+        public virtual IEnumerable<BookedOrder> Tickets { get; set; }
     }
 }
