@@ -8,7 +8,7 @@ using CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels;
 using CinemaTicketReservationSystem.BLL.Models.Domain.UserModels;
 using CinemaTicketReservationSystem.BLL.Models.Results.UserProfile;
 using CinemaTicketReservationSystem.DAL.Abstract;
-using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
+using CinemaTicketReservationSystem.DAL.Entity.BookingEntity;
 using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 
 namespace CinemaTicketReservationSystem.BLL.Services
@@ -78,18 +78,18 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            IEnumerable<SessionSeat> tickets;
+            IEnumerable<BookedOrder> tickets;
             if (showPastTickets)
             {
-                tickets = user.Tickets.Where(x => x.Session.StartDate < DateTime.Now);
+                tickets = user.Tickets.Where(x => x.ReservedSessionSeats.Last().Session.StartDate < DateTime.Now);
             }
             else
             {
-                tickets = user.Tickets.Where(x => x.Session.StartDate > DateTime.Now);
+                tickets = user.Tickets.Where(x => x.ReservedSessionSeats.Last().Session.StartDate > DateTime.Now);
             }
 
             UserProfileModel userModel = _mapper.Map<UserProfileModel>(user);
-            userModel.Tickets = _mapper.Map<IEnumerable<SessionSeatModel>>(tickets);
+            userModel.Tickets = _mapper.Map<IEnumerable<BookedOrderModel>>(tickets);
 
             return new UserProfileResult()
             {
