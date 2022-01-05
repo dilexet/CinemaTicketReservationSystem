@@ -10,6 +10,7 @@ using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
+using CinemaTicketReservationSystem.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicketReservationSystem.BLL.Services
@@ -48,64 +49,17 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             var cinemaExist =
                 await _cinemaRepository.FirstOrDefaultAsync(cinema => cinema.Name.Equals(sessionModel.CinemaName));
-            if (cinemaExist == null)
-            {
-                return new SessionServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Cinema is not exists"
-                    }
-                };
-            }
 
             var hallExist = cinemaExist.Halls.FirstOrDefault(hall => hall.Name.Equals(sessionModel.HallName));
 
-            if (hallExist == null)
-            {
-                return new SessionServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Hall is not exists in this cinema"
-                    }
-                };
-            }
-
             var movieExist =
                 await _movieRepository.FirstOrDefaultAsync(movie => movie.Name.Equals(sessionModel.MovieName));
-
-            if (movieExist == null)
-            {
-                return new SessionServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Movie is not exists"
-                    }
-                };
-            }
 
             List<SessionAdditionalService> sessionAdditionalServices = new List<SessionAdditionalService>();
             foreach (var sessionAdditionalService in sessionModel.SessionAdditionalServices)
             {
                 var additionalServiceExist = cinemaExist.AdditionalServices.FirstOrDefault(service =>
                     service.Name.Equals(sessionAdditionalService.AdditionalService.Name));
-                if (additionalServiceExist == null)
-                {
-                    return new SessionServiceResult()
-                    {
-                        Success = false,
-                        Errors = new[]
-                        {
-                            "Additional Service is not exists"
-                        }
-                    };
-                }
-
                 sessionAdditionalServices.Add(new SessionAdditionalService()
                 {
                     AdditionalService = additionalServiceExist,
@@ -117,25 +71,14 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 _mapper.Map<List<SessionSeatType>>(sessionModel.SessionSeatTypes);
 
             List<SessionSeat> sessionSeats = new List<SessionSeat>();
-            foreach (var row in hallExist.Rows)
+            foreach (var row in hallExist!.Rows)
             {
                 foreach (var seat in row.Seats)
                 {
                     var sessionSeatTypeExist = sessionSeatTypes.FirstOrDefault(x => x.SeatType.Equals(seat.SeatType));
-                    if (sessionSeatTypeExist == null)
-                    {
-                        return new SessionServiceResult()
-                        {
-                            Success = false,
-                            Errors = new[]
-                            {
-                                "Session Seat Type is not exists"
-                            }
-                        };
-                    }
-
                     sessionSeats.Add(new SessionSeat()
                     {
+                        TicketState = TicketState.Free,
                         Seat = seat,
                         SessionSeatType = sessionSeatTypeExist
                     });
@@ -190,46 +133,11 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var cinemaExist =
                 await _cinemaRepository.FirstOrDefaultAsync(cinema => cinema.Name.Equals(sessionModel.CinemaName));
-            if (cinemaExist == null)
-            {
-                return new SessionServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Cinema is not exists"
-                    }
-                };
-            }
 
             var hallExist = cinemaExist.Halls.FirstOrDefault(hall => hall.Name.Equals(sessionModel.HallName));
 
-            if (hallExist == null)
-            {
-                return new SessionServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Hall is not exists in this cinema"
-                    }
-                };
-            }
-
             var movieExist =
                 await _movieRepository.FirstOrDefaultAsync(movie => movie.Name.Equals(sessionModel.MovieName));
-
-            if (movieExist == null)
-            {
-                return new SessionServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Movie is not exists"
-                    }
-                };
-            }
 
             foreach (var sessionAdditionalService in sessionExist.SessionAdditionalServices)
             {
@@ -251,17 +159,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
             {
                 var additionalServiceExist = cinemaExist.AdditionalServices.FirstOrDefault(service =>
                     service.Name.Equals(sessionAdditionalService.AdditionalService.Name));
-                if (additionalServiceExist == null)
-                {
-                    return new SessionServiceResult()
-                    {
-                        Success = false,
-                        Errors = new[]
-                        {
-                            "Additional Service is not exists"
-                        }
-                    };
-                }
 
                 sessionAdditionalServices.Add(new SessionAdditionalService()
                 {
@@ -274,25 +171,14 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 _mapper.Map<List<SessionSeatType>>(sessionModel.SessionSeatTypes);
 
             List<SessionSeat> sessionSeats = new List<SessionSeat>();
-            foreach (var row in hallExist.Rows)
+            foreach (var row in hallExist!.Rows)
             {
                 foreach (var seat in row.Seats)
                 {
                     var sessionSeatTypeExist = sessionSeatTypes.FirstOrDefault(x => x.SeatType.Equals(seat.SeatType));
-                    if (sessionSeatTypeExist == null)
-                    {
-                        return new SessionServiceResult()
-                        {
-                            Success = false,
-                            Errors = new[]
-                            {
-                                "Session Seat Type is not exists"
-                            }
-                        };
-                    }
-
                     sessionSeats.Add(new SessionSeat()
                     {
+                        TicketState = TicketState.Free,
                         Seat = seat,
                         SessionSeatType = sessionSeatTypeExist
                     });

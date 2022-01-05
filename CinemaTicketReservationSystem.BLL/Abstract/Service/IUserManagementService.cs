@@ -6,7 +6,7 @@ using CinemaTicketReservationSystem.BLL.Models.Results.User;
 
 namespace CinemaTicketReservationSystem.BLL.Abstract.Service
 {
-    public interface IUserService
+    public interface IUserManagementService
     {
         Task<UserServiceGetUsersResult> GetUsers(FilterParametersModel filter);
 

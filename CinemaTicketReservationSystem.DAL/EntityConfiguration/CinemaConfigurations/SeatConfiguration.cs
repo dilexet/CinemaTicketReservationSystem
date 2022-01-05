@@ -1,5 +1,4 @@
 ﻿using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
-using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -19,7 +18,8 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.CinemaConfigurat
             builder
                 .HasMany(x => x.SessionSeats)
                 .WithOne(x => x.Seat)
-                .HasForeignKey(x => x.SeatId);
+                .HasForeignKey(x => x.SeatId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

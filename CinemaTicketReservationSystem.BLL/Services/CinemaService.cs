@@ -40,6 +40,20 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var cinema = _mapper.Map<Cinema>(cinemaModel);
 
+            foreach (var hall in cinema.Halls)
+            {
+                List<string> seatTypes = new List<string>();
+                foreach (var row in hall.Rows)
+                {
+                    foreach (var seat in row.Seats)
+                    {
+                        seatTypes.Add(seat.SeatType);
+                    }
+                }
+
+                hall.SeatTypes = seatTypes.Distinct();
+            }
+
             if (!await _cinemaRepository.CreateAsync(cinema))
             {
                 return new CinemaServiceResult()
@@ -91,6 +105,20 @@ namespace CinemaTicketReservationSystem.BLL.Services
             cinemaExist.Name = cinemaModel.Name;
             cinemaExist.Address.Street = cinemaModel.AddressModel.Street;
             cinemaExist.Address.CityName = cinemaModel.AddressModel.CityName;
+
+            foreach (var hall in cinemaExist.Halls)
+            {
+                List<string> seatTypes = new List<string>();
+                foreach (var row in hall.Rows)
+                {
+                    foreach (var seat in row.Seats)
+                    {
+                        seatTypes.Add(seat.SeatType);
+                    }
+                }
+
+                hall.SeatTypes = seatTypes.Distinct();
+            }
 
             if (!await _cinemaRepository.UpdateAsync(cinemaExist))
             {

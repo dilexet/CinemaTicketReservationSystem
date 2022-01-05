@@ -10,6 +10,8 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.CinemaConfigurat
         {
             builder.HasKey(x => x.Id);
 
+            builder.Ignore(x => x.SeatTypes);
+
             builder
                 .HasOne(x => x.Cinema)
                 .WithMany(x => x.Halls)
@@ -19,7 +21,7 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.CinemaConfigurat
                 .HasMany(x => x.Sessions)
                 .WithOne(x => x.Hall)
                 .HasForeignKey(x => x.HallId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .HasMany(x => x.Rows)

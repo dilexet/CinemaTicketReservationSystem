@@ -13,13 +13,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicketReservationSystem.BLL.Services
 {
-    public class UserService : IUserService
+    public class UserManagementService : IUserManagementService
     {
         private readonly IUserRepository _userRepository;
         private readonly IRepository<Role> _roleRepository;
         private readonly IMapper _mapper;
 
-        public UserService(IUserRepository userRepository, IRepository<Role> roleRepository, IMapper mapper)
+        public UserManagementService(IUserRepository userRepository, IRepository<Role> roleRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;

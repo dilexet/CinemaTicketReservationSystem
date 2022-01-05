@@ -2,6 +2,7 @@
 using System.Reflection;
 using CinemaTicketReservationSystem.WebApi.CustomFilters;
 using CinemaTicketReservationSystem.WebApi.Extensions;
+using CinemaTicketReservationSystem.WebApi.Hubs;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,6 +40,10 @@ namespace CinemaTicketReservationSystem.WebApi
                 })
                 .AddFluentValidation(x => x.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
 
+            services.AddSignalR();
+
+            services.AddMemoryCache();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddDataAccessServicesToConfigureServices(Configuration);
@@ -72,7 +77,11 @@ namespace CinemaTicketReservationSystem.WebApi
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<SeatBookingHub>("/seat-booking-hub");
+            });
         }
     }
 }
