@@ -19,7 +19,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
 {
     public class BookingService : IBookingService
     {
-        // TODO: Removed unused
         private readonly IRepository<Session> _sessionRepository;
         private readonly IRepository<BookedOrder> _bookedOrderRepository;
         private readonly IRepository<UserProfile> _userProfileRepository;
@@ -46,17 +45,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<BookingServiceResult> BookTickets(Guid id, BookingModel bookingModel)
         {
             var sessionExist = await _sessionRepository.FindByIdAsync(id);
-            if (sessionExist == null)
-            {
-                return new BookingServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Session is not exists"
-                    }
-                };
-            }
 
             List<SessionAdditionalService> sessionAdditionalServices = new List<SessionAdditionalService>();
             double totalPrice = 0;
@@ -151,17 +139,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<SessionServiceResult> GetSessionById(Guid id)
         {
             var session = await _sessionRepository.FindByIdAsync(id);
-            if (session == null)
-            {
-                return new SessionServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Session is not exists"
-                    }
-                };
-            }
 
             var sessionModel = _mapper.Map<SessionModel>(session);
 
