@@ -28,29 +28,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<HallServiceResult> AddHall(Guid cinemaId, HallModel hallModel)
         {
             var cinemaExist = await _cinemaRepository.FindByIdAsync(cinemaId);
-            if (cinemaExist == null)
-            {
-                return new HallServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Cinema is not exists"
-                    }
-                };
-            }
-
-            if (cinemaExist.Halls.FirstOrDefault(x => x.Name == hallModel.Name) != null)
-            {
-                return new HallServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Hall with this name is exists"
-                    }
-                };
-            }
 
             var hall = _mapper.Map<Hall>(hallModel);
             hall.Cinema = cinemaExist;
@@ -91,17 +68,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<HallServiceResult> UpdateHall(Guid id, HallModel hallModel)
         {
             var hallExist = await _hallRepository.FindByIdAsync(id);
-            if (hallExist == null)
-            {
-                return new HallServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Hall is not exists"
-                    }
-                };
-            }
 
             var cinema = hallExist.Cinema;
             if (!await _hallRepository.RemoveAndSaveAsync(hallExist))
@@ -155,17 +121,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<HallServiceRemoveResult> RemoveHall(Guid id)
         {
             var hallExist = await _hallRepository.FindByIdAsync(id);
-            if (hallExist == null)
-            {
-                return new HallServiceRemoveResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Hall is not exists"
-                    }
-                };
-            }
 
             if (!await _hallRepository.RemoveAndSaveAsync(hallExist))
             {
@@ -214,17 +169,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<HallServiceResult> GetHallById(Guid id)
         {
             var hall = await _hallRepository.FindByIdAsync(id);
-            if (hall == null)
-            {
-                return new HallServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Hall is not exists"
-                    }
-                };
-            }
 
             var hallModel = _mapper.Map<HallModel>(hall);
 
