@@ -1,10 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Session;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Session;
+using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Session;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,9 +40,11 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSessionInfo(Guid id, SessionRequest sessionRequest)
+        public async Task<IActionResult> UpdateSessionInfo([FromRoute] UpdateSessionRequestWrapper updateSessionRequestWrapper)
         {
-            var result = await _sessionService.UpdateSessionInfo(id, _mapper.Map<SessionRequestModel>(sessionRequest));
+            var result = await _sessionService.UpdateSessionInfo(
+                updateSessionRequestWrapper.Id,
+                _mapper.Map<SessionRequestModel>(updateSessionRequestWrapper.SessionRequest));
             var response = _mapper.Map<SessionResponse>(result);
             if (!response.Success)
             {
@@ -55,9 +57,9 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveSession(Guid id)
+        public async Task<IActionResult> RemoveSession([FromRoute] SessionRequestWrapper sessionRequestWrapper)
         {
-            var result = await _sessionService.RemoveSession(id);
+            var result = await _sessionService.RemoveSession(sessionRequestWrapper.Id);
             var response = _mapper.Map<SessionRemoveResponse>(result);
             if (!response.Success)
             {
@@ -70,9 +72,9 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSessionById(Guid id)
+        public async Task<IActionResult> GetSessionById([FromRoute] SessionRequestWrapper sessionRequestWrapper)
         {
-            var result = await _sessionService.GetSessionById(id);
+            var result = await _sessionService.GetSessionById(sessionRequestWrapper.Id);
             var response = _mapper.Map<SessionResponse>(result);
             if (!response.Success)
             {

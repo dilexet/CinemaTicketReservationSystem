@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Models.Domain.HallModels;
-using CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Hall;
+using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Hall;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,12 +24,11 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddHall(
-            Guid cinemaId, HallRequest hallRequest)
+        public async Task<IActionResult> AddHall([FromRoute] AddHallRequestWrapper addHallRequestWrapper)
         {
             var hallResult = await _hallService.AddHall(
-                cinemaId,
-                _mapper.Map<HallModel>(hallRequest));
+                addHallRequestWrapper.CinemaId,
+                _mapper.Map<HallModel>(addHallRequestWrapper.HallRequest));
 
             var response = _mapper.Map<HallResponse>(hallResult);
             if (!response.Success)
@@ -44,11 +42,11 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateHall(Guid id, HallRequest hallRequest)
+        public async Task<IActionResult> UpdateHall([FromRoute] UpdateHallRequestWrapper updateHallRequestWrapper)
         {
             var hallResult = await _hallService.UpdateHall(
-                id,
-                _mapper.Map<HallModel>(hallRequest));
+                updateHallRequestWrapper.Id,
+                _mapper.Map<HallModel>(updateHallRequestWrapper.HallRequest));
 
             var response = _mapper.Map<HallResponse>(hallResult);
             if (!response.Success)
@@ -62,9 +60,9 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveHall(Guid id)
+        public async Task<IActionResult> RemoveHall([FromRoute] HallRequestWrapper hallRequestWrapper)
         {
-            var hallResult = await _hallService.RemoveHall(id);
+            var hallResult = await _hallService.RemoveHall(hallRequestWrapper.Id);
             var response = _mapper.Map<HallRemoveResponse>(hallResult);
             if (!response.Success)
             {
@@ -77,9 +75,9 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetHallById(Guid id)
+        public async Task<IActionResult> GetHallById([FromRoute] HallRequestWrapper hallRequestWrapper)
         {
-            var hallResult = await _hallService.GetHallById(id);
+            var hallResult = await _hallService.GetHallById(hallRequestWrapper.Id);
             var response = _mapper.Map<HallResponse>(hallResult);
             if (!response.Success)
             {

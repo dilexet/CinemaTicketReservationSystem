@@ -92,7 +92,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             try
             {
                 result = await _authorizeService.RefreshTokenAsync(
-                    refreshTokenRequest.Username,
+                    refreshTokenRequest.UserId,
                     refreshTokenRequest.Token);
             }
             catch (Exception e)

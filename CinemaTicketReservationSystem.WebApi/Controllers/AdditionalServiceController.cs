@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Models.Domain.AdditionalServiceModels;
-using CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema;
 using CinemaTicketReservationSystem.WebApi.Models.Response.AdditionalService;
+using CinemaTicketReservationSystem.WebApi.Models.Wrappers.AdditionalService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,11 +25,11 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddAdditionalService(
-            Guid cinemaId, AdditionalServiceRequest additionalServiceRequest)
+            [FromRoute] AddAdditionalServiceRequestWrapper addAdditionalServiceRequestWrapper)
         {
             var additionalServiceResult = await _additionalServiceManagement.AddAdditionalService(
-                cinemaId,
-                _mapper.Map<AdditionalServiceModel>(additionalServiceRequest));
+                addAdditionalServiceRequestWrapper.CinemaId,
+                _mapper.Map<AdditionalServiceModel>(addAdditionalServiceRequestWrapper.AdditionalServiceRequest));
 
             var response = _mapper.Map<AdditionalServiceResponse>(additionalServiceResult);
             if (!response.Success)
@@ -45,10 +44,11 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAdditionalService(
-            Guid id, Guid cinemaId, AdditionalServiceRequest additionalServiceRequest)
+            [FromRoute] UpdateAdditionalServiceRequestWrapper updateAdditionalServiceRequestWrapper)
         {
             var additionalServiceResult = await _additionalServiceManagement.UpdateAdditionalService(
-                id, cinemaId, _mapper.Map<AdditionalServiceModel>(additionalServiceRequest));
+                updateAdditionalServiceRequestWrapper.Id,
+                _mapper.Map<AdditionalServiceModel>(updateAdditionalServiceRequestWrapper.AdditionalServiceRequest));
 
             var response = _mapper.Map<AdditionalServiceResponse>(additionalServiceResult);
             if (!response.Success)
@@ -62,9 +62,11 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveAdditionalService(Guid id)
+        public async Task<IActionResult> RemoveAdditionalService(
+            [FromRoute] AdditionalServiceRequestWrapper additionalServiceRequestWrapper)
         {
-            var additionalServiceResult = await _additionalServiceManagement.RemoveAdditionalService(id);
+            var additionalServiceResult =
+                await _additionalServiceManagement.RemoveAdditionalService(additionalServiceRequestWrapper.Id);
             var response = _mapper.Map<AdditionalServiceRemoveResponse>(additionalServiceResult);
             if (!response.Success)
             {
@@ -77,9 +79,11 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAdditionalServiceById(Guid id)
+        public async Task<IActionResult> GetAdditionalServiceById(
+            [FromRoute] AdditionalServiceRequestWrapper additionalServiceRequestWrapper)
         {
-            var additionalServiceResult = await _additionalServiceManagement.GetAdditionalServiceById(id);
+            var additionalServiceResult =
+                await _additionalServiceManagement.GetAdditionalServiceById(additionalServiceRequestWrapper.Id);
             var response = _mapper.Map<AdditionalServiceResponse>(additionalServiceResult);
             if (!response.Success)
             {
