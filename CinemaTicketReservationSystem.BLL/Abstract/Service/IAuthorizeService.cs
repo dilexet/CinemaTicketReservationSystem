@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CinemaTicketReservationSystem.BLL.Models.Domain.AuthModels;
 using CinemaTicketReservationSystem.BLL.Models.Results.Authorize;
 
@@ -10,6 +11,6 @@ namespace CinemaTicketReservationSystem.BLL.Abstract.Service
 
         Task<AuthorizeResult> RegisterAsync(RegisterModel registerModel);
 
-        Task<AuthorizeResult> RefreshTokenAsync(string username, string refreshToken);
+        Task<AuthorizeResult> RefreshTokenAsync(Guid userId, string refreshToken);
     }
 }
