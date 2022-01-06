@@ -5,7 +5,7 @@ using CinemaTicketReservationSystem.BLL.Extensions;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema;
 using FluentValidation;
 
-namespace CinemaTicketReservationSystem.WebApi.Validators.Cinema
+namespace CinemaTicketReservationSystem.WebApi.Validators.Seat
 {
     public class SeatRequestValidator : AbstractValidator<SeatRequest>
     {

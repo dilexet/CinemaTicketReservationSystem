@@ -1,11 +1,13 @@
-﻿using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
+﻿using CinemaTicketReservationSystem.DAL.Abstract;
+using CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator;
+using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
 using FluentValidation;
 
-namespace CinemaTicketReservationSystem.WebApi.Validators.User
+namespace CinemaTicketReservationSystem.WebApi.Validators.Authorize
 {
     public class UserRegisterRequestValidator : AbstractValidator<UserRegisterRequest>
     {
-        public UserRegisterRequestValidator()
+        public UserRegisterRequestValidator(IUserRepository userRepository)
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage("Please enter the username");
             RuleFor(x => x.Name).Length(5, 16).WithMessage("Username must be between 5 and 16 characters");
@@ -18,7 +20,9 @@ namespace CinemaTicketReservationSystem.WebApi.Validators.User
             RuleFor(x => x.Password).Length(4, 25).WithMessage("Password must be between 4 and 25 characters");
 
             RuleFor(x => x.ConfirmPassword).NotEmpty().WithMessage("Please enter the confirmation password");
-            RuleFor(x => x.ConfirmPassword).Equal(x => x.Password).WithMessage("The password and confirmation password do not match");
+            RuleFor(x => x.ConfirmPassword).Equal(x => x.Password)
+                .WithMessage("The password and confirmation password do not match");
+            RuleFor(x => x).UserMustNotExistAsync(userRepository);
         }
     }
 }
