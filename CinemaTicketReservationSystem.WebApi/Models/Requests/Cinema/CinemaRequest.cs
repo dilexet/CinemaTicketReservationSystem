@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema
+﻿namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema
 {
     public class CinemaRequest
     {
