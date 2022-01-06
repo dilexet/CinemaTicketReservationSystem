@@ -41,7 +41,7 @@ namespace CinemaTicketReservationSystem.BLL.Utils
 
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
             var header = new JwtHeader(credentials);
-            var claimsIdentity = CreateClaimsIdentity(user.Id, user.Name, user.Role);
+            var claimsIdentity = CreateClaimsIdentity(user.Id, user.UserProfileId, user.Name, user.Role);
 
             var payload = new JwtPayload(issuer, audience, claimsIdentity.Claims, now, now.AddMinutes(lifeTime));
 
@@ -50,11 +50,12 @@ namespace CinemaTicketReservationSystem.BLL.Utils
             return token;
         }
 
-        private ClaimsIdentity CreateClaimsIdentity(Guid id, string name, string role)
+        private ClaimsIdentity CreateClaimsIdentity(Guid id, Guid userProfileId, string name, string role)
         {
             var claims = new List<Claim>
             {
                 new ("UserId", id.ToString()),
+                new ("UserProfileId", userProfileId.ToString()),
                 new (ClaimsIdentity.DefaultNameClaimType, name),
                 new (ClaimsIdentity.DefaultRoleClaimType, role),
                 new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
