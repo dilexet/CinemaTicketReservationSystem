@@ -22,9 +22,9 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadFile(IFormFile file)
+        public async Task<IActionResult> UploadFile(IFormFile formFile)
         {
-            var result = await _fileService.UploadImage(file);
+            var result = await _fileService.UploadImage(formFile);
             var response = _mapper.Map<FileResponse>(result);
 
             if (!response.Success)
