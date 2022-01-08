@@ -14,6 +14,7 @@ using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 using CinemaTicketReservationSystem.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CinemaTicketReservationSystem.BLL.Services
 {
@@ -24,6 +25,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
         private readonly IRepository<UserProfile> _userProfileRepository;
         private readonly IRepository<SessionAdditionalService> _sessionAdditionalServiceRepository;
         private readonly IRepository<SessionSeat> _sessionSeatRepository;
+        private readonly IMemoryCache _memoryCache;
         private readonly IMapper _mapper;
 
         public BookingService(
@@ -32,7 +34,8 @@ namespace CinemaTicketReservationSystem.BLL.Services
             IRepository<SessionSeat> sessionSeatRepository,
             IMapper mapper,
             IRepository<UserProfile> userProfileRepository,
-            IRepository<BookedOrder> bookedOrderRepository)
+            IRepository<BookedOrder> bookedOrderRepository,
+            IMemoryCache memoryCache)
         {
             _sessionRepository = sessionRepository;
             _sessionAdditionalServiceRepository = sessionAdditionalServiceRepository;
@@ -40,6 +43,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             _mapper = mapper;
             _userProfileRepository = userProfileRepository;
             _bookedOrderRepository = bookedOrderRepository;
+            _memoryCache = memoryCache;
         }
 
         public async Task<BookingServiceResult> BookTickets(Guid id, BookingModel bookingModel)
@@ -139,6 +143,14 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<SessionServiceResult> GetSessionById(Guid id)
         {
             var session = await _sessionRepository.FindByIdAsync(id);
+            foreach (var seat in session.SessionSeats)
+            {
+                var seatId = _memoryCache.Get(seat.SeatId);
+                if (seatId != null)
+                {
+                    seat.TicketState = TicketState.Blocked;
+                }
+            }
 
             var sessionModel = _mapper.Map<SessionModel>(session);
 
