@@ -89,6 +89,11 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
                 new BaseRepository<BookedOrder>(
                     provider.GetService<ApplicationDbContext>(),
                     provider.GetService<ILogger<BaseRepository<BookedOrder>>>()));
+
+            services.AddScoped<IRepository<Address>>(provider =>
+                new BaseRepository<Address>(
+                    provider.GetService<ApplicationDbContext>(),
+                    provider.GetService<ILogger<BaseRepository<Address>>>()));
         }
     }
 }
