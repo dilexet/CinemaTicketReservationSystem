@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using CinemaTicketReservationSystem.BLL.Models.FilterModel;
 using CinemaTicketReservationSystem.BLL.Models.Results.Movie;
+using CinemaTicketReservationSystem.BLL.Models.Results.Search;
 using CinemaTicketReservationSystem.BLL.Models.Results.Session;
 
 namespace CinemaTicketReservationSystem.BLL.Abstract.Service
@@ -13,10 +13,10 @@ namespace CinemaTicketReservationSystem.BLL.Abstract.Service
 
         Task<SessionServiceGetAllResult> GetSessionsForMovie(Guid movieId);
 
-        Task<IEnumerable<string>> GetListOfMovieTitles(string movieTitleSearchQuery);
+        Task<SearchSuggestionResult> GetListOfMovieTitles(string movieTitleSearchQuery);
 
-        Task<IEnumerable<string>> GetListOfCinemaNames(string cinemaTitleSearchQuery);
+        Task<SearchSuggestionResult> GetListOfCinemaNames(string cinemaTitleSearchQuery);
 
-        Task<IEnumerable<string>> GetListOfCityNames(string cityTitleSearchQuery);
+        Task<SearchSuggestionResult> GetListOfCityNames(string cityTitleSearchQuery);
     }
 }

@@ -8,6 +8,7 @@ using CinemaTicketReservationSystem.BLL.Models.Domain.MovieModels;
 using CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels;
 using CinemaTicketReservationSystem.BLL.Models.FilterModel;
 using CinemaTicketReservationSystem.BLL.Models.Results.Movie;
+using CinemaTicketReservationSystem.BLL.Models.Results.Search;
 using CinemaTicketReservationSystem.BLL.Models.Results.Session;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
@@ -24,17 +25,20 @@ namespace CinemaTicketReservationSystem.BLL.Services
         private readonly IRepository<Session> _sessionRepository;
         private readonly IRepository<Movie> _movieRepository;
         private readonly IRepository<Cinema> _cinemaRepository;
+        private readonly IRepository<Address> _addressRepository;
 
         public MovieFilterService(
             IMapper mapper,
             IRepository<Session> sessionRepository,
             IRepository<Movie> movieRepository,
-            IRepository<Cinema> cinemaRepository)
+            IRepository<Cinema> cinemaRepository,
+            IRepository<Address> addressRepository)
         {
             _mapper = mapper;
             _sessionRepository = sessionRepository;
             _movieRepository = movieRepository;
             _cinemaRepository = cinemaRepository;
+            _addressRepository = addressRepository;
         }
 
         public async Task<MovieServiceGetMoviesResult> GetMoviesByFilter(
@@ -126,44 +130,73 @@ namespace CinemaTicketReservationSystem.BLL.Services
             };
         }
 
-        // TODO: maybe you need to take it to a individual service
-        public async Task<IEnumerable<string>> GetListOfMovieTitles(string movieTitleSearchQuery)
+        public async Task<SearchSuggestionResult> GetListOfMovieTitles(string movieTitleSearchQuery)
         {
             var movies = _movieRepository.GetBy(x => x.Name.Contains(movieTitleSearchQuery));
             if (movies == null || !movies.Any())
             {
-                // TODO
-                return null;
+                return new SearchSuggestionResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "Movies not found"
+                    }
+                };
             }
 
             var moviesTitle = await movies.Select(x => x.Name).ToListAsync();
-            return moviesTitle;
+            return new SearchSuggestionResult()
+            {
+                Success = true,
+                ListOfTitles = moviesTitle
+            };
         }
 
-        public async Task<IEnumerable<string>> GetListOfCinemaNames(string cinemaTitleSearchQuery)
+        public async Task<SearchSuggestionResult> GetListOfCinemaNames(string cinemaNameSearchQuery)
         {
-            var cinemas = _cinemaRepository.GetBy(x => x.Name.Contains(cinemaTitleSearchQuery));
+            var cinemas = _cinemaRepository.GetBy(x => x.Name.Contains(cinemaNameSearchQuery));
             if (cinemas == null || !cinemas.Any())
             {
-                // TODO
-                return null;
+                return new SearchSuggestionResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "Cinemas not found"
+                    }
+                };
             }
 
             var cinemasName = await cinemas.Select(x => x.Name).ToListAsync();
-            return cinemasName;
+            return new SearchSuggestionResult()
+            {
+                Success = true,
+                ListOfTitles = cinemasName
+            };
         }
 
-        public async Task<IEnumerable<string>> GetListOfCityNames(string cityTitleSearchQuery)
+        public async Task<SearchSuggestionResult> GetListOfCityNames(string cityNameSearchQuery)
         {
-            var cinemas = _cinemaRepository.GetBy(x => x.Address.CityName.Contains(cityTitleSearchQuery));
-            if (cinemas == null || !cinemas.Any())
+            var cities = _addressRepository.GetBy(x => x.CityName.Contains(cityNameSearchQuery));
+            if (cities == null || !cities.Any())
             {
-                // TODO
-                return null;
+                return new SearchSuggestionResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "Cities not found"
+                    }
+                };
             }
 
-            var cityNames = await cinemas.Select(x => x.Address.CityName).ToListAsync();
-            return cityNames;
+            var cityNames = await cities.Select(x => x.CityName).ToListAsync();
+            return new SearchSuggestionResult()
+            {
+                Success = true,
+                ListOfTitles = cityNames
+            };
         }
     }
 }
