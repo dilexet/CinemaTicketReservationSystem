@@ -6,7 +6,6 @@ using CinemaTicketReservationSystem.WebApi.Models.Response.Cinema;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Cinema;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
@@ -17,13 +16,11 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
     {
         private readonly ICinemaService _cinemaService;
         private readonly IMapper _mapper;
-        private readonly ILogger<CinemaController> _logger;
 
-        public CinemaController(ICinemaService cinemaService, IMapper mapper, ILogger<CinemaController> logger)
+        public CinemaController(ICinemaService cinemaService, IMapper mapper)
         {
             _cinemaService = cinemaService;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpPost]
@@ -34,11 +31,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<CinemaResponse>(cinemaResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status400BadRequest;
                 return BadRequest(response);
             }
@@ -57,11 +49,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<CinemaResponse>(cinemaResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status400BadRequest;
                 return BadRequest(response);
             }
@@ -77,11 +64,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<CinemaRemoveResponse>(cinemaResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status400BadRequest;
                 return BadRequest(response);
             }
@@ -97,11 +79,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<CinemaResponse>(cinemaResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status404NotFound;
                 return NotFound(response);
             }
@@ -117,11 +94,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<CinemaGetAllResponse>(cinemaResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status404NotFound;
                 return NotFound(response);
             }

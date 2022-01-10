@@ -7,7 +7,6 @@ using CinemaTicketReservationSystem.WebApi.Models.Requests.Token;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Authorize;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
@@ -17,16 +16,13 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
     {
         private readonly IAuthorizeService _authorizeService;
         private readonly IMapper _mapper;
-        private readonly ILogger<AuthorizeController> _logger;
 
         public AuthorizeController(
             IAuthorizeService authorizeService,
-            IMapper mapper,
-            ILogger<AuthorizeController> logger)
+            IMapper mapper)
         {
             _authorizeService = authorizeService;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpPost("login")]
@@ -38,11 +34,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
 
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status401Unauthorized;
                 return Unauthorized(response);
             }
@@ -60,11 +51,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
 
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status401Unauthorized;
                 return Unauthorized(response);
             }
@@ -84,11 +70,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
 
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status401Unauthorized;
                 return Unauthorized(response);
             }

@@ -4,7 +4,6 @@ using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.WebApi.Models.Response.File;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
@@ -15,13 +14,11 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
     {
         private readonly IFileService _fileService;
         private readonly IMapper _mapper;
-        private readonly ILogger<FileController> _logger;
 
-        public FileController(IFileService fileService, IMapper mapper, ILogger<FileController> logger)
+        public FileController(IFileService fileService, IMapper mapper)
         {
             _fileService = fileService;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpPost]
@@ -32,11 +29,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
 
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status400BadRequest;
                 return BadRequest(response);
             }

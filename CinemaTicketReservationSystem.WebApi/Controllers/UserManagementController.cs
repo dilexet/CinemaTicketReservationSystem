@@ -8,7 +8,6 @@ using CinemaTicketReservationSystem.WebApi.Models.Response.UserManagement;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.UserManagement;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
@@ -19,16 +18,13 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
     {
         private readonly IUserManagementService _userManagementService;
         private readonly IMapper _mapper;
-        private readonly ILogger<UserManagementController> _logger;
 
         public UserManagementController(
             IUserManagementService userManagementService,
-            IMapper mapper,
-            ILogger<UserManagementController> logger)
+            IMapper mapper)
         {
             _userManagementService = userManagementService;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpPost]
@@ -40,11 +36,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<UserManagementResponse>(usersResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status400BadRequest;
                 return BadRequest(response);
             }
@@ -62,11 +53,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<UserManagementResponse>(usersResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status400BadRequest;
                 return BadRequest(response);
             }
@@ -82,11 +68,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<UserManagementRemoveResponse>(usersResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status400BadRequest;
                 return BadRequest(response);
             }
@@ -102,11 +83,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<UserManagementGetUsersResponse>(usersResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status404NotFound;
                 return NotFound(response);
             }
@@ -122,11 +98,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<UserManagementResponse>(usersResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status404NotFound;
                 return NotFound(response);
             }

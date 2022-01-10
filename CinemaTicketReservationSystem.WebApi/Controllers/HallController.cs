@@ -6,7 +6,6 @@ using CinemaTicketReservationSystem.WebApi.Models.Response.Hall;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Hall;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
@@ -17,13 +16,11 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
     {
         private readonly IHallService _hallService;
         private readonly IMapper _mapper;
-        private readonly ILogger<HallController> _logger;
 
-        public HallController(IHallService hallService, IMapper mapper, ILogger<HallController> logger)
+        public HallController(IHallService hallService, IMapper mapper)
         {
             _hallService = hallService;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpPost]
@@ -36,11 +33,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<HallResponse>(hallResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status400BadRequest;
                 return BadRequest(response);
             }
@@ -59,11 +51,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<HallResponse>(hallResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status400BadRequest;
                 return BadRequest(response);
             }
@@ -79,11 +66,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<HallRemoveResponse>(hallResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status400BadRequest;
                 return BadRequest(response);
             }
@@ -99,11 +81,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<HallResponse>(hallResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status404NotFound;
                 return NotFound(response);
             }
@@ -119,11 +96,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<HallGetAllResponse>(hallResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status404NotFound;
                 return NotFound(response);
             }

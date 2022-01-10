@@ -3,7 +3,6 @@ using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Cinema;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
@@ -14,13 +13,11 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
     {
         private readonly ISeatTypeService _seatTypeService;
         private readonly IMapper _mapper;
-        private readonly ILogger<SeatTypeController> _logger;
 
-        public SeatTypeController(ISeatTypeService seatTypeService, IMapper mapper, ILogger<SeatTypeController> logger)
+        public SeatTypeController(ISeatTypeService seatTypeService, IMapper mapper)
         {
             _seatTypeService = seatTypeService;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpGet]
@@ -30,11 +27,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<SeatTypeGetAllResponse>(seatTypesResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status404NotFound;
                 return NotFound(response);
             }

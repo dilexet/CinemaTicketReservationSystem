@@ -11,7 +11,6 @@ using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Session;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
@@ -23,18 +22,15 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         private readonly IBookingService _bookingService;
         private readonly IHubContext<SeatBookingHub> _hubContext;
         private readonly IMapper _mapper;
-        private readonly ILogger<BookingController> _logger;
 
         public BookingController(
             IBookingService bookingService,
             IMapper mapper,
-            IHubContext<SeatBookingHub> hubContext,
-            ILogger<BookingController> logger)
+            IHubContext<SeatBookingHub> hubContext)
         {
             _bookingService = bookingService;
             _mapper = mapper;
             _hubContext = hubContext;
-            _logger = logger;
         }
 
         [HttpPut("{id}")]
@@ -46,11 +42,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<BookTicketsResponse>(bookingResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status400BadRequest;
                 return BadRequest(response);
             }
@@ -70,11 +61,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<SessionResponse>(sessionResult);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status404NotFound;
                 return NotFound(response);
             }
@@ -90,11 +76,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<SessionGetAllResponse>(availableSessions);
             if (!response.Success)
             {
-                foreach (var error in response.Errors)
-                {
-                    _logger.LogError(error.ToString());
-                }
-
                 response.Code = StatusCodes.Status404NotFound;
                 return NotFound(response);
             }
