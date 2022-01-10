@@ -4,6 +4,7 @@ using CinemaTicketReservationSystem.DAL.Initializers;
 using CinemaTicketReservationSystem.WebApi.CustomFilters;
 using CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations;
 using CinemaTicketReservationSystem.WebApi.Hubs;
+using CinemaTicketReservationSystem.WebApi.Middleware;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -66,6 +67,8 @@ namespace CinemaTicketReservationSystem.WebApi
                 app.UseDeveloperExceptionPage();
                 app.UseSwaggerConfigure();
             }
+
+            app.UseMiddleware<ResponseLoggingMiddleware>();
 
             app.UseSerilogRequestLogging();
             app.UseDbMigrateConfigure();
