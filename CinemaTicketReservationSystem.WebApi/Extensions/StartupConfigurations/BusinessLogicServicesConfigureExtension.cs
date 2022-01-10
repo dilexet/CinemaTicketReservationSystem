@@ -91,6 +91,14 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
                 new UserProfileService(
                     provider.GetService<IRepository<UserProfile>>(),
                     provider.GetService<IMapper>()));
+
+            services.AddScoped<IMovieFilterService>(provider =>
+                new MovieFilterService(
+                    provider.GetService<IMapper>(),
+                    provider.GetService<IRepository<Session>>(),
+                    provider.GetService<IRepository<Movie>>(),
+                    provider.GetService<IRepository<Cinema>>(),
+                    provider.GetService<IRepository<Address>>()));
         }
     }
 }
