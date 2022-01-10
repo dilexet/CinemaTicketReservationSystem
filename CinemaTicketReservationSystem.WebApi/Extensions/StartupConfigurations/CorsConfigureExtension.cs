@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CinemaTicketReservationSystem.WebApi.Extensions
+namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
 {
     public static class CorsConfigureExtension
     {

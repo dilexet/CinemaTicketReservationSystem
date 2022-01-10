@@ -9,12 +9,13 @@ using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
+using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace CinemaTicketReservationSystem.WebApi.Extensions
+namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
 {
     public static class BusinessLogicServicesConfigureExtension
     {
@@ -85,6 +86,11 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
             services.AddScoped<IFileService>(provider =>
                 new FileService(
                     provider.GetService<IWebHostEnvironment>()));
+
+            services.AddScoped<IUserProfileService>(provider =>
+                new UserProfileService(
+                    provider.GetService<IRepository<UserProfile>>(),
+                    provider.GetService<IMapper>()));
         }
     }
 }

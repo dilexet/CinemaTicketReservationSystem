@@ -12,11 +12,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
     {
         public SeatTypeServiceGetAllResult GetSeatTypes()
         {
-            List<string> seatTypesList = new List<string>();
-            foreach (var seatType in Enum.GetValues(typeof(SeatTypes)).Cast<SeatTypes>())
-            {
-                seatTypesList.Add(seatType.GetDisplayName());
-            }
+            List<string> seatTypesList = Enum.GetValues(typeof(SeatTypes)).Cast<SeatTypes>().Select(seatType => seatType.GetDisplayName()).ToList();
 
             return new SeatTypeServiceGetAllResult()
             {

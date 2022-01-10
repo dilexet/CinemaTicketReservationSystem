@@ -2,6 +2,7 @@
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Models.Domain.AdditionalServiceModels;
 using CinemaTicketReservationSystem.BLL.Models.Domain.AuthModels;
+using CinemaTicketReservationSystem.BLL.Models.Domain.BookingModels;
 using CinemaTicketReservationSystem.BLL.Models.Domain.CinemaModels;
 using CinemaTicketReservationSystem.BLL.Models.Domain.HallModels;
 using CinemaTicketReservationSystem.BLL.Models.Domain.MovieModels;
@@ -11,6 +12,7 @@ using CinemaTicketReservationSystem.BLL.Models.Domain.UserModels;
 using CinemaTicketReservationSystem.BLL.Models.FilterModel;
 using CinemaTicketReservationSystem.BLL.Models.Results.AdditionalService;
 using CinemaTicketReservationSystem.BLL.Models.Results.Authorize;
+using CinemaTicketReservationSystem.BLL.Models.Results.Booking;
 using CinemaTicketReservationSystem.BLL.Models.Results.Cinema;
 using CinemaTicketReservationSystem.BLL.Models.Results.File;
 using CinemaTicketReservationSystem.BLL.Models.Results.Hall;
@@ -18,24 +20,31 @@ using CinemaTicketReservationSystem.BLL.Models.Results.Movie;
 using CinemaTicketReservationSystem.BLL.Models.Results.SeatType;
 using CinemaTicketReservationSystem.BLL.Models.Results.Session;
 using CinemaTicketReservationSystem.BLL.Models.Results.User;
+using CinemaTicketReservationSystem.BLL.Models.Results.UserProfile;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
+using CinemaTicketReservationSystem.DAL.Entity.BookingEntity;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
+using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 using CinemaTicketReservationSystem.WebApi.Models.Filters;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Authorize;
+using CinemaTicketReservationSystem.WebApi.Models.Requests.Booking;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Session;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.User;
 using CinemaTicketReservationSystem.WebApi.Models.Response.AdditionalService;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Authorize;
+using CinemaTicketReservationSystem.WebApi.Models.Response.Booking;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Cinema;
 using CinemaTicketReservationSystem.WebApi.Models.Response.File;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Hall;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Session;
 using CinemaTicketReservationSystem.WebApi.Models.Response.UserManagement;
+using CinemaTicketReservationSystem.WebApi.Models.Response.UserProfile;
+using CinemaTicketReservationSystem.WebApi.Models.ViewModels.Booking;
 using CinemaTicketReservationSystem.WebApi.Models.ViewModels.Cinema;
 using CinemaTicketReservationSystem.WebApi.Models.ViewModels.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.ViewModels.Session;
@@ -47,9 +56,15 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
     {
         public MapperProfile()
         {
-            CreateMap<User, TokenUserModel>().ForMember(
-                dest => dest.Role,
-                source => source.MapFrom(res => res.Role.Name));
+            CreateMap<User, TokenUserModel>()
+                .ForMember(
+                    dest => dest.Role,
+                    source => source.MapFrom(
+                        res => res.Role.Name))
+                .ForMember(
+                    dest => dest.UserProfileId,
+                    source => source.MapFrom(
+                        res => res.UserProfile.Id));
             CreateMap<RegisterModel, User>();
 
             CreateMap<UserLoginRequest, LoginModel>();
@@ -175,13 +190,7 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                     {
                         CityName = res.CityName,
                         Street = res.Street
-                    }))
-                .ForMember(
-                    dest => dest.Halls,
-                    source => source.MapFrom(res => res.Halls))
-                .ForMember(
-                    dest => dest.AdditionalServices,
-                    source => source.MapFrom(res => res.AdditionalServices));
+                    }));
 
             CreateMap<SeatModel, SeatViewModel>()
                 .ForMember(
@@ -486,6 +495,60 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                         source.MapFrom(res => res.Session));
 
             CreateMap<SessionServiceRemoveResult, SessionRemoveResponse>();
+
+            CreateMap<UserProfileModel, UserProfile>();
+
+            CreateMap<UserProfile, UserProfileModel>();
+
+            CreateMap<UserProfileUpdateRequest, UserProfileModel>();
+
+            CreateMap<UserProfileModel, UserProfileViewModel>()
+                .ForMember(
+                    dest => dest.Tickets,
+                    source =>
+                        source.MapFrom(res => res.Tickets));
+
+            CreateMap<UserProfileResult, UserProfileResponse>()
+                .ForMember(
+                    dest => dest.UserProfileViewModel,
+                    source =>
+                        source.MapFrom(res => res.UserProfile));
+
+            CreateMap<BookTicketsRequest, BookingModel>();
+
+            CreateMap<BookedOrder, BookedOrderModel>()
+                .ForMember(
+                    dest => dest.UserProfile,
+                    source =>
+                        source.MapFrom(res => res.UserProfile))
+                .ForMember(
+                    dest => dest.ReservedSessionSeats,
+                    source =>
+                        source.MapFrom(res => res.ReservedSessionSeats))
+                .ForMember(
+                    dest => dest.SelectedSessionAdditionalServices,
+                    source =>
+                        source.MapFrom(res => res.SelectedSessionAdditionalServices));
+
+            CreateMap<BookedOrderModel, BookedOrderViewModel>()
+                .ForMember(
+                    dest => dest.UserProfile,
+                    source =>
+                        source.MapFrom(res => res.UserProfile))
+                .ForMember(
+                    dest => dest.ReservedSessionSeats,
+                    source =>
+                        source.MapFrom(res => res.ReservedSessionSeats))
+                .ForMember(
+                    dest => dest.SelectedSessionAdditionalServices,
+                    source =>
+                        source.MapFrom(res => res.SelectedSessionAdditionalServices));
+
+            CreateMap<BookingServiceResult, BookTicketsResponse>()
+                .ForMember(
+                    dest => dest.BookedOrderViewModel,
+                    source =>
+                        source.MapFrom(res => res.BookedOrder));
         }
     }
 }

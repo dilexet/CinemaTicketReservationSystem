@@ -9,7 +9,7 @@ namespace CinemaTicketReservationSystem.BLL.Abstract.Service
     {
         Task<AdditionalServiceResult> AddAdditionalService(Guid cinemaId, AdditionalServiceModel additionalService);
 
-        Task<AdditionalServiceResult> UpdateAdditionalService(Guid guid, Guid id, AdditionalServiceModel additionalService);
+        Task<AdditionalServiceResult> UpdateAdditionalService(Guid id, AdditionalServiceModel additionalService);
 
         Task<AdditionalServiceRemoveResult> RemoveAdditionalService(Guid id);
 

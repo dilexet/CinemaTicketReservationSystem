@@ -1,19 +1,26 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CinemaTicketReservationSystem.WebApi.Hubs
 {
     public class SeatBookingHub : Hub
     {
-        public async Task SetBlockedSeats(Guid[] seatsId)
+        private readonly IMemoryCache _memoryCache;
+
+        public SeatBookingHub(IMemoryCache memoryCache)
         {
-            await Clients.All.SendAsync("setBlockedSeat", seatsId);
+            _memoryCache = memoryCache;
         }
 
-        public async Task SetBookingSeats(Guid[] seatsId)
+        public async Task SetBlockedSeats(Guid seatsId)
         {
-            await Clients.All.SendAsync("setBookingSeat", seatsId);
+            _memoryCache.Set(seatsId, seatsId, new MemoryCacheEntryOptions()
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(15)
+            });
+            await Clients.All.SendAsync("setBlockedSeat", seatsId);
         }
     }
 }

@@ -32,16 +32,14 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
                     var fileType = file.FileName.Split('.').Last();
                     var path = directory + Guid.NewGuid() + '.' + fileType;
-                    using (FileStream fileStream = new FileStream(_environment.WebRootPath + path, FileMode.Create))
+                    await using FileStream fileStream = new FileStream(_environment.WebRootPath + path, FileMode.Create);
+                    await file.CopyToAsync(fileStream);
+                    fileStream.Flush();
+                    return new FileServiceResult()
                     {
-                        await file.CopyToAsync(fileStream);
-                        fileStream.Flush();
-                        return new FileServiceResult()
-                        {
-                            Success = true,
-                            PosterPath = path
-                        };
-                    }
+                        Success = true,
+                        PosterPath = path
+                    };
                 }
             }
             catch (IOException e)

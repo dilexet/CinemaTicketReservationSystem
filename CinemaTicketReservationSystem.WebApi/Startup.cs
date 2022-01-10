@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Reflection;
+using CinemaTicketReservationSystem.DAL.Initializers;
 using CinemaTicketReservationSystem.WebApi.CustomFilters;
-using CinemaTicketReservationSystem.WebApi.Extensions;
+using CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations;
 using CinemaTicketReservationSystem.WebApi.Hubs;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -82,6 +83,8 @@ namespace CinemaTicketReservationSystem.WebApi
                 endpoints.MapControllers();
                 endpoints.MapHub<SeatBookingHub>("/seat-booking-hub");
             });
+
+            RoleInitialize.Seed(app.ApplicationServices);
         }
     }
 }

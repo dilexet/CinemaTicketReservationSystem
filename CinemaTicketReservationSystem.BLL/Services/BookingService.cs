@@ -14,17 +14,18 @@ using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 using CinemaTicketReservationSystem.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CinemaTicketReservationSystem.BLL.Services
 {
     public class BookingService : IBookingService
     {
-        // TODO: Removed unused
         private readonly IRepository<Session> _sessionRepository;
         private readonly IRepository<BookedOrder> _bookedOrderRepository;
         private readonly IRepository<UserProfile> _userProfileRepository;
         private readonly IRepository<SessionAdditionalService> _sessionAdditionalServiceRepository;
         private readonly IRepository<SessionSeat> _sessionSeatRepository;
+        private readonly IMemoryCache _memoryCache;
         private readonly IMapper _mapper;
 
         public BookingService(
@@ -33,7 +34,8 @@ namespace CinemaTicketReservationSystem.BLL.Services
             IRepository<SessionSeat> sessionSeatRepository,
             IMapper mapper,
             IRepository<UserProfile> userProfileRepository,
-            IRepository<BookedOrder> bookedOrderRepository)
+            IRepository<BookedOrder> bookedOrderRepository,
+            IMemoryCache memoryCache)
         {
             _sessionRepository = sessionRepository;
             _sessionAdditionalServiceRepository = sessionAdditionalServiceRepository;
@@ -41,22 +43,12 @@ namespace CinemaTicketReservationSystem.BLL.Services
             _mapper = mapper;
             _userProfileRepository = userProfileRepository;
             _bookedOrderRepository = bookedOrderRepository;
+            _memoryCache = memoryCache;
         }
 
         public async Task<BookingServiceResult> BookTickets(Guid id, BookingModel bookingModel)
         {
             var sessionExist = await _sessionRepository.FindByIdAsync(id);
-            if (sessionExist == null)
-            {
-                return new BookingServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Session is not exists"
-                    }
-                };
-            }
 
             List<SessionAdditionalService> sessionAdditionalServices = new List<SessionAdditionalService>();
             double totalPrice = 0;
@@ -151,16 +143,13 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<SessionServiceResult> GetSessionById(Guid id)
         {
             var session = await _sessionRepository.FindByIdAsync(id);
-            if (session == null)
+            foreach (var seat in session.SessionSeats)
             {
-                return new SessionServiceResult()
+                var seatId = _memoryCache.Get(seat.SeatId);
+                if (seatId != null)
                 {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Session is not exists"
-                    }
-                };
+                    seat.TicketState = TicketState.Blocked;
+                }
             }
 
             var sessionModel = _mapper.Map<SessionModel>(session);

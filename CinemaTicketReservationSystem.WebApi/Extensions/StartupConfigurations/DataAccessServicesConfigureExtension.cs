@@ -1,16 +1,18 @@
 ﻿using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Context;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
+using CinemaTicketReservationSystem.DAL.Entity.BookingEntity;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
+using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 using CinemaTicketReservationSystem.DAL.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace CinemaTicketReservationSystem.WebApi.Extensions
+namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
 {
     public static class DataAccessServicesConfigureExtension
     {
@@ -43,16 +45,6 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
                     provider.GetService<ApplicationDbContext>(),
                     provider.GetService<ILogger<BaseRepository<Cinema>>>()));
 
-            services.AddScoped<IRepository<Movie>>(provider =>
-                new BaseRepository<Movie>(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<BaseRepository<Movie>>>()));
-
-            services.AddScoped<IRepository<Session>>(provider =>
-                new BaseRepository<Session>(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<BaseRepository<Session>>>()));
-
             services.AddScoped<IRepository<AdditionalService>>(provider =>
                 new BaseRepository<AdditionalService>(
                     provider.GetService<ApplicationDbContext>(),
@@ -62,6 +54,16 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
                 new BaseRepository<Hall>(
                     provider.GetService<ApplicationDbContext>(),
                     provider.GetService<ILogger<BaseRepository<Hall>>>()));
+
+            services.AddScoped<IRepository<Movie>>(provider =>
+                new BaseRepository<Movie>(
+                    provider.GetService<ApplicationDbContext>(),
+                    provider.GetService<ILogger<BaseRepository<Movie>>>()));
+
+            services.AddScoped<IRepository<Session>>(provider =>
+                new BaseRepository<Session>(
+                    provider.GetService<ApplicationDbContext>(),
+                    provider.GetService<ILogger<BaseRepository<Session>>>()));
 
             services.AddScoped<IRepository<SessionAdditionalService>>(provider =>
                 new BaseRepository<SessionAdditionalService>(
@@ -77,6 +79,16 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
                 new BaseRepository<SessionSeat>(
                     provider.GetService<ApplicationDbContext>(),
                     provider.GetService<ILogger<BaseRepository<SessionSeat>>>()));
+
+            services.AddScoped<IRepository<UserProfile>>(provider =>
+                new BaseRepository<UserProfile>(
+                    provider.GetService<ApplicationDbContext>(),
+                    provider.GetService<ILogger<BaseRepository<UserProfile>>>()));
+
+            services.AddScoped<IRepository<BookedOrder>>(provider =>
+                new BaseRepository<BookedOrder>(
+                    provider.GetService<ApplicationDbContext>(),
+                    provider.GetService<ILogger<BaseRepository<BookedOrder>>>()));
         }
     }
 }
