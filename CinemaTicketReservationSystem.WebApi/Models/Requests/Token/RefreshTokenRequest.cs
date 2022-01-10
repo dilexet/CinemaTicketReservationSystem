@@ -1,8 +1,10 @@
-﻿namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Token
+﻿using System;
+
+namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Token
 {
     public class RefreshTokenRequest
     {
-        public string Username { get; set; }
+        public Guid UserId { get; set; }
 
         public string Token { get; set; }
     }

@@ -119,17 +119,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<SessionServiceResult> UpdateSessionInfo(Guid id, SessionRequestModel sessionModel)
         {
             var sessionExist = await _sessionRepository.FindByIdAsync(id);
-            if (sessionExist == null)
-            {
-                return new SessionServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Session is not exists"
-                    }
-                };
-            }
 
             var cinemaExist =
                 await _cinemaRepository.FirstOrDefaultAsync(cinema => cinema.Name.Equals(sessionModel.CinemaName));
@@ -217,17 +206,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<SessionServiceRemoveResult> RemoveSession(Guid id)
         {
             var sessionExist = await _sessionRepository.FindByIdAsync(id);
-            if (sessionExist == null)
-            {
-                return new SessionServiceRemoveResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Session is not exists"
-                    }
-                };
-            }
 
             if (!await _sessionRepository.RemoveAndSaveAsync(sessionExist))
             {
@@ -276,17 +254,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<SessionServiceResult> GetSessionById(Guid id)
         {
             var session = await _sessionRepository.FindByIdAsync(id);
-            if (session == null)
-            {
-                return new SessionServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Session is not exists"
-                    }
-                };
-            }
 
             var sessionModel = _mapper.Map<SessionModel>(session);
 

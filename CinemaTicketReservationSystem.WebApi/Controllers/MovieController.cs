@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Models.Domain.MovieModels;
 using CinemaTicketReservationSystem.BLL.Models.FilterModel;
 using CinemaTicketReservationSystem.WebApi.Models.Filters;
-using CinemaTicketReservationSystem.WebApi.Models.Requests.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;
+using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Movie;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,9 +26,9 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddMovie(MovieRequest movieRequest)
+        public async Task<IActionResult> AddMovie([FromRoute] AddMovieRequestWrapper addMovieRequestWrapper)
         {
-            var movieModel = _mapper.Map<MovieModel>(movieRequest);
+            var movieModel = _mapper.Map<MovieModel>(addMovieRequestWrapper.MovieRequest);
             var movieResult = await _movieService.AddMovie(movieModel);
             var response = _mapper.Map<MovieResponse>(movieResult);
             if (!response.Success)
@@ -43,9 +42,12 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateMovieInfo(Guid id, MovieRequest movieRequest)
+        public async Task<IActionResult> UpdateMovieInfo(
+            [FromRoute] UpdateMovieRequestWrapper updateMovieRequestWrapper)
         {
-            var movieResult = await _movieService.UpdateMovieInfo(id, _mapper.Map<MovieModel>(movieRequest));
+            var movieResult = await _movieService.UpdateMovieInfo(
+                updateMovieRequestWrapper.Id,
+                _mapper.Map<MovieModel>(updateMovieRequestWrapper.MovieRequest));
             var response = _mapper.Map<MovieResponse>(movieResult);
             if (!response.Success)
             {
@@ -58,9 +60,9 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveMovie(Guid id)
+        public async Task<IActionResult> RemoveMovie([FromRoute] MovieRequestWrapper movieRequestWrapper)
         {
-            var movieResult = await _movieService.RemoveMovie(id);
+            var movieResult = await _movieService.RemoveMovie(movieRequestWrapper.Id);
             var response = _mapper.Map<MovieRemoveResponse>(movieResult);
             if (!response.Success)
             {
@@ -73,9 +75,9 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMovieById(Guid id)
+        public async Task<IActionResult> GetMovieById([FromRoute] MovieRequestWrapper movieRequestWrapper)
         {
-            var movieResult = await _movieService.GetMovieById(id);
+            var movieResult = await _movieService.GetMovieById(movieRequestWrapper.Id);
             var response = _mapper.Map<MovieResponse>(movieResult);
             if (!response.Success)
             {

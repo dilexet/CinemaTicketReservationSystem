@@ -1,5 +1,5 @@
 ﻿using CinemaTicketReservationSystem.DAL.Abstract;
-using CinemaTicketReservationSystem.WebApi.Extensions;
+using CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Session;
 using FluentValidation;
 
@@ -13,7 +13,7 @@ namespace CinemaTicketReservationSystem.WebApi.Validators.Session
             IRepository<DAL.Entity.CinemaEntity.Hall> hallRepository)
         {
             RuleFor(x => x.MovieName).MovieMustExistAsync(movieRepository);
-            RuleFor(x => x.CinemaName).CinemaMustExistAsync(cinemaRepository);
+            RuleFor(x => x.CinemaName).CinemaNameMustExistAsync(cinemaRepository);
 
             RuleFor(x => x)
                 .HallMustExistAsync(cinemaRepository);

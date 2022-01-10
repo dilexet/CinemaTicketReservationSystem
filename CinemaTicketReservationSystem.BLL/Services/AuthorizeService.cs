@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
@@ -37,19 +38,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var userExisting = await _userRepository.FirstOrDefaultAsync(x =>
                 x.Email.Equals(loginModel.Name) || x.Name.Equals(loginModel.Name));
 
-            if (userExisting == null ||
-                !_userRepository.CheckPassword(userExisting.PasswordHash, loginModel.Password))
-            {
-                return new AuthorizeResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Invalid username or password"
-                    }
-                };
-            }
-
             var tokenResult = await _tokenService.GenerateTokens(_mapper.Map<TokenUserModel>(userExisting));
             if (!tokenResult.Success)
             {
@@ -83,20 +71,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<AuthorizeResult> RegisterAsync(RegisterModel registerModel)
         {
-            var userExisting = await _userRepository.FirstOrDefaultAsync(x =>
-                x.Email.Equals(registerModel.Email) || x.Name.Equals(registerModel.Name));
-            if (userExisting != null)
-            {
-                return new AuthorizeResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "User is exists"
-                    }
-                };
-            }
-
             User user = _mapper.Map<User>(registerModel);
             user.UserProfile = new UserProfile
             {
@@ -157,34 +131,11 @@ namespace CinemaTicketReservationSystem.BLL.Services
             };
         }
 
-        public async Task<AuthorizeResult> RefreshTokenAsync(string username, string refreshToken)
+        public async Task<AuthorizeResult> RefreshTokenAsync(Guid userId, string refreshToken)
         {
-            var userExisting = await _userRepository.FirstOrDefaultAsync(x =>
-                x.Email.Equals(username) || x.Name.Equals(username));
-            if (userExisting == null)
-            {
-                return new AuthorizeResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "User is not exists"
-                    }
-                };
-            }
+            var userExisting = await _userRepository.FindByIdAsync(userId);
 
             var token = userExisting.RefreshTokens.FirstOrDefault(x => x.Token.Equals(refreshToken));
-            if (token == null)
-            {
-                return new AuthorizeResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Token is not exists"
-                    }
-                };
-            }
 
             var refreshTokenResult =
                 await _tokenService.RefreshJwtToken(_mapper.Map<TokenUserModel>(userExisting), token);

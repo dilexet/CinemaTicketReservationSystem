@@ -9,9 +9,5 @@ namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema
         public string CityName { get; set; }
 
         public string Street { get; set; }
-
-        public IEnumerable<AdditionalServiceRequest> AdditionalServices { get; set; }
-
-        public IEnumerable<HallRequest> Halls { get; set; }
     }
 }

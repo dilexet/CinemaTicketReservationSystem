@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema;
+using CinemaTicketReservationSystem.WebApi.Validators.Seat;
 using FluentValidation;
 
-namespace CinemaTicketReservationSystem.WebApi.Validators.Cinema
+namespace CinemaTicketReservationSystem.WebApi.Validators.Row
 {
     public class RowRequestValidator : AbstractValidator<RowRequest>
     {

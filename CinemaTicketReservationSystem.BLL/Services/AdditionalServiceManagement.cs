@@ -19,7 +19,9 @@ namespace CinemaTicketReservationSystem.BLL.Services
         private readonly IMapper _mapper;
 
         public AdditionalServiceManagement(
-            IRepository<AdditionalService> additionalServiceRepository, IRepository<Cinema> cinemaRepository, IMapper mapper)
+            IRepository<AdditionalService> additionalServiceRepository,
+            IRepository<Cinema> cinemaRepository,
+            IMapper mapper)
         {
             _additionalServiceRepository = additionalServiceRepository;
             _mapper = mapper;
@@ -30,29 +32,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
             Guid cinemaId, AdditionalServiceModel additionalServiceModel)
         {
             var cinemaExist = await _cinemaRepository.FindByIdAsync(cinemaId);
-            if (cinemaExist == null)
-            {
-                return new AdditionalServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Cinema is not exists"
-                    }
-                };
-            }
-
-            if (cinemaExist.AdditionalServices.FirstOrDefault(x => x.Name == additionalServiceModel.Name) != null)
-            {
-                return new AdditionalServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Additional service with this name is exists in this cinema"
-                    }
-                };
-            }
 
             var additionalService = _mapper.Map<AdditionalService>(additionalServiceModel);
             additionalService.Cinema = cinemaExist;
@@ -77,20 +56,11 @@ namespace CinemaTicketReservationSystem.BLL.Services
             };
         }
 
-        public async Task<AdditionalServiceResult> UpdateAdditionalService(Guid guid, Guid id, AdditionalServiceModel additionalServiceModel)
+        public async Task<AdditionalServiceResult> UpdateAdditionalService(
+            Guid id,
+            AdditionalServiceModel additionalServiceModel)
         {
             var additionalServicesExist = await _additionalServiceRepository.FindByIdAsync(id);
-            if (additionalServicesExist == null)
-            {
-                return new AdditionalServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Additional service is not exists"
-                    }
-                };
-            }
 
             additionalServicesExist.Name = additionalServiceModel.Name;
 
@@ -118,17 +88,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<AdditionalServiceRemoveResult> RemoveAdditionalService(Guid id)
         {
             var additionalServiceExist = await _additionalServiceRepository.FindByIdAsync(id);
-            if (additionalServiceExist == null)
-            {
-                return new AdditionalServiceRemoveResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Additional Service is not exists"
-                    }
-                };
-            }
 
             if (!await _additionalServiceRepository.RemoveAndSaveAsync(additionalServiceExist))
             {
@@ -178,17 +137,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<AdditionalServiceResult> GetAdditionalServiceById(Guid id)
         {
             var additionalService = await _additionalServiceRepository.FindByIdAsync(id);
-            if (additionalService == null)
-            {
-                return new AdditionalServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Additional Service is not exists"
-                    }
-                };
-            }
 
             var additionalServiceModel = _mapper.Map<AdditionalServiceModel>(additionalService);
 

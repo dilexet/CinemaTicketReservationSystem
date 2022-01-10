@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema;
+using CinemaTicketReservationSystem.WebApi.Validators.Row;
 using FluentValidation;
 
-namespace CinemaTicketReservationSystem.WebApi.Validators.Cinema
+namespace CinemaTicketReservationSystem.WebApi.Validators.Hall
 {
     public class HallRequestValidator : AbstractValidator<HallRequest>
     {
@@ -23,7 +24,7 @@ namespace CinemaTicketReservationSystem.WebApi.Validators.Cinema
             RuleFor(x => x.Rows).Must(x =>
             {
                 var rows = x.ToList();
-                return rows.Select(row => row.NumberRow).Distinct().Count() == rows.Count();
+                return rows.Select(row => row.NumberRow).Distinct().Count() == rows.Count;
             }).WithMessage("Rows number must be unique");
         }
     }

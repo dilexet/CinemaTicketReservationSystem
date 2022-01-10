@@ -8,7 +8,6 @@ using CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels;
 using CinemaTicketReservationSystem.BLL.Models.Domain.UserModels;
 using CinemaTicketReservationSystem.BLL.Models.Results.UserProfile;
 using CinemaTicketReservationSystem.DAL.Abstract;
-using CinemaTicketReservationSystem.DAL.Entity.BookingEntity;
 using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 
 namespace CinemaTicketReservationSystem.BLL.Services
@@ -27,17 +26,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<UserProfileResult> UpdateUserProfile(Guid id, UserProfileModel userProfileModel)
         {
             var userProfile = await _userProfileRepository.FindByIdAsync(id);
-            if (userProfile == null)
-            {
-                return new UserProfileResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "User is not exists"
-                    }
-                };
-            }
 
             userProfile.Name = userProfileModel.Name;
             userProfile.Surname = userProfileModel.Surname;
@@ -63,30 +51,13 @@ namespace CinemaTicketReservationSystem.BLL.Services
             };
         }
 
-        public async Task<UserProfileResult> GetUserProfileById(Guid id, bool showPastTickets = false)
+        public async Task<UserProfileResult> GetUserProfileById(Guid id, bool showPastTickets)
         {
-            var user = await _userProfileRepository.FirstOrDefaultAsync(user => user.UserId.Equals(id));
-            if (user == null)
-            {
-                return new UserProfileResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "User is not exists"
-                    }
-                };
-            }
+            var user = await _userProfileRepository.FindByIdAsync(id);
 
-            IEnumerable<BookedOrder> tickets;
-            if (showPastTickets)
-            {
-                tickets = user.Tickets.Where(x => x.ReservedSessionSeats.Last().Session.StartDate < DateTime.Now);
-            }
-            else
-            {
-                tickets = user.Tickets.Where(x => x.ReservedSessionSeats.Last().Session.StartDate > DateTime.Now);
-            }
+            var tickets = showPastTickets
+                ? user.Tickets.Where(x => x.ReservedSessionSeats.Last().Session.StartDate < DateTime.Now)
+                : user.Tickets.Where(x => x.ReservedSessionSeats.Last().Session.StartDate > DateTime.Now);
 
             UserProfileModel userModel = _mapper.Map<UserProfileModel>(user);
             userModel.Tickets = _mapper.Map<IEnumerable<BookedOrderModel>>(tickets);

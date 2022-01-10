@@ -26,19 +26,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<MovieServiceResult> AddMovie(MovieModel movieModel)
         {
-            var movieExist = await _movieRepository.FirstOrDefaultAsync(x => x.Name == movieModel.Name);
-            if (movieExist != null)
-            {
-                return new MovieServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Movie is exists"
-                    }
-                };
-            }
-
             var movie = _mapper.Map<Movie>(movieModel);
 
             if (!await _movieRepository.CreateAsync(movie))
@@ -64,30 +51,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<MovieServiceResult> UpdateMovieInfo(Guid id, MovieModel movieModel)
         {
-            if (await _movieRepository.FirstOrDefaultAsync(x => x.Name == movieModel.Name) != null)
-            {
-                return new MovieServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Movie with this name is exists"
-                    }
-                };
-            }
-
             var movieExist = await _movieRepository.FindByIdAsync(id);
-            if (movieExist == null)
-            {
-                return new MovieServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Movie is not exists"
-                    }
-                };
-            }
 
             movieExist.Name = movieModel.Name;
             movieExist.StartDate = movieModel.StartDate;
@@ -122,17 +86,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<MovieServiceRemoveResult> RemoveMovie(Guid id)
         {
             var movieExist = await _movieRepository.FindByIdAsync(id);
-            if (movieExist == null)
-            {
-                return new MovieServiceRemoveResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Movie is not exists"
-                    }
-                };
-            }
 
             if (!await _movieRepository.RemoveAndSaveAsync(movieExist))
             {
@@ -202,17 +155,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<MovieServiceResult> GetMovieById(Guid id)
         {
             var movie = await _movieRepository.FindByIdAsync(id);
-            if (movie == null)
-            {
-                return new MovieServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Movie is not exists"
-                    }
-                };
-            }
 
             var movieModel = _mapper.Map<MovieModel>(movie);
 

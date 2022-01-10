@@ -1,14 +1,31 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
+using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Session;
 using FluentValidation;
 
-namespace CinemaTicketReservationSystem.WebApi.Extensions
+namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
 {
-    public static class RuleBuilderExtension
+    public static class SessionRuleBuilderExtension
     {
+        public static IRuleBuilderOptions<T, Guid> SessionMustExistAsync<T>(
+            this IRuleBuilder<T, Guid> ruleBuilder, IRepository<Session> repository)
+        {
+            var options = ruleBuilder
+                .NotEmpty()
+                .MustAsync(async (id, _) =>
+                {
+                    var sessionExist = await repository.FindByIdAsync(id);
+                    return sessionExist != null;
+                })
+                .WithName("Session")
+                .WithMessage("Session is not exists");
+            return options;
+        }
+
         public static IRuleBuilderOptions<T, string> MovieMustExistAsync<T>(
             this IRuleBuilder<T, string> ruleBuilder, IRepository<Movie> repository)
         {
@@ -18,20 +35,8 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
                 {
                     return await repository.FirstOrDefaultAsync(x => x.Name.Equals(movieName)) != null;
                 })
+                .WithName("MovieName")
                 .WithMessage("Movie with this name not found");
-            return options;
-        }
-
-        public static IRuleBuilderOptions<T, string> CinemaMustExistAsync<T>(
-            this IRuleBuilder<T, string> ruleBuilder, IRepository<Cinema> repository)
-        {
-            var options = ruleBuilder
-                .NotEmpty()
-                .MustAsync(async (cinemaName, _) =>
-                {
-                    return await repository.FirstOrDefaultAsync(x => x.Name.Equals(cinemaName)) != null;
-                })
-                .WithMessage("Cinema with this name not found");
             return options;
         }
 
@@ -84,7 +89,7 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
 
                     return true;
                 })
-                .WithName("SessionAdditionalService")
+                .WithName("AdditionalServiceName")
                 .WithMessage("Additional service with this name not found in this cinema");
             return options;
         }
@@ -115,7 +120,7 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions
 
                     return true;
                 })
-                .WithName("SessionSeatType")
+                .WithName("SeatTypeName")
                 .WithMessage("Seat type with this name not found in this hall");
             return options;
         }

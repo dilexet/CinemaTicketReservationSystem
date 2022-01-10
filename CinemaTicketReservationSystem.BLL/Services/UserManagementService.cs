@@ -9,6 +9,7 @@ using CinemaTicketReservationSystem.BLL.Models.FilterModel;
 using CinemaTicketReservationSystem.BLL.Models.Results.User;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
+using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicketReservationSystem.BLL.Services
@@ -76,18 +77,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<UserServiceResult> GetById(Guid id)
         {
             var user = await _userRepository.FindByIdAsync(id);
-            if (user == null)
-            {
-                return new UserServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "User is not exists"
-                    }
-                };
-            }
-
             UserModel userModel = _mapper.Map<UserModel>(user);
 
             return new UserServiceResult()
@@ -99,35 +88,16 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<UserServiceResult> CreateUser(UserModel userModel)
         {
-            var userExist = await _userRepository.FirstOrDefaultAsync(x => x.Name == userModel.Name);
-            if (userExist != null)
-            {
-                return new UserServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "User is exists"
-                    }
-                };
-            }
-
             var user = _mapper.Map<User>(userModel);
             user.PasswordHash = _userRepository.HashPassword(userModel.Password);
             var role = await _roleRepository.FirstOrDefaultAsync(role => role.Name == userModel.RoleModel.Name);
-            if (role == null)
-            {
-                return new UserServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Role is not exists"
-                    }
-                };
-            }
-
             user.Role = role;
+
+            user.UserProfile = new UserProfile
+            {
+                Name = user.Name
+            };
+
             if (!await _userRepository.CreateAsync(user))
             {
                 return new UserServiceResult()
@@ -151,43 +121,8 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<UserServiceResult> UpdateUser(Guid id, UserModel userModel)
         {
-            if (await _userRepository.FirstOrDefaultAsync(x => x.Name == userModel.Name) != null)
-            {
-                return new UserServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "User with this name is exists"
-                    }
-                };
-            }
-
             var userExist = await _userRepository.FindByIdAsync(id);
-            if (userExist == null)
-            {
-                return new UserServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "User is not exists"
-                    }
-                };
-            }
-
             var roleExist = await _roleRepository.FirstOrDefaultAsync(role => role.Name == userModel.RoleModel.Name);
-            if (roleExist == null)
-            {
-                return new UserServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Role is not exists"
-                    }
-                };
-            }
 
             userExist.Name = userModel.Name;
             userExist.Email = userModel.Email;
@@ -217,17 +152,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<UserServiceRemoveResult> DeleteUser(Guid id)
         {
             var userExist = await _userRepository.FindByIdAsync(id);
-            if (userExist == null)
-            {
-                return new UserServiceRemoveResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "User is not exists"
-                    }
-                };
-            }
 
             if (!await _userRepository.RemoveAndSaveAsync(userExist))
             {

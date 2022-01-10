@@ -25,34 +25,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<CinemaServiceResult> AddCinema(CinemaModel cinemaModel)
         {
-            var cinemaExist = await _cinemaRepository.FirstOrDefaultAsync(x => x.Name == cinemaModel.Name);
-            if (cinemaExist != null)
-            {
-                return new CinemaServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Cinema is exists"
-                    }
-                };
-            }
-
             var cinema = _mapper.Map<Cinema>(cinemaModel);
-
-            foreach (var hall in cinema.Halls)
-            {
-                List<string> seatTypes = new List<string>();
-                foreach (var row in hall.Rows)
-                {
-                    foreach (var seat in row.Seats)
-                    {
-                        seatTypes.Add(seat.SeatType);
-                    }
-                }
-
-                hall.SeatTypes = seatTypes.Distinct();
-            }
 
             if (!await _cinemaRepository.CreateAsync(cinema))
             {
@@ -77,48 +50,11 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<CinemaServiceResult> UpdateCinemaInfo(Guid id, CinemaModel cinemaModel)
         {
-            if (await _cinemaRepository.FirstOrDefaultAsync(x => x.Name == cinemaModel.Name) != null)
-            {
-                return new CinemaServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Cinema with this name is exists"
-                    }
-                };
-            }
-
             var cinemaExist = await _cinemaRepository.FindByIdAsync(id);
-            if (cinemaExist == null)
-            {
-                return new CinemaServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Cinema is not exists"
-                    }
-                };
-            }
 
             cinemaExist.Name = cinemaModel.Name;
             cinemaExist.Address.Street = cinemaModel.AddressModel.Street;
             cinemaExist.Address.CityName = cinemaModel.AddressModel.CityName;
-
-            foreach (var hall in cinemaExist.Halls)
-            {
-                List<string> seatTypes = new List<string>();
-                foreach (var row in hall.Rows)
-                {
-                    foreach (var seat in row.Seats)
-                    {
-                        seatTypes.Add(seat.SeatType);
-                    }
-                }
-
-                hall.SeatTypes = seatTypes.Distinct();
-            }
 
             if (!await _cinemaRepository.UpdateAsync(cinemaExist))
             {
@@ -144,17 +80,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<CinemaServiceRemoveResult> RemoveCinema(Guid id)
         {
             var cinemaExist = await _cinemaRepository.FindByIdAsync(id);
-            if (cinemaExist == null)
-            {
-                return new CinemaServiceRemoveResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Cinema is not exists"
-                    }
-                };
-            }
 
             if (!await _cinemaRepository.RemoveAndSaveAsync(cinemaExist))
             {
@@ -203,18 +128,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<CinemaServiceResult> GetCinemaById(Guid id)
         {
             var cinema = await _cinemaRepository.FindByIdAsync(id);
-            if (cinema == null)
-            {
-                return new CinemaServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Cinema is not exists"
-                    }
-                };
-            }
-
             var cinemaModel = _mapper.Map<CinemaModel>(cinema);
 
             return new CinemaServiceResult()

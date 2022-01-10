@@ -1,7 +1,7 @@
 ﻿using CinemaTicketReservationSystem.WebApi.Models.Requests.User;
 using FluentValidation;
 
-namespace CinemaTicketReservationSystem.WebApi.Validators.User
+namespace CinemaTicketReservationSystem.WebApi.Validators.UserProfile
 {
     public class UserProfileUpdateRequestValidator : AbstractValidator<UserProfileUpdateRequest>
     {
