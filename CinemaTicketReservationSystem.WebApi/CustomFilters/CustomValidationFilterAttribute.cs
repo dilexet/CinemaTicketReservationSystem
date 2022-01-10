@@ -24,7 +24,7 @@ namespace CinemaTicketReservationSystem.WebApi.CustomFilters
                 {
                     Code = StatusCodes.Status400BadRequest,
                     Success = false,
-                    Errors = errors
+                    ValidationErrors = errors
                 });
             }
         }
