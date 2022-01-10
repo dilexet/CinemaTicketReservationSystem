@@ -17,7 +17,9 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         private readonly IAdditionalServiceManagement _additionalServiceManagement;
         private readonly IMapper _mapper;
 
-        public AdditionalServiceController(IAdditionalServiceManagement additionalServiceManagement, IMapper mapper)
+        public AdditionalServiceController(
+            IAdditionalServiceManagement additionalServiceManagement,
+            IMapper mapper)
         {
             _additionalServiceManagement = additionalServiceManagement;
             _mapper = mapper;

@@ -40,7 +40,8 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSessionInfo([FromRoute] UpdateSessionRequestWrapper updateSessionRequestWrapper)
+        public async Task<IActionResult> UpdateSessionInfo(
+            [FromRoute] UpdateSessionRequestWrapper updateSessionRequestWrapper)
         {
             var result = await _sessionService.UpdateSessionInfo(
                 updateSessionRequestWrapper.Id,

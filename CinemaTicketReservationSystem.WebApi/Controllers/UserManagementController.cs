@@ -19,7 +19,9 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         private readonly IUserManagementService _userManagementService;
         private readonly IMapper _mapper;
 
-        public UserManagementController(IUserManagementService userManagementService, IMapper mapper)
+        public UserManagementController(
+            IUserManagementService userManagementService,
+            IMapper mapper)
         {
             _userManagementService = userManagementService;
             _mapper = mapper;

@@ -23,7 +23,10 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         private readonly IHubContext<SeatBookingHub> _hubContext;
         private readonly IMapper _mapper;
 
-        public BookingController(IBookingService bookingService, IMapper mapper, IHubContext<SeatBookingHub> hubContext)
+        public BookingController(
+            IBookingService bookingService,
+            IMapper mapper,
+            IHubContext<SeatBookingHub> hubContext)
         {
             _bookingService = bookingService;
             _mapper = mapper;
