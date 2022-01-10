@@ -29,11 +29,11 @@ namespace CinemaTicketReservationSystem.WebApi.Middleware
             await _next(context);
             var formatResponse = await FormatResponse(context.Response);
             // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
-            if (!formatResponse.Success)
+            if (formatResponse != null && formatResponse.Errors != null && !formatResponse.Success)
             {
                 foreach (var error in formatResponse.Errors)
                 {
-                    _logger.LogError(error.ToString());
+                    _logger.LogError(error);
                 }
             }
 
