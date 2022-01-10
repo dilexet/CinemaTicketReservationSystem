@@ -84,18 +84,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
                             movieFilterParametersModel.NumberAvailableSeats) != null);
             }
 
-            if (movies == null || !movies.Any())
-            {
-                return new MovieServiceGetMoviesResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "No movies found"
-                    }
-                };
-            }
-
             var moviesModel = _mapper.Map<IEnumerable<MovieModel>>(await movies.ToListAsync());
 
             return new MovieServiceGetMoviesResult()
@@ -133,17 +121,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<SearchSuggestionResult> GetListOfMovieTitles(string movieTitleSearchQuery)
         {
             var movies = _movieRepository.GetBy(x => x.Name.Contains(movieTitleSearchQuery));
-            if (movies == null || !movies.Any())
-            {
-                return new SearchSuggestionResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Movies not found"
-                    }
-                };
-            }
 
             var moviesTitle = await movies.Select(x => x.Name).ToListAsync();
             return new SearchSuggestionResult()
@@ -156,17 +133,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<SearchSuggestionResult> GetListOfCinemaNames(string cinemaNameSearchQuery)
         {
             var cinemas = _cinemaRepository.GetBy(x => x.Name.Contains(cinemaNameSearchQuery));
-            if (cinemas == null || !cinemas.Any())
-            {
-                return new SearchSuggestionResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Cinemas not found"
-                    }
-                };
-            }
 
             var cinemasName = await cinemas.Select(x => x.Name).ToListAsync();
             return new SearchSuggestionResult()
@@ -179,17 +145,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<SearchSuggestionResult> GetListOfCityNames(string cityNameSearchQuery)
         {
             var cities = _addressRepository.GetBy(x => x.CityName.Contains(cityNameSearchQuery));
-            if (cities == null || !cities.Any())
-            {
-                return new SearchSuggestionResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "Cities not found"
-                    }
-                };
-            }
 
             var cityNames = await cities.Select(x => x.CityName).ToListAsync();
             return new SearchSuggestionResult()

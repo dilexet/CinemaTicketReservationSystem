@@ -32,11 +32,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var movieResult =
                 await _movieFilterService.GetMoviesByFilter(_mapper.Map<MovieFilterParametersModel>(filter));
             var response = _mapper.Map<MovieGetAllResponse>(movieResult);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);
@@ -63,11 +58,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var result =
                 await _movieFilterService.GetListOfMovieTitles(searchQuery);
             var response = _mapper.Map<SearchSuggestionResponse>(result);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);
@@ -79,11 +69,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var result =
                 await _movieFilterService.GetListOfCinemaNames(searchQuery);
             var response = _mapper.Map<SearchSuggestionResponse>(result);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);
@@ -95,11 +80,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var result =
                 await _movieFilterService.GetListOfCityNames(searchQuery);
             var response = _mapper.Map<SearchSuggestionResponse>(result);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);
