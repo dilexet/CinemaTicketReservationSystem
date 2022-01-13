@@ -56,8 +56,8 @@ namespace CinemaTicketReservationSystem.BLL.Utils
             {
                 new ("UserId", id.ToString()),
                 new ("UserProfileId", userProfileId.ToString()),
-                new (ClaimsIdentity.DefaultNameClaimType, name),
-                new (ClaimsIdentity.DefaultRoleClaimType, role),
+                new ("UserName", name),
+                new ("UserRole", role),
                 new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             ClaimsIdentity claimsIdentity =
