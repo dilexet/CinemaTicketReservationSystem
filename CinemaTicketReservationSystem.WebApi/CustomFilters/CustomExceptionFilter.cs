@@ -24,6 +24,7 @@ namespace CinemaTicketReservationSystem.WebApi.CustomFilters
             Response response = new Response();
 
             var exceptionType = context.Exception.GetType();
+            // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
             _logger.LogError(context.Exception, context.Exception.Message);
             if (exceptionType == typeof(AutoMapperMappingException))
             {
@@ -50,6 +51,15 @@ namespace CinemaTicketReservationSystem.WebApi.CustomFilters
                 response.Errors = new[]
                 {
                     context.Exception.Message
+                };
+            }
+            else if (exceptionType == typeof(NullReferenceException))
+            {
+                response.Code = StatusCodes.Status500InternalServerError;
+                response.Success = false;
+                response.Errors = new[]
+                {
+                    context.Exception.Message,
                 };
             }
             else if (exceptionType == typeof(DbException))
