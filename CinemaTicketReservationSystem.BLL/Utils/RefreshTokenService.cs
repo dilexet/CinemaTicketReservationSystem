@@ -28,7 +28,7 @@ namespace CinemaTicketReservationSystem.BLL.Utils
                 throw new ArgumentNullException(nameof(userId));
             }
 
-            var lifeTime = _options.Value.RefreshTokenExpirationMinutes;
+            var lifeTime = _options.Value.RefreshTokenExpirationHours;
 
             if (lifeTime.Equals(0))
             {
@@ -42,14 +42,14 @@ namespace CinemaTicketReservationSystem.BLL.Utils
                 IsUsed = false,
                 UserId = userId,
                 AddedDate = now,
-                ExpiryDate = now.AddMinutes(lifeTime),
+                ExpiryDate = now.AddHours(lifeTime),
                 IsRevoked = false,
                 Token = RandomString(25) + Guid.NewGuid()
             };
             return refreshToken;
         }
 
-        // TODO: added validation checks
+        // TODO: added validation checks (jti)
         // TODO: remove refresh tokens that have expired
         public bool Validate(RefreshToken refreshToken)
         {
