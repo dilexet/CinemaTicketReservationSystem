@@ -1,7 +1,6 @@
 ﻿using System;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
-using CinemaTicketReservationSystem.WebApi.Models.Requests.User;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.UserManagement;
 using FluentValidation;
 
@@ -43,8 +42,8 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
             return options;
         }
 
-        public static IRuleBuilderOptions<T, UserCreateRequest> UserMustNotExistAsync<T>(
-            this IRuleBuilder<T, UserCreateRequest> ruleBuilder,
+        public static IRuleBuilderOptions<T, CreateUserRequestWrapper> UserMustNotExistAsync<T>(
+            this IRuleBuilder<T, CreateUserRequestWrapper> ruleBuilder,
             IUserRepository userRepository)
         {
             var options = ruleBuilder
@@ -52,7 +51,7 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
                 .MustAsync(async (user, _) =>
                 {
                     var userExisting = await userRepository.FirstOrDefaultAsync(x =>
-                        x.Email.Equals(user.Email) || x.Name.Equals(user.Name));
+                        x.Email.Equals(user.UserCreateRequest.Email) || x.Name.Equals(user.UserCreateRequest.Name));
                     return userExisting == null;
                 })
                 .WithName("User")
