@@ -21,6 +21,12 @@ namespace CinemaTicketReservationSystem.WebApi.Middleware
 
         public async Task Invoke(HttpContext context)
         {
+            if (!context.Response.Body.CanRead)
+            {
+                await _next(context);
+                return;
+            }
+
             var originalBodyStream = context.Response.Body;
 
             await using var responseBody = new MemoryStream();
