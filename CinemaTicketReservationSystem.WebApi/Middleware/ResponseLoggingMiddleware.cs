@@ -44,8 +44,21 @@ namespace CinemaTicketReservationSystem.WebApi.Middleware
         {
             response.Body.Seek(0, SeekOrigin.Begin);
             var text = await new StreamReader(response.Body).ReadToEndAsync();
-            Response customResponse = JsonConvert.DeserializeObject<Response>(text);
-            response.Body.Seek(0, SeekOrigin.Begin);
+            if (string.IsNullOrEmpty(text))
+            {
+                return null;
+            }
+
+            Response customResponse = null;
+            try
+            {
+                customResponse = JsonConvert.DeserializeObject<Response>(text);
+                response.Body.Seek(0, SeekOrigin.Begin);
+            }
+            catch (Newtonsoft.Json.JsonException)
+            {
+                _logger.LogError("Deserialize object error");
+            }
 
             return customResponse;
         }
