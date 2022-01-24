@@ -21,7 +21,7 @@ namespace CinemaTicketReservationSystem.WebApi.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            if (!context.Response.Body.CanRead)
+            if (context.Request.Path.Value != null && context.Request.Path.Value.Contains("/images/"))
             {
                 await _next(context);
                 return;
