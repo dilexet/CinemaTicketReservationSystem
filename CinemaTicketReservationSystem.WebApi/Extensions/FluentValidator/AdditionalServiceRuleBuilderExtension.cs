@@ -17,10 +17,16 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
                 .NotEmpty()
                 .MustAsync(async (additionalServiceRequestWrapper, _) =>
                 {
-                    var cinemaExist = await repository.FindByIdAsync(additionalServiceRequestWrapper.CinemaId);
-                    return cinemaExist.AdditionalServices.FirstOrDefault(x =>
-                        x.Name == additionalServiceRequestWrapper.AdditionalServiceRequest.Name) == null;
+                    if (additionalServiceRequestWrapper.CinemaId != Guid.Empty)
+                    {
+                        var cinemaExist = await repository.FindByIdAsync(additionalServiceRequestWrapper.CinemaId);
+                        return cinemaExist.AdditionalServices.FirstOrDefault(x =>
+                            x.Name == additionalServiceRequestWrapper.AdditionalServiceRequest.Name) == null;
+                    }
+
+                    return false;
                 })
+                .WithName("AdditionalServiceRequest.Name")
                 .WithMessage("Additional service with this name is exists in this cinema");
             return options;
         }

@@ -248,7 +248,16 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                     source =>
                         source.MapFrom(res => res.Rows));
 
-            CreateMap<AdditionalService, AdditionalServiceModel>();
+            CreateMap<AdditionalService, AdditionalServiceModel>()
+                .ForMember(
+                    dest => dest.CinemaName,
+                    source =>
+                        source.MapFrom(res => res.Cinema.Name))
+                .ForMember(
+                    dest => dest.CinemaId,
+                    source =>
+                        source.MapFrom(res => res.Cinema.Id));
+
             CreateMap<Address, AddressModel>();
 
             CreateMap<Cinema, CinemaModel>()
