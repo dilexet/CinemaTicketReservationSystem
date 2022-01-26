@@ -46,6 +46,7 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
 
                     return cinemaExist.Id == cinema.Id;
                 })
+                .WithName("CinemaRequest.Name")
                 .WithMessage("Cinema with this name is exists");
             return options;
         }
