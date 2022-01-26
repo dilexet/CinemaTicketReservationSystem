@@ -4,13 +4,14 @@ using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Models.Domain.AdditionalServiceModels;
 using CinemaTicketReservationSystem.WebApi.Models.Response.AdditionalService;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.AdditionalService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    // [Authorize(Policy = "AdminRole")]
+    [Authorize(Policy = "ManagerRole")]
     [ApiController]
     public class AdditionalServiceController : ControllerBase
     {
@@ -25,7 +26,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost]
+        [HttpPost("{cinemaId}")]
         public async Task<IActionResult> AddAdditionalService(
             [FromRoute] AddAdditionalServiceRequestWrapper addAdditionalServiceRequestWrapper)
         {
@@ -44,7 +45,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}/{cinemaId}")]
         public async Task<IActionResult> UpdateAdditionalService(
             [FromRoute] UpdateAdditionalServiceRequestWrapper updateAdditionalServiceRequestWrapper)
         {

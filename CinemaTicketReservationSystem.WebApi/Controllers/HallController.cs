@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    // [Authorize(Policy = "AdminRole")]
+    // [Authorize(Policy = "ManagerRole")]
     [ApiController]
     public class HallController : ControllerBase
     {

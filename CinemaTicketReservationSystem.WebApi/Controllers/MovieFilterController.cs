@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    // [Authorize(Policy = "AdminRole")]
+    // [Authorize(Policy = "UserRole")]
     [ApiController]
     public class MovieFilterController : ControllerBase
     {
