@@ -57,6 +57,8 @@ namespace CinemaTicketReservationSystem.BLL.Services
             movieExist.StartDate = movieModel.StartDate;
             movieExist.EndDate = movieModel.EndDate;
 
+            movieExist.PosterUrl = movieModel.PosterUrl;
+
             movieExist.MovieDescription.ReleaseDate = movieModel.MovieDescriptionModel.ReleaseDate;
             movieExist.MovieDescription.Description = movieModel.MovieDescriptionModel.Description;
             movieExist.MovieDescription.Countries = movieModel.MovieDescriptionModel.Countries;
