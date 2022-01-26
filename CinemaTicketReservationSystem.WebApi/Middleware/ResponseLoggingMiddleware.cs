@@ -61,7 +61,7 @@ namespace CinemaTicketReservationSystem.WebApi.Middleware
                 customResponse = JsonConvert.DeserializeObject<Response>(text);
                 response.Body.Seek(0, SeekOrigin.Begin);
             }
-            catch (Newtonsoft.Json.JsonException)
+            catch (JsonException)
             {
                 _logger.LogError("Deserialize object error");
             }
