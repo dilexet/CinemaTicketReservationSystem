@@ -9,7 +9,8 @@ namespace CinemaTicketReservationSystem.WebApi.Validators.AdditionalService
     {
         public AddAdditionalServiceRequestWrapperValidator(IRepository<DAL.Entity.CinemaEntity.Cinema> cinemaRepository)
         {
-            RuleFor(x => x.AdditionalServiceRequest).SetValidator(new AdditionalServiceRequestValidator());
+            RuleFor(x => x.AdditionalServiceRequest)
+                .SetValidator(new AdditionalServiceRequestValidator());
             RuleFor(x => x.CinemaId).CinemaMustExistAsync(cinemaRepository);
             RuleFor(x => x).AdditionalServiceNameMustNotExistAsync(cinemaRepository);
         }

@@ -9,6 +9,9 @@ namespace CinemaTicketReservationSystem.WebApi.Models.Wrappers.Hall
         [FromRoute(Name = "id")]
         public Guid Id { get; set; }
 
+        [FromRoute(Name = "cinemaId")]
+        public Guid CinemaId { get; set; }
+
         [FromBody]
         public HallRequest HallRequest { get; set; }
     }

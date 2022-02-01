@@ -15,8 +15,8 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
                 .NotEmpty()
                 .MustAsync(async (id, _) =>
                 {
-                    var hallExist = await repository.FindByIdAsync(id);
-                    return hallExist != null;
+                    var movieExist = await repository.FindByIdAsync(id);
+                    return movieExist != null;
                 })
                 .WithName("Movie")
                 .WithMessage("Movie is not exists");
@@ -39,7 +39,7 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
 
                     return movieExist.Id == movieRequestWrapper.Id;
                 })
-                .WithName("MovieName")
+                .WithName("MovieRequest.Name")
                 .WithMessage("Movie with this name is exists");
             return options;
         }

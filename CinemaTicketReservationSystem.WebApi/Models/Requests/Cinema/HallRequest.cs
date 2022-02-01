@@ -6,7 +6,7 @@ namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Cinema
     {
         public string Name { get; set; }
 
-        public uint NumberOfSeats { get; set; }
+        public uint NumberOfRows { get; set; }
 
         public IEnumerable<RowRequest> Rows { get; set; }
     }

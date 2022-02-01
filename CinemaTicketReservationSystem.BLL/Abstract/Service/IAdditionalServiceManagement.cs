@@ -16,5 +16,7 @@ namespace CinemaTicketReservationSystem.BLL.Abstract.Service
         Task<AdditionalServiceGetAllResult> GetAdditionalServices();
 
         Task<AdditionalServiceResult> GetAdditionalServiceById(Guid id);
+
+        Task<AdditionalServiceGetAllResult> GetAdditionalServicesByCinemaId(Guid cinemaId);
     }
 }

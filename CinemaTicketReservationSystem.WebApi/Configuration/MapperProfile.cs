@@ -220,21 +220,17 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                 .ForMember(
                     dest => dest.Street,
                     source =>
-                        source.MapFrom(res => res.AddressModel.Street))
-                .ForMember(
-                    dest => dest.AdditionalServices,
-                    source =>
-                        source.MapFrom(res => res.AdditionalServices))
-                .ForMember(
-                    dest => dest.Halls,
-                    source =>
-                        source.MapFrom(res => res.Halls));
+                        source.MapFrom(res => res.AddressModel.Street));
 
             CreateMap<Seat, SeatModel>()
                 .ForMember(
                     dest => dest.SeatType,
                     source =>
-                        source.MapFrom(res => res.SeatType));
+                        source.MapFrom(res => res.SeatType))
+                .ForMember(
+                    dest => dest.NumberRow,
+                    source =>
+                        source.MapFrom(res => res.Row.NumberRow));
 
             CreateMap<Row, RowModel>()
                 .ForMember(
@@ -246,24 +242,33 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                 .ForMember(
                     dest => dest.Rows,
                     source =>
-                        source.MapFrom(res => res.Rows));
+                        source.MapFrom(res => res.Rows))
+                .ForMember(
+                    dest => dest.CinemaId,
+                    source =>
+                        source.MapFrom(res => res.CinemaId))
+                .ForMember(
+                    dest => dest.CinemaName,
+                    source =>
+                        source.MapFrom(res => res.Cinema.Name));
 
-            CreateMap<AdditionalService, AdditionalServiceModel>();
+            CreateMap<AdditionalService, AdditionalServiceModel>()
+                .ForMember(
+                    dest => dest.CinemaName,
+                    source =>
+                        source.MapFrom(res => res.Cinema.Name))
+                .ForMember(
+                    dest => dest.CinemaId,
+                    source =>
+                        source.MapFrom(res => res.Cinema.Id));
+
             CreateMap<Address, AddressModel>();
 
             CreateMap<Cinema, CinemaModel>()
                 .ForMember(
-                    dest => dest.Halls,
-                    source =>
-                        source.MapFrom(res => res.Halls))
-                .ForMember(
                     dest => dest.AddressModel,
                     source =>
-                        source.MapFrom(res => res.Address))
-                .ForMember(
-                    dest => dest.AdditionalServices,
-                    source =>
-                        source.MapFrom(res => res.AdditionalServices));
+                        source.MapFrom(res => res.Address));
 
             CreateMap<SeatModel, Seat>()
                 .ForMember(
@@ -288,17 +293,9 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
 
             CreateMap<CinemaModel, Cinema>()
                 .ForMember(
-                    dest => dest.Halls,
-                    source =>
-                        source.MapFrom(res => res.Halls))
-                .ForMember(
                     dest => dest.Address,
                     source =>
-                        source.MapFrom(res => res.AddressModel))
-                .ForMember(
-                    dest => dest.AdditionalServices,
-                    source =>
-                        source.MapFrom(res => res.AdditionalServices));
+                        source.MapFrom(res => res.AddressModel));
 
             CreateMap<CinemaServiceResult, CinemaResponse>().ForMember(
                 dest => dest.Cinema,
@@ -310,6 +307,8 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                     dest => dest.Cinemas,
                     source =>
                         source.MapFrom(res => res.CinemaModels));
+
+            CreateMap<SeatTypeModel, SeatTypeViewModel>();
 
             CreateMap<SeatTypeServiceGetAllResult, SeatTypeGetAllResponse>()
                 .ForMember(
@@ -362,11 +361,11 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                 .ForMember(
                     dest => dest.SessionAdditionalServices,
                     source =>
-                        source.MapFrom(res => res.SessionAdditionalServicesRequest))
+                        source.MapFrom(res => res.SessionAdditionalServices))
                 .ForMember(
                     dest => dest.SessionSeatTypes,
                     source =>
-                        source.MapFrom(res => res.SessionSeatTypesRequest));
+                        source.MapFrom(res => res.SessionSeatTypes));
 
             CreateMap<SessionSeatTypeModel, SessionSeatType>();
 

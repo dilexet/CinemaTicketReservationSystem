@@ -1,9 +1,13 @@
-﻿namespace CinemaTicketReservationSystem.WebApi.Models.Filters
+﻿using System;
+
+namespace CinemaTicketReservationSystem.WebApi.Models.Filters
 {
     public class FilterParameters
     {
-        public string SearchQuery { get; set; }
+        public DateTime? FromDate { get; set; }
 
-        public string SortBy { get; set; }
+        public DateTime? ToDate { get; set; }
+
+        public bool? StillShowing { get; set; }
     }
 }

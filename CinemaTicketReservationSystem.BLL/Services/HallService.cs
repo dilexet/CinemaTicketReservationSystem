@@ -69,7 +69,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             var hallExist = await _hallRepository.FindByIdAsync(id);
 
-            var cinema = hallExist.Cinema;
             if (!await _hallRepository.RemoveAndSaveAsync(hallExist))
             {
                 return new HallServiceResult()
@@ -83,6 +82,8 @@ namespace CinemaTicketReservationSystem.BLL.Services
             }
 
             var newHall = _mapper.Map<Hall>(hallModel);
+            newHall.Id = id;
+            var cinema = hallExist.Cinema;
             newHall.Cinema = cinema;
 
             List<string> seatTypes = new List<string>();
@@ -176,6 +177,31 @@ namespace CinemaTicketReservationSystem.BLL.Services
             {
                 Success = true,
                 HallModel = hallModel
+            };
+        }
+
+        public async Task<HallServiceGetAllResult> GetHallsByCinemaId(Guid cinemaId)
+        {
+            IQueryable<Hall> halls = _hallRepository.GetBy().Where(x => x.CinemaId.Equals(cinemaId));
+
+            if (!halls.Any())
+            {
+                return new HallServiceGetAllResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "No halls found"
+                    }
+                };
+            }
+
+            var hallsModel = _mapper.Map<IEnumerable<HallModel>>(await halls.ToListAsync());
+
+            return new HallServiceGetAllResult()
+            {
+                Success = true,
+                HallModels = hallsModel
             };
         }
     }

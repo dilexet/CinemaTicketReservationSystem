@@ -54,15 +54,20 @@ namespace CinemaTicketReservationSystem.BLL.Utils
         {
             var claims = new List<Claim>
             {
-                new ("UserId", id.ToString()),
-                new ("UserProfileId", userProfileId.ToString()),
-                new (ClaimsIdentity.DefaultNameClaimType, name),
-                new (ClaimsIdentity.DefaultRoleClaimType, role),
-                new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim("UserId", id.ToString()),
+                new Claim("UserProfileId", userProfileId.ToString()),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, name),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, role),
+                new Claim("Name", name),
+                new Claim("Role", role),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             ClaimsIdentity claimsIdentity =
-                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-
+                new ClaimsIdentity(
+                    claims,
+                    "Token",
+                    ClaimsIdentity.DefaultNameClaimType,
+                    ClaimsIdentity.DefaultRoleClaimType);
             return claimsIdentity;
         }
     }

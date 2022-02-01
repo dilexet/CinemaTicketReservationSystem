@@ -4,6 +4,7 @@ using System.Linq;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Enums;
 using CinemaTicketReservationSystem.BLL.Extensions;
+using CinemaTicketReservationSystem.BLL.Models.Domain.CinemaModels;
 using CinemaTicketReservationSystem.BLL.Models.Results.SeatType;
 
 namespace CinemaTicketReservationSystem.BLL.Services
@@ -12,7 +13,16 @@ namespace CinemaTicketReservationSystem.BLL.Services
     {
         public SeatTypeServiceGetAllResult GetSeatTypes()
         {
-            List<string> seatTypesList = Enum.GetValues(typeof(SeatTypes)).Cast<SeatTypes>().Select(seatType => seatType.GetDisplayName()).ToList();
+            List<SeatTypeModel> seatTypesList = new List<SeatTypeModel>();
+
+            foreach (var seatTypeName in Enum.GetValues(typeof(SeatTypes)).Cast<SeatTypes>()
+                         .Select(seatType => seatType.GetDisplayName()).ToList())
+            {
+                seatTypesList.Add(new SeatTypeModel()
+                {
+                    Name = seatTypeName
+                });
+            }
 
             return new SeatTypeServiceGetAllResult()
             {

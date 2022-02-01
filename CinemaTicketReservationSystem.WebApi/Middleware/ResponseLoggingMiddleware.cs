@@ -21,6 +21,12 @@ namespace CinemaTicketReservationSystem.WebApi.Middleware
 
         public async Task Invoke(HttpContext context)
         {
+            if (context.Request.Path.Value != null && context.Request.Path.Value.Contains("/images/"))
+            {
+                await _next(context);
+                return;
+            }
+
             var originalBodyStream = context.Response.Body;
 
             await using var responseBody = new MemoryStream();
@@ -29,11 +35,11 @@ namespace CinemaTicketReservationSystem.WebApi.Middleware
             await _next(context);
             var formatResponse = await FormatResponse(context.Response);
             // ReSharper disable once TemplateIsNotCompileTimeConstantProblem
-            if (!formatResponse.Success)
+            if (formatResponse != null && formatResponse.Errors != null && !formatResponse.Success)
             {
                 foreach (var error in formatResponse.Errors)
                 {
-                    _logger.LogError(error.ToString());
+                    _logger.LogError(error);
                 }
             }
 
@@ -44,8 +50,21 @@ namespace CinemaTicketReservationSystem.WebApi.Middleware
         {
             response.Body.Seek(0, SeekOrigin.Begin);
             var text = await new StreamReader(response.Body).ReadToEndAsync();
-            Response customResponse = JsonConvert.DeserializeObject<Response>(text);
-            response.Body.Seek(0, SeekOrigin.Begin);
+            if (string.IsNullOrEmpty(text))
+            {
+                return null;
+            }
+
+            Response customResponse = null;
+            try
+            {
+                customResponse = JsonConvert.DeserializeObject<Response>(text);
+                response.Body.Seek(0, SeekOrigin.Begin);
+            }
+            catch (JsonException)
+            {
+                _logger.LogError("Deserialize object error");
+            }
 
             return customResponse;
         }

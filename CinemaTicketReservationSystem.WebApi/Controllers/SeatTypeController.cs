@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Cinema;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    // [Authorize(Policy = "AdminRole")]
+    [Authorize(Policy = "ManagerRole")]
     [ApiController]
     public class SeatTypeController : ControllerBase
     {

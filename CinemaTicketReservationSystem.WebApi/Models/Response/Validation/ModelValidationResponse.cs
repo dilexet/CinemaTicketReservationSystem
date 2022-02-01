@@ -1,14 +1,9 @@
 ﻿using System.Collections.Generic;
-using CinemaTicketReservationSystem.WebApi.Models.Abstract;
 
 namespace CinemaTicketReservationSystem.WebApi.Models.Response.Validation
 {
-    public class ModelValidationResponse : IResponse
+    public class ModelValidationResponse : Response
     {
-        public int Code { get; set; }
-
-        public bool Success { get; set; }
-
-        public IDictionary<string, IEnumerable<object>> Errors { get; set; }
+        public IDictionary<string, IEnumerable<object>> ValidationErrors { get; set; }
     }
 }

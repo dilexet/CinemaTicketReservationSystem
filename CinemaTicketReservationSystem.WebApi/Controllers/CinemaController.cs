@@ -4,13 +4,14 @@ using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Models.Domain.CinemaModels;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Cinema;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Cinema;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    // [Authorize(Policy = "AdminRole")]
+    [Authorize(Policy = "ManagerRole")]
     [ApiController]
     public class CinemaController : ControllerBase
     {

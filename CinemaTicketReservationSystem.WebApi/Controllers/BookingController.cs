@@ -8,6 +8,7 @@ using CinemaTicketReservationSystem.WebApi.Models.Response.Booking;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Session;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Booking;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Session;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -15,7 +16,7 @@ using Microsoft.AspNetCore.SignalR;
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    // [Authorize(Policy = "AdminRole")]
+    [Authorize(Policy = "UserRole")]
     [ApiController]
     public class BookingController : ControllerBase
     {

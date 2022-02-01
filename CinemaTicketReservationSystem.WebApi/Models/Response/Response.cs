@@ -9,6 +9,6 @@ namespace CinemaTicketReservationSystem.WebApi.Models.Response
 
         public bool Success { get; set; }
 
-        public IEnumerable<object> Errors { get; set; }
+        public IEnumerable<string> Errors { get; set; }
     }
 }

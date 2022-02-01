@@ -48,12 +48,12 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<SessionServiceResult> AddSession(SessionRequestModel sessionModel)
         {
             var cinemaExist =
-                await _cinemaRepository.FirstOrDefaultAsync(cinema => cinema.Name.Equals(sessionModel.CinemaName));
+                await _cinemaRepository.FindByIdAsync(sessionModel.CinemaId);
 
-            var hallExist = cinemaExist.Halls.FirstOrDefault(hall => hall.Name.Equals(sessionModel.HallName));
+            var hallExist = cinemaExist.Halls.FirstOrDefault(hall => hall.Id.Equals(sessionModel.HallId));
 
             var movieExist =
-                await _movieRepository.FirstOrDefaultAsync(movie => movie.Name.Equals(sessionModel.MovieName));
+                await _movieRepository.FindByIdAsync(sessionModel.MovieId);
 
             List<SessionAdditionalService> sessionAdditionalServices = new List<SessionAdditionalService>();
             foreach (var sessionAdditionalService in sessionModel.SessionAdditionalServices)
@@ -121,12 +121,12 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var sessionExist = await _sessionRepository.FindByIdAsync(id);
 
             var cinemaExist =
-                await _cinemaRepository.FirstOrDefaultAsync(cinema => cinema.Name.Equals(sessionModel.CinemaName));
+                await _cinemaRepository.FindByIdAsync(sessionModel.CinemaId);
 
-            var hallExist = cinemaExist.Halls.FirstOrDefault(hall => hall.Name.Equals(sessionModel.HallName));
+            var hallExist = cinemaExist.Halls.FirstOrDefault(hall => hall.Id.Equals(sessionModel.HallId));
 
             var movieExist =
-                await _movieRepository.FirstOrDefaultAsync(movie => movie.Name.Equals(sessionModel.MovieName));
+                await _movieRepository.FindByIdAsync(sessionModel.MovieId);
 
             foreach (var sessionAdditionalService in sessionExist.SessionAdditionalServices)
             {

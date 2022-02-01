@@ -4,13 +4,14 @@ using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Models.Domain.UserModels;
 using CinemaTicketReservationSystem.WebApi.Models.Response.UserProfile;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.UserProfile;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    // [Authorize(Policy = "UserRole")]
+    [Authorize(Policy = "UserRole")]
     [ApiController]
     public class UserProfileController : ControllerBase
     {

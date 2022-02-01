@@ -24,7 +24,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             {
                 if (file.Length > 0)
                 {
-                    var directory = "/Files/";
+                    var directory = "/images/";
                     if (!Directory.Exists(_environment.WebRootPath + directory))
                     {
                         Directory.CreateDirectory(_environment.WebRootPath + directory);

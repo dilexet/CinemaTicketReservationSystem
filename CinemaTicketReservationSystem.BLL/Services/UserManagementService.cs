@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Models.Domain.UserModels;
-using CinemaTicketReservationSystem.BLL.Models.FilterModel;
 using CinemaTicketReservationSystem.BLL.Models.Results.User;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
@@ -27,31 +26,9 @@ namespace CinemaTicketReservationSystem.BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<UserServiceGetUsersResult> GetUsers(FilterParametersModel filter)
+        public async Task<UserServiceGetUsersResult> GetUsers()
         {
             var users = _userRepository.GetBy();
-
-            if (!string.IsNullOrEmpty(filter.SearchQuery))
-            {
-                var searQuery = filter.SearchQuery.ToLower();
-                users = users.Where(user =>
-                    user.Name.ToLower().Contains(searQuery) ||
-                    user.Email.ToLower().Contains(searQuery) ||
-                    user.Role.Name.ToLower().Contains(searQuery));
-            }
-
-            if (!string.IsNullOrEmpty(filter.SortBy))
-            {
-                switch (filter.SortBy)
-                {
-                    case "name":
-                        users = users?.OrderBy(movie => movie.Name);
-                        break;
-                    case "role_name":
-                        users = users?.OrderBy(movie => movie.Role.Name);
-                        break;
-                }
-            }
 
             if (users == null || !users.Any())
             {

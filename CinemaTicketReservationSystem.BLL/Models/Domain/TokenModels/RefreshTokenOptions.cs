@@ -4,6 +4,6 @@
     {
         public string RefreshTokenSecret { get; set; }
 
-        public int RefreshTokenExpirationMinutes { get; set; }
+        public int RefreshTokenExpirationHours { get; set; }
     }
 }

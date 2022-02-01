@@ -30,6 +30,8 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.SessionConfigura
                 .HasOne(x => x.BookedOrder)
                 .WithMany(x => x.ReservedSessionSeats)
                 .HasForeignKey(x => x.BookedOrderId);
+
+            builder.Property(x => x.BookedOrderId).IsRequired(false);
         }
     }
 }

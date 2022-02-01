@@ -19,19 +19,20 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
                     var cinemaExist = await repository.FindByIdAsync(hallRequest.CinemaId);
                     return cinemaExist?.Halls.FirstOrDefault(x => x.Name.Equals(hallRequest.HallRequest.Name)) == null;
                 })
-                .WithName("HallName")
+                .WithName("HallRequest.Name")
                 .WithMessage("Hall with this name is exists");
             return options;
         }
 
         public static IRuleBuilderOptions<T, UpdateHallRequestWrapper> HallMustNotExistForUpdateInCinemaAsync<T>(
-            this IRuleBuilder<T, UpdateHallRequestWrapper> ruleBuilder, IRepository<Hall> repository)
+            this IRuleBuilder<T, UpdateHallRequestWrapper> ruleBuilder, IRepository<Cinema> repository)
         {
             var options = ruleBuilder
                 .NotEmpty()
                 .MustAsync(async (hallRequest, _) =>
                 {
-                    var hallExist = await repository.FirstOrDefaultAsync(x => x.Name == hallRequest.HallRequest.Name);
+                    var cinemaExist = await repository.FindByIdAsync(hallRequest.CinemaId);
+                    var hallExist = cinemaExist.Halls.FirstOrDefault(x => x.Name == hallRequest.HallRequest.Name);
                     if (hallExist == null)
                     {
                         return true;
@@ -39,7 +40,7 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
 
                     return hallExist.Id == hallRequest.Id;
                 })
-                .WithName("HallName")
+                .WithName("HallRequest.Name")
                 .WithMessage("Hall with this name is exists");
             return options;
         }

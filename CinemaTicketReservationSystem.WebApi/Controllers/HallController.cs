@@ -3,14 +3,16 @@ using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Models.Domain.HallModels;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Hall;
+using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Cinema;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Hall;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    // [Authorize(Policy = "AdminRole")]
+    [Authorize(Policy = "ManagerRole")]
     [ApiController]
     public class HallController : ControllerBase
     {
@@ -23,7 +25,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost]
+        [HttpPost("{cinemaId}")]
         public async Task<IActionResult> AddHall([FromRoute] AddHallRequestWrapper addHallRequestWrapper)
         {
             var hallResult = await _hallService.AddHall(
@@ -41,7 +43,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}/{cinemaId}")]
         public async Task<IActionResult> UpdateHall([FromRoute] UpdateHallRequestWrapper updateHallRequestWrapper)
         {
             var hallResult = await _hallService.UpdateHall(
@@ -93,6 +95,21 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         public async Task<IActionResult> GetHalls()
         {
             var hallResult = await _hallService.GetHalls();
+            var response = _mapper.Map<HallGetAllResponse>(hallResult);
+            if (!response.Success)
+            {
+                response.Code = StatusCodes.Status404NotFound;
+                return NotFound(response);
+            }
+
+            response.Code = StatusCodes.Status200OK;
+            return Ok(response);
+        }
+
+        [HttpGet("{id}/cinema")]
+        public async Task<IActionResult> GetHallsByCinemaId([FromRoute] CinemaRequestWrapper cinemaRequestWrapper)
+        {
+            var hallResult = await _hallService.GetHallsByCinemaId(cinemaRequestWrapper.Id);
             var response = _mapper.Map<HallGetAllResponse>(hallResult);
             if (!response.Success)
             {

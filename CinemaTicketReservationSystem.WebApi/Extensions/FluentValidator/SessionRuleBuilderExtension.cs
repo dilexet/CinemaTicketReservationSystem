@@ -2,7 +2,6 @@
 using System.Linq;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
-using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Session;
 using FluentValidation;
@@ -26,20 +25,6 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
             return options;
         }
 
-        public static IRuleBuilderOptions<T, string> MovieMustExistAsync<T>(
-            this IRuleBuilder<T, string> ruleBuilder, IRepository<Movie> repository)
-        {
-            var options = ruleBuilder
-                .NotEmpty()
-                .MustAsync(async (movieName, _) =>
-                {
-                    return await repository.FirstOrDefaultAsync(x => x.Name.Equals(movieName)) != null;
-                })
-                .WithName("MovieName")
-                .WithMessage("Movie with this name not found");
-            return options;
-        }
-
         public static IRuleBuilderOptions<T, SessionRequest> HallMustExistAsync<T>(
             this IRuleBuilder<T, SessionRequest> ruleBuilder, IRepository<Cinema> repository)
         {
@@ -47,9 +32,8 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
                 .NotEmpty()
                 .MustAsync(async (sessionRequest, _) =>
                 {
-                    var cinemaExist = await repository.FirstOrDefaultAsync(x =>
-                        x.Name.Equals(sessionRequest.CinemaName));
-                    if (cinemaExist?.Halls.FirstOrDefault(x => x.Name.Equals(sessionRequest.HallName)) == null)
+                    var cinemaExist = await repository.FindByIdAsync(sessionRequest.CinemaId);
+                    if (cinemaExist?.Halls.FirstOrDefault(x => x.Id.Equals(sessionRequest.HallId)) == null)
                     {
                         return false;
                     }
@@ -57,7 +41,7 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
                     return true;
                 })
                 .WithName("HallName")
-                .WithMessage("Hall with this name not found in this cinema");
+                .WithMessage("Hall not found in this cinema");
             return options;
         }
 
@@ -70,14 +54,13 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
                 .NotEmpty()
                 .MustAsync(async (sessionRequest, _) =>
                 {
-                    var cinemaExist = await repository.FirstOrDefaultAsync(x =>
-                        x.Name.Equals(sessionRequest.CinemaName));
+                    var cinemaExist = await repository.FindByIdAsync(sessionRequest.CinemaId);
                     if (cinemaExist == null)
                     {
                         return false;
                     }
 
-                    foreach (var sessionAdditionalService in sessionRequest.SessionAdditionalServicesRequest)
+                    foreach (var sessionAdditionalService in sessionRequest.SessionAdditionalServices)
                     {
                         var additionalServiceExist = cinemaExist.AdditionalServices.FirstOrDefault(service =>
                             service.Name.Equals(sessionAdditionalService.Name));
@@ -102,14 +85,13 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
                 .NotEmpty()
                 .MustAsync(async (sessionRequest, _) =>
                 {
-                    var hallExist = await repository.FirstOrDefaultAsync(x =>
-                        x.Name.Equals(sessionRequest.HallName));
+                    var hallExist = await repository.FindByIdAsync(sessionRequest.HallId);
                     if (hallExist == null)
                     {
                         return false;
                     }
 
-                    foreach (var seatType in sessionRequest.SessionSeatTypesRequest)
+                    foreach (var seatType in sessionRequest.SessionSeatTypes)
                     {
                         var seatTypeExist = hallExist.SeatTypes.FirstOrDefault(x => x.Equals(seatType.SeatType));
                         if (seatTypeExist == null)

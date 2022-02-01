@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaTicketReservationSystem.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220105125729_InitialDb")]
-    partial class InitialDb
+    [Migration("20220131103722_ChangeBookedOrderIdFk")]
+    partial class ChangeBookedOrderIdFk
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -86,17 +86,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0a163d28-48bb-42a7-b143-05caf6dbd263"),
+                            Id = new Guid("4ef6e4ed-0966-48dd-8cd2-04e34ab9f325"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("b248c363-caf9-4718-9d2d-61664e052ee8"),
+                            Id = new Guid("72a60787-491c-4ac0-bdac-732b344bd451"),
                             Name = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("8d81bdc8-2f39-42c5-b8e0-4e5fa569d344"),
+                            Id = new Guid("89bd71f9-879e-4915-a846-68d7fac8441b"),
                             Name = "User"
                         });
                 });
@@ -213,7 +213,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("NumberOfSeats")
+                    b.Property<long>("NumberOfRows")
                         .HasColumnType("bigint");
 
                     b.Property<string>("SeatTypesString")
@@ -378,7 +378,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BookedOrderId")
+                    b.Property<Guid?>("BookedOrderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("SeatId")
@@ -607,9 +607,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 {
                     b.HasOne("CinemaTicketReservationSystem.DAL.Entity.BookingEntity.BookedOrder", "BookedOrder")
                         .WithMany("ReservedSessionSeats")
-                        .HasForeignKey("BookedOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BookedOrderId");
 
                     b.HasOne("CinemaTicketReservationSystem.DAL.Entity.CinemaEntity.Seat", "Seat")
                         .WithMany("SessionSeats")
