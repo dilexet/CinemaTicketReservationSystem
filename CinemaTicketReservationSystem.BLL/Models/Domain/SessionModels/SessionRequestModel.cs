@@ -7,11 +7,11 @@ namespace CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels
     {
         public DateTime StartDate { get; set; }
 
-        public string MovieName { get; set; }
+        public Guid MovieId { get; set; }
 
-        public string CinemaName { get; set; }
+        public Guid CinemaId { get; set; }
 
-        public string HallName { get; set; }
+        public Guid HallId { get; set; }
 
         public IEnumerable<SessionAdditionalServiceModel> SessionAdditionalServices { get; set; }
 

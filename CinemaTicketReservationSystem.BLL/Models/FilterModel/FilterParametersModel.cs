@@ -1,9 +1,13 @@
-﻿namespace CinemaTicketReservationSystem.BLL.Models.FilterModel
+﻿using System;
+
+namespace CinemaTicketReservationSystem.BLL.Models.FilterModel
 {
     public class FilterParametersModel
     {
-        public string SearchQuery { get; set; }
+        public DateTime? FromDate { get; set; }
 
-        public string SortBy { get; set; }
+        public DateTime? ToDate { get; set; }
+
+        public bool? StillShowing { get; set; }
     }
 }
