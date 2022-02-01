@@ -146,5 +146,32 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 AdditionalServiceModel = additionalServiceModel
             };
         }
+
+        public async Task<AdditionalServiceGetAllResult> GetAdditionalServicesByCinemaId(Guid cinemaId)
+        {
+            IQueryable<AdditionalService> additionalServices =
+                _additionalServiceRepository.GetBy().Where(x => x.CinemaId.Equals(cinemaId));
+
+            if (!additionalServices.Any())
+            {
+                return new AdditionalServiceGetAllResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "No services found"
+                    }
+                };
+            }
+
+            var additionalServiceModels =
+                _mapper.Map<IEnumerable<AdditionalServiceModel>>(await additionalServices.ToListAsync());
+
+            return new AdditionalServiceGetAllResult()
+            {
+                Success = true,
+                AdditionalServices = additionalServiceModels
+            };
+        }
     }
 }

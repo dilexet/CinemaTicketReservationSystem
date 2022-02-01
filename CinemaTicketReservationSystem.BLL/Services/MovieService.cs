@@ -112,25 +112,22 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             IQueryable<Movie> movies = _movieRepository.GetBy();
 
-            if (!string.IsNullOrEmpty(filter.SearchQuery))
+            if (filter.FromDate != null)
             {
-                var searQuery = filter.SearchQuery.ToLower();
                 movies = movies.Where(movie =>
-                    movie.Name.ToLower().Contains(searQuery) ||
-                    movie.MovieDescription.Description.ToLower().Contains(searQuery));
+                    movie.StartDate >= filter.FromDate);
             }
 
-            if (!string.IsNullOrEmpty(filter.SortBy))
+            if (filter.ToDate != null)
             {
-                switch (filter.SortBy)
-                {
-                    case "name":
-                        movies = movies?.OrderBy(movie => movie.Name);
-                        break;
-                    case "release_date":
-                        movies = movies?.OrderBy(movie => movie.MovieDescription.ReleaseDate);
-                        break;
-                }
+                movies = movies.Where(movie =>
+                    movie.EndDate <= filter.ToDate);
+            }
+
+            if (filter.StillShowing == true)
+            {
+                DateTime now = DateTime.Now;
+                movies = movies.Where(movie => movie.EndDate >= now);
             }
 
             if (movies == null || !movies.Any())
