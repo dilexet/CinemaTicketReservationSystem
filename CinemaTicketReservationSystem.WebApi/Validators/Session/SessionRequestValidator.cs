@@ -12,8 +12,8 @@ namespace CinemaTicketReservationSystem.WebApi.Validators.Session
             IRepository<DAL.Entity.CinemaEntity.Cinema> cinemaRepository,
             IRepository<DAL.Entity.CinemaEntity.Hall> hallRepository)
         {
-            RuleFor(x => x.MovieName).MovieMustExistAsync(movieRepository);
-            RuleFor(x => x.CinemaName).CinemaNameMustExistAsync(cinemaRepository);
+            RuleFor(x => x.MovieId).MovieMustExistAsync(movieRepository);
+            RuleFor(x => x.CinemaId).CinemaNameMustExistAsync(cinemaRepository);
 
             RuleFor(x => x)
                 .HallMustExistAsync(cinemaRepository);
@@ -25,15 +25,15 @@ namespace CinemaTicketReservationSystem.WebApi.Validators.Session
                 .SeatTypesMustExistAsync(hallRepository);
 
             RuleFor(x => x.StartDate).NotNull().NotEmpty().WithMessage("Session start date can't be empty");
-            RuleFor(x => x.MovieName).NotEmpty().WithMessage("Movie name can't be empty");
+            RuleFor(x => x.MovieId).NotEmpty().WithMessage("Movie name can't be empty");
 
-            RuleFor(x => x.CinemaName).NotEmpty().WithMessage("Cinema name can't be empty");
-            RuleFor(x => x.HallName).NotEmpty().WithMessage("Hall name can't be empty");
+            RuleFor(x => x.CinemaId).NotEmpty().WithMessage("Cinema name can't be empty");
+            RuleFor(x => x.HallId).NotEmpty().WithMessage("Hall name can't be empty");
 
-            RuleFor(x => x.SessionAdditionalServicesRequest)
+            RuleFor(x => x.SessionAdditionalServices)
                 .ForEach(x => x.SetValidator(new SessionAdditionalServicesRequestValidator()));
 
-            RuleFor(x => x.SessionSeatTypesRequest)
+            RuleFor(x => x.SessionSeatTypes)
                 .ForEach(x => x.SetValidator(new SessionSeatTypeRequestValidator()));
         }
     }
