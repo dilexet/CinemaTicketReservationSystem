@@ -7,14 +7,14 @@ namespace CinemaTicketReservationSystem.WebApi.Models.Requests.Session
     {
         public DateTime StartDate { get; set; }
 
-        public string MovieName { get; set; }
+        public Guid MovieId { get; set; }
 
-        public string CinemaName { get; set; }
+        public Guid CinemaId { get; set; }
 
-        public string HallName { get; set; }
+        public Guid HallId { get; set; }
 
-        public IEnumerable<SessionAdditionalServiceRequest> SessionAdditionalServicesRequest { get; set; }
+        public IEnumerable<SessionAdditionalServiceRequest> SessionAdditionalServices { get; set; }
 
-        public IEnumerable<SessionSeatTypeRequest> SessionSeatTypesRequest { get; set; }
+        public IEnumerable<SessionSeatTypeRequest> SessionSeatTypes { get; set; }
     }
 }
