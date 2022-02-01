@@ -8,13 +8,13 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
 {
     public static class CinemaRuleBuilderExtension
     {
-        public static IRuleBuilderOptions<T, string> CinemaNameMustExistAsync<T>(
-            this IRuleBuilder<T, string> ruleBuilder, IRepository<Cinema> repository)
+        public static IRuleBuilderOptions<T, Guid> CinemaNameMustExistAsync<T>(
+            this IRuleBuilder<T, Guid> ruleBuilder, IRepository<Cinema> repository)
         {
             var options = ruleBuilder
                 .NotEmpty()
-                .MustAsync(async (cinemaName, _) =>
-                    await repository.FirstOrDefaultAsync(x => x.Name.Equals(cinemaName)) != null)
+                .MustAsync(async (id, _) =>
+                    await repository.FindByIdAsync(id) != null)
                 .WithMessage("Cinema with this name not found");
             return options;
         }
