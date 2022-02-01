@@ -5,13 +5,14 @@ using CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Session;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Session;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Session;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    // [Authorize(Policy = "ManagerRole")]
+    [Authorize(Policy = "ManagerRole")]
     [ApiController]
     public class SessionController : ControllerBase
     {

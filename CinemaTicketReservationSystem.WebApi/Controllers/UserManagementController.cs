@@ -2,8 +2,6 @@
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Models.Domain.UserModels;
-using CinemaTicketReservationSystem.BLL.Models.FilterModel;
-using CinemaTicketReservationSystem.WebApi.Models.Filters;
 using CinemaTicketReservationSystem.WebApi.Models.Response.UserManagement;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.UserManagement;
 using Microsoft.AspNetCore.Authorization;
@@ -78,9 +76,9 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers([FromQuery] FilterParameters filter)
+        public async Task<IActionResult> GetUsers()
         {
-            var usersResult = await _userManagementService.GetUsers(_mapper.Map<FilterParametersModel>(filter));
+            var usersResult = await _userManagementService.GetUsers();
             var response = _mapper.Map<UserManagementGetUsersResponse>(usersResult);
             if (!response.Success)
             {

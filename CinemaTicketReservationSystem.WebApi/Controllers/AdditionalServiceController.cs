@@ -4,6 +4,7 @@ using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Models.Domain.AdditionalServiceModels;
 using CinemaTicketReservationSystem.WebApi.Models.Response.AdditionalService;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.AdditionalService;
+using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Cinema;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +46,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPut("{id}/{cinemaId}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAdditionalService(
             [FromRoute] UpdateAdditionalServiceRequestWrapper updateAdditionalServiceRequestWrapper)
         {
@@ -103,6 +104,23 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         {
             var additionalServicesResult = await _additionalServiceManagement.GetAdditionalServices();
             var response = _mapper.Map<AdditionalServiceGetAllResponse>(additionalServicesResult);
+            if (!response.Success)
+            {
+                response.Code = StatusCodes.Status404NotFound;
+                return NotFound(response);
+            }
+
+            response.Code = StatusCodes.Status200OK;
+            return Ok(response);
+        }
+
+        [HttpGet("{id}/cinema")]
+        public async Task<IActionResult> GetAdditionalServicesByCinemaId(
+            [FromRoute] CinemaRequestWrapper cinemaRequestWrapper)
+        {
+            var servicesResult =
+                await _additionalServiceManagement.GetAdditionalServicesByCinemaId(cinemaRequestWrapper.Id);
+            var response = _mapper.Map<AdditionalServiceGetAllResponse>(servicesResult);
             if (!response.Success)
             {
                 response.Code = StatusCodes.Status404NotFound;
