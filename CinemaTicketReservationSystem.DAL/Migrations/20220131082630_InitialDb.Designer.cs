@@ -4,14 +4,16 @@ using CinemaTicketReservationSystem.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CinemaTicketReservationSystem.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220131082630_InitialDb")]
+    partial class InitialDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,17 +86,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4ef6e4ed-0966-48dd-8cd2-04e34ab9f325"),
+                            Id = new Guid("4c197b96-439a-44ab-99fe-b4bfb4981098"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("72a60787-491c-4ac0-bdac-732b344bd451"),
+                            Id = new Guid("49223b60-80e5-49f9-8405-ecf0541a6701"),
                             Name = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("89bd71f9-879e-4915-a846-68d7fac8441b"),
+                            Id = new Guid("f7201009-c2c1-4458-b3fa-b87da1a15c6a"),
                             Name = "User"
                         });
                 });
@@ -376,7 +378,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BookedOrderId")
+                    b.Property<Guid>("BookedOrderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("SeatId")
@@ -605,7 +607,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 {
                     b.HasOne("CinemaTicketReservationSystem.DAL.Entity.BookingEntity.BookedOrder", "BookedOrder")
                         .WithMany("ReservedSessionSeats")
-                        .HasForeignKey("BookedOrderId");
+                        .HasForeignKey("BookedOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CinemaTicketReservationSystem.DAL.Entity.CinemaEntity.Seat", "Seat")
                         .WithMany("SessionSeats")
