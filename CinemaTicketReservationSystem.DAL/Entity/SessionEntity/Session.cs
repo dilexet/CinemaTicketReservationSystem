@@ -7,6 +7,8 @@ namespace CinemaTicketReservationSystem.DAL.Entity.SessionEntity
 {
     public class Session : BasedEntity
     {
+        public bool Deleted { get; set; }
+
         public DateTime StartDate { get; set; }
 
         public Guid MovieId { get; set; }
