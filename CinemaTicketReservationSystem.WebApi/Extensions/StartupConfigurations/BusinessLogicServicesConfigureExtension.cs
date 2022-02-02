@@ -80,8 +80,7 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
                     provider.GetService<IRepository<Cinema>>(),
                     provider.GetService<IMapper>(),
                     provider.GetService<IRepository<SessionAdditionalService>>(),
-                    provider.GetService<IRepository<SessionSeatType>>(),
-                    provider.GetService<IRepository<SessionSeat>>()));
+                    provider.GetService<IRepository<SessionSeatType>>()));
 
             services.AddScoped<IFileService>(provider =>
                 new FileService(
