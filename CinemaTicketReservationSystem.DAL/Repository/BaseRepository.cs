@@ -29,6 +29,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository
             EntityEntry<TEntity> result = null;
             try
             {
+                entity.Deleted = false;
                 result = await _context.Set<TEntity>().AddAsync(entity);
             }
             catch (SqlException e)
@@ -50,7 +51,7 @@ namespace CinemaTicketReservationSystem.DAL.Repository
             try
             {
                 entity = await _context.Set<TEntity>()
-                    .Where(x => x.Id.Equals(id))
+                    .Where(x => x.Id.Equals(id) && x.Deleted == false)
                     .FirstOrDefaultAsync();
             }
             catch (SqlException e)
@@ -66,9 +67,10 @@ namespace CinemaTicketReservationSystem.DAL.Repository
             IQueryable<TEntity> entities = null;
             try
             {
+                entities = _context.Set<TEntity>().Where(x => x.Deleted == false);
                 entities = predicate != null
-                    ? _context.Set<TEntity>().Where(predicate)
-                    : _context.Set<TEntity>();
+                    ? entities.Where(predicate)
+                    : entities;
             }
             catch (SqlException e)
             {
@@ -92,6 +94,11 @@ namespace CinemaTicketReservationSystem.DAL.Repository
                 _log.LogError(e, "Error while getting model by predicate or default");
             }
 
+            if (entity != null && entity.Deleted)
+            {
+                return null;
+            }
+
             return entity;
         }
 
@@ -113,7 +120,8 @@ namespace CinemaTicketReservationSystem.DAL.Repository
         {
             try
             {
-                _context.Set<TEntity>().Remove(entity);
+                entity.Deleted = true;
+                _context.Entry(entity).State = EntityState.Modified;
             }
             catch (SqlException e)
             {
@@ -128,7 +136,8 @@ namespace CinemaTicketReservationSystem.DAL.Repository
         {
             try
             {
-                _context.Set<TEntity>().Remove(entity);
+                entity.Deleted = true;
+                _context.Entry(entity).State = EntityState.Modified;
             }
             catch (SqlException e)
             {
