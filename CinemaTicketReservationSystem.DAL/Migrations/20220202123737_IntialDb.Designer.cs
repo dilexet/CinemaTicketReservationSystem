@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaTicketReservationSystem.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220202070912_UpdateSessionEntity")]
-    partial class UpdateSessionEntity
+    [Migration("20220202123737_IntialDb")]
+    partial class IntialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,6 +45,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Property<DateTime>("AddedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("ExpiryDate")
                         .HasColumnType("datetime2");
 
@@ -76,6 +79,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -86,17 +92,20 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("81a95f89-4347-4e1e-860e-cd63c0c799c9"),
+                            Id = new Guid("364d2057-a77b-491d-8d14-93488b345471"),
+                            Deleted = false,
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("05b7aee5-dea3-42f1-b10b-a17c4888c838"),
+                            Id = new Guid("2057b984-0b8d-4e16-8b33-08ae2fae192f"),
+                            Deleted = false,
                             Name = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("07c8cf55-4e89-446c-a941-05f496e4d730"),
+                            Id = new Guid("ba16ae0e-b72a-4f60-b6f4-5231262a31b2"),
+                            Deleted = false,
                             Name = "User"
                         });
                 });
@@ -106,6 +115,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -132,6 +144,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
                     b.Property<double>("TotalPrice")
                         .HasColumnType("float");
 
@@ -153,6 +168,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
 
                     b.Property<Guid>("CinemaId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -176,6 +194,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Property<string>("CityName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Street")
                         .HasColumnType("nvarchar(max)");
 
@@ -193,6 +214,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -209,6 +233,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
 
                     b.Property<Guid>("CinemaId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -232,6 +259,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("HallId")
                         .HasColumnType("uniqueidentifier");
 
@@ -254,6 +284,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
                     b.Property<long>("NumberSeat")
                         .HasColumnType("bigint");
 
@@ -275,6 +308,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -302,6 +338,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Property<string>("CountriesString")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Countries");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -360,6 +399,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Property<Guid>("AdditionalServiceId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -383,6 +425,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
 
                     b.Property<Guid?>("BookedOrderId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("SeatId")
                         .HasColumnType("uniqueidentifier");
@@ -415,6 +460,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -436,6 +484,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
