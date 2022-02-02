@@ -18,17 +18,17 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.AuthorizeConfigu
                 .HasForeignKey(x => x.RoleId);
 
             builder.HasData(
-                new
+                new Role()
                 {
-                    Id = Guid.NewGuid(), Name = RoleTypes.Admin.ToString()
+                    Id = Guid.NewGuid(), Name = RoleTypes.Admin.ToString(), Deleted = false
                 },
-                new
+                new Role()
                 {
-                    Id = Guid.NewGuid(), Name = RoleTypes.Manager.ToString()
+                    Id = Guid.NewGuid(), Name = RoleTypes.Manager.ToString(), Deleted = false
                 },
-                new
+                new Role()
                 {
-                    Id = Guid.NewGuid(), Name = RoleTypes.User.ToString()
+                    Id = Guid.NewGuid(), Name = RoleTypes.User.ToString(), Deleted = false
                 });
         }
     }

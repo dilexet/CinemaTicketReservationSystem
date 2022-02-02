@@ -19,14 +19,17 @@ namespace CinemaTicketReservationSystem.DAL.Initializers
                 context.Roles.AddRange(
                     new Role()
                     {
+                        Deleted = false,
                         Name = RoleTypes.Admin.ToString(),
                     },
                     new Role()
                     {
+                        Deleted = false,
                         Name = RoleTypes.Manager.ToString(),
                     },
                     new Role()
                     {
+                        Deleted = false,
                         Name = RoleTypes.User.ToString(),
                     });
 
@@ -38,6 +41,7 @@ namespace CinemaTicketReservationSystem.DAL.Initializers
                 {
                     context.Roles.Add(new Role()
                     {
+                        Deleted = false,
                         Name = RoleTypes.Admin.ToString()
                     });
                 }
@@ -46,6 +50,7 @@ namespace CinemaTicketReservationSystem.DAL.Initializers
                 {
                     context.Roles.Add(new Role()
                     {
+                        Deleted = false,
                         Name = RoleTypes.Manager.ToString()
                     });
                 }
@@ -54,6 +59,7 @@ namespace CinemaTicketReservationSystem.DAL.Initializers
                 {
                     context.Roles.Add(new Role()
                     {
+                        Deleted = false,
                         Name = RoleTypes.User.ToString()
                     });
                 }
