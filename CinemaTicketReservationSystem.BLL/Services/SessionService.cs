@@ -23,7 +23,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         private readonly IRepository<SessionAdditionalService> _sessionAdditionalServiceRepository;
         private readonly IRepository<SessionSeatType> _sessionSeatTypeRepository;
-        private readonly IRepository<SessionSeat> _sessionSeatRepository;
 
         private readonly IMapper _mapper;
 
@@ -33,8 +32,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             IRepository<Cinema> cinemaRepository,
             IMapper mapper,
             IRepository<SessionAdditionalService> sessionAdditionalServiceRepository,
-            IRepository<SessionSeatType> sessionSeatTypeRepository,
-            IRepository<SessionSeat> sessionSeatRepository)
+            IRepository<SessionSeatType> sessionSeatTypeRepository)
         {
             _sessionRepository = sessionRepository;
             _movieRepository = movieRepository;
@@ -42,7 +40,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
             _mapper = mapper;
             _sessionAdditionalServiceRepository = sessionAdditionalServiceRepository;
             _sessionSeatTypeRepository = sessionSeatTypeRepository;
-            _sessionSeatRepository = sessionSeatRepository;
         }
 
         public async Task<SessionServiceResult> AddSession(SessionRequestModel sessionModel)
@@ -87,6 +84,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             Session session = new Session
             {
+                Deleted = false,
                 StartDate = sessionModel.StartDate,
                 Movie = movieExist,
                 Hall = hallExist,
@@ -120,67 +118,28 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             var sessionExist = await _sessionRepository.FindByIdAsync(id);
 
-            var cinemaExist =
-                await _cinemaRepository.FindByIdAsync(sessionModel.CinemaId);
-
-            var hallExist = cinemaExist.Halls.FirstOrDefault(hall => hall.Id.Equals(sessionModel.HallId));
-
-            var movieExist =
-                await _movieRepository.FindByIdAsync(sessionModel.MovieId);
-
-            foreach (var sessionAdditionalService in sessionExist.SessionAdditionalServices)
+            foreach (var service in sessionModel.SessionAdditionalServices)
             {
-                _sessionAdditionalServiceRepository.Remove(sessionAdditionalService);
-            }
-
-            foreach (var sessionSeat in sessionExist.SessionSeats)
-            {
-                _sessionSeatRepository.Remove(sessionSeat);
-            }
-
-            foreach (var sessionSeatType in sessionExist.SessionSeatType)
-            {
-                _sessionSeatTypeRepository.Remove(sessionSeatType);
-            }
-
-            List<SessionAdditionalService> sessionAdditionalServices = new List<SessionAdditionalService>();
-            foreach (var sessionAdditionalService in sessionModel.SessionAdditionalServices)
-            {
-                var additionalServiceExist = cinemaExist.AdditionalServices.FirstOrDefault(service =>
-                    service.Name.Equals(sessionAdditionalService.AdditionalService.Name));
-
-                sessionAdditionalServices.Add(new SessionAdditionalService()
+                var serviceExist = sessionExist.SessionAdditionalServices.FirstOrDefault(x =>
+                    x.AdditionalService.Name == service.AdditionalService.Name);
+                if (serviceExist != null)
                 {
-                    AdditionalService = additionalServiceExist,
-                    Price = sessionAdditionalService.Price
-                });
+                    serviceExist.Price = service.Price;
+                    await _sessionAdditionalServiceRepository.UpdateAsync(serviceExist);
+                }
             }
 
-            List<SessionSeatType> sessionSeatTypes =
-                _mapper.Map<List<SessionSeatType>>(sessionModel.SessionSeatTypes);
-
-            List<SessionSeat> sessionSeats = new List<SessionSeat>();
-            foreach (var row in hallExist!.Rows)
+            foreach (var seatType in sessionModel.SessionSeatTypes)
             {
-                foreach (var seat in row.Seats)
+                var seatTypeExist = sessionExist.SessionSeatType.FirstOrDefault(x => x.SeatType == seatType.SeatType);
+                if (seatTypeExist != null)
                 {
-                    var sessionSeatTypeExist = sessionSeatTypes.FirstOrDefault(x => x.SeatType.Equals(seat.SeatType));
-                    sessionSeats.Add(new SessionSeat()
-                    {
-                        TicketState = TicketState.Free,
-                        Seat = seat,
-                        SessionSeatType = sessionSeatTypeExist
-                    });
+                    seatTypeExist.Price = seatType.Price;
+                    await _sessionSeatTypeRepository.UpdateAsync(seatTypeExist);
                 }
             }
 
             sessionExist.StartDate = sessionModel.StartDate;
-            sessionExist.Movie = movieExist;
-            sessionExist.Hall = hallExist;
-
-            sessionExist.SessionAdditionalServices = sessionAdditionalServices;
-            sessionExist.SessionSeatType = sessionSeatTypes;
-            sessionExist.SessionSeats = sessionSeats;
 
             if (!await _sessionRepository.UpdateAsync(sessionExist))
             {
@@ -206,8 +165,9 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<SessionServiceRemoveResult> RemoveSession(Guid id)
         {
             var sessionExist = await _sessionRepository.FindByIdAsync(id);
+            sessionExist.Deleted = true;
 
-            if (!await _sessionRepository.RemoveAndSaveAsync(sessionExist))
+            if (!await _sessionRepository.UpdateAsync(sessionExist))
             {
                 return new SessionServiceRemoveResult()
                 {
@@ -228,7 +188,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<SessionServiceGetAllResult> GetSessions()
         {
-            IQueryable<Session> sessions = _sessionRepository.GetBy();
+            IQueryable<Session> sessions = _sessionRepository.GetBy(x => x.Deleted == false);
 
             if (sessions == null || !sessions.Any())
             {
@@ -254,6 +214,17 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<SessionServiceResult> GetSessionById(Guid id)
         {
             var session = await _sessionRepository.FindByIdAsync(id);
+            if (session.Deleted)
+            {
+                return new SessionServiceResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "No session found"
+                    }
+                };
+            }
 
             var sessionModel = _mapper.Map<SessionModel>(session);
 
