@@ -18,5 +18,7 @@ namespace CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels
         public IEnumerable<SessionAdditionalServiceModel> SessionAdditionalServices { get; set; }
 
         public IEnumerable<SessionSeatModel> SessionSeats { get; set; }
+
+        public IEnumerable<SessionSeatTypeModel> SessionSeatTypes { get; set; }
     }
 }

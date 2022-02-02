@@ -18,5 +18,7 @@ namespace CinemaTicketReservationSystem.WebApi.Models.ViewModels.Session
         public IEnumerable<SessionAdditionalServiceViewModel> SessionAdditionalServices { get; set; }
 
         public IEnumerable<SessionSeatViewModel> SessionSeats { get; set; }
+
+        public IEnumerable<SessionSeatTypeViewModel> SessionSeatTypes { get; set; }
     }
 }
