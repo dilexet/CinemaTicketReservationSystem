@@ -405,7 +405,11 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                 .ForMember(
                     dest => dest.SessionSeats,
                     source =>
-                        source.MapFrom(res => res.SessionSeats));
+                        source.MapFrom(res => res.SessionSeats))
+                .ForMember(
+                    dest => dest.SessionSeatType,
+                    source =>
+                        source.MapFrom(res => res.SessionSeatTypes));
 
             CreateMap<SessionSeatType, SessionSeatTypeModel>();
 
@@ -445,7 +449,11 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                 .ForMember(
                     dest => dest.SessionSeats,
                     source =>
-                        source.MapFrom(res => res.SessionSeats));
+                        source.MapFrom(res => res.SessionSeats))
+                .ForMember(
+                    dest => dest.SessionSeatTypes,
+                    source =>
+                        source.MapFrom(res => res.SessionSeatType));
 
             CreateMap<SessionAdditionalServiceModel, SessionAdditionalServiceViewModel>()
                 .ForMember(
