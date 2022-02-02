@@ -84,7 +84,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             Session session = new Session
             {
-                Deleted = false,
                 StartDate = sessionModel.StartDate,
                 Movie = movieExist,
                 Hall = hallExist,
@@ -165,9 +164,8 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<SessionServiceRemoveResult> RemoveSession(Guid id)
         {
             var sessionExist = await _sessionRepository.FindByIdAsync(id);
-            sessionExist.Deleted = true;
 
-            if (!await _sessionRepository.UpdateAsync(sessionExist))
+            if (!await _sessionRepository.RemoveAndSaveAsync(sessionExist))
             {
                 return new SessionServiceRemoveResult()
                 {
