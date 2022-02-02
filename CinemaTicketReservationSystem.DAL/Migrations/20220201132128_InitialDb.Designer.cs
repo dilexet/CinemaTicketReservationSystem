@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaTicketReservationSystem.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220131082630_InitialDb")]
+    [Migration("20220201132128_InitialDb")]
     partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,17 +86,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4c197b96-439a-44ab-99fe-b4bfb4981098"),
+                            Id = new Guid("b177f1fa-9067-42bd-9c23-82e97366f103"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("49223b60-80e5-49f9-8405-ecf0541a6701"),
+                            Id = new Guid("cfb4db47-5530-4851-b183-5bf704e373c7"),
                             Name = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("f7201009-c2c1-4458-b3fa-b87da1a15c6a"),
+                            Id = new Guid("682cc1ab-575a-429d-9c63-7e68fd6afec3"),
                             Name = "User"
                         });
                 });
@@ -378,7 +378,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BookedOrderId")
+                    b.Property<Guid?>("BookedOrderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("SeatId")
@@ -607,9 +607,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 {
                     b.HasOne("CinemaTicketReservationSystem.DAL.Entity.BookingEntity.BookedOrder", "BookedOrder")
                         .WithMany("ReservedSessionSeats")
-                        .HasForeignKey("BookedOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BookedOrderId");
 
                     b.HasOne("CinemaTicketReservationSystem.DAL.Entity.CinemaEntity.Seat", "Seat")
                         .WithMany("SessionSeats")

@@ -356,7 +356,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     SessionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SeatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SessionSeatTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BookedOrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    BookedOrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -366,7 +366,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         column: x => x.BookedOrderId,
                         principalTable: "BookedOrders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SessionSeats_Seats_SeatId",
                         column: x => x.SeatId,
@@ -388,17 +388,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("4c197b96-439a-44ab-99fe-b4bfb4981098"), "Admin" });
+                values: new object[] { new Guid("b177f1fa-9067-42bd-9c23-82e97366f103"), "Admin" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("49223b60-80e5-49f9-8405-ecf0541a6701"), "Manager" });
+                values: new object[] { new Guid("cfb4db47-5530-4851-b183-5bf704e373c7"), "Manager" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { new Guid("f7201009-c2c1-4458-b3fa-b87da1a15c6a"), "User" });
+                values: new object[] { new Guid("682cc1ab-575a-429d-9c63-7e68fd6afec3"), "User" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdditionalServices_CinemaId",
