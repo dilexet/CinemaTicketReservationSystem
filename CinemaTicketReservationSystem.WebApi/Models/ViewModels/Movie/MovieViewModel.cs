@@ -14,6 +14,6 @@ namespace CinemaTicketReservationSystem.WebApi.Models.ViewModels.Movie
 
         public DateTime EndDate { get; set; }
 
-        public MovieDescriptionViewModel MovieDescriptionViewModel { get; set; }
+        public MovieDescriptionViewModel MovieDescription { get; set; }
     }
 }
