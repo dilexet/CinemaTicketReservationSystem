@@ -42,7 +42,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         public async Task<IActionResult> GetSessionsForMovie([FromRoute] MovieRequestWrapper movieRequestWrapper)
         {
             var sessionsResult = await _movieFilterService.GetSessionsForMovie(movieRequestWrapper.Id);
-            var response = _mapper.Map<SessionResponse>(sessionsResult);
+            var response = _mapper.Map<SessionGetAllResponse>(sessionsResult);
             if (!response.Success)
             {
                 response.Code = StatusCodes.Status404NotFound;
