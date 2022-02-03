@@ -149,7 +149,7 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
 
             CreateMap<MovieModel, MovieViewModel>()
                 .ForMember(
-                    dest => dest.MovieDescriptionViewModel,
+                    dest => dest.MovieDescription,
                     source => source.MapFrom(res => res.MovieDescriptionModel))
                 .ForMember(
                     dest => dest.PosterUrl,
