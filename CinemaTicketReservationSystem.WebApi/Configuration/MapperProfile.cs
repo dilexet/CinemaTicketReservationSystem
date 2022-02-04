@@ -17,6 +17,7 @@ using CinemaTicketReservationSystem.BLL.Models.Results.Cinema;
 using CinemaTicketReservationSystem.BLL.Models.Results.File;
 using CinemaTicketReservationSystem.BLL.Models.Results.Hall;
 using CinemaTicketReservationSystem.BLL.Models.Results.Movie;
+using CinemaTicketReservationSystem.BLL.Models.Results.MovieFilter;
 using CinemaTicketReservationSystem.BLL.Models.Results.Search;
 using CinemaTicketReservationSystem.BLL.Models.Results.SeatType;
 using CinemaTicketReservationSystem.BLL.Models.Results.Session;
@@ -42,6 +43,7 @@ using CinemaTicketReservationSystem.WebApi.Models.Response.Cinema;
 using CinemaTicketReservationSystem.WebApi.Models.Response.File;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Hall;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;
+using CinemaTicketReservationSystem.WebApi.Models.Response.MovieFilter;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Search;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Session;
 using CinemaTicketReservationSystem.WebApi.Models.Response.UserManagement;
@@ -561,6 +563,15 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
 
             CreateMap<SearchSuggestionResult, SearchSuggestionResponse>();
             CreateMap<MovieFilterParametersRequest, MovieFilterParametersModel>();
+            CreateMap<GetSessionsResult, GetSessionsResponse>()
+                .ForMember(
+                    dest => dest.Sessions,
+                    source =>
+                        source.MapFrom(res => res.Sessions))
+                .ForMember(
+                    dest => dest.Movie,
+                    source =>
+                        source.MapFrom(res => res.Movie));
         }
     }
 }
