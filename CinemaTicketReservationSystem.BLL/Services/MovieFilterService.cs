@@ -72,10 +72,11 @@ namespace CinemaTicketReservationSystem.BLL.Services
             {
                 movies =
                     movies.Where(movie =>
-                        movie.Sessions.Any(x => x.StartDate >= movieFilterParametersModel.StartDate));
+                        movie.Sessions.Any(x => x.StartDate.Date == movieFilterParametersModel.StartDate.Value.Date));
             }
 
-            if (movieFilterParametersModel.NumberAvailableSeats != 0)
+            if (movieFilterParametersModel.NumberAvailableSeats != null &&
+                movieFilterParametersModel.NumberAvailableSeats != 0)
             {
                 movies =
                     movies.Where(movie =>
