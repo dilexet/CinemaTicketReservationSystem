@@ -8,8 +8,8 @@ using CinemaTicketReservationSystem.BLL.Models.Domain.MovieModels;
 using CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels;
 using CinemaTicketReservationSystem.BLL.Models.FilterModel;
 using CinemaTicketReservationSystem.BLL.Models.Results.Movie;
+using CinemaTicketReservationSystem.BLL.Models.Results.MovieFilter;
 using CinemaTicketReservationSystem.BLL.Models.Results.Search;
-using CinemaTicketReservationSystem.BLL.Models.Results.Session;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
@@ -94,13 +94,15 @@ namespace CinemaTicketReservationSystem.BLL.Services
             };
         }
 
-        public async Task<SessionServiceGetAllResult> GetSessionsForMovie(Guid movieId)
+        public async Task<GetSessionsResult> GetSessionsForMovie(Guid movieId)
         {
-            var sessions = _sessionRepository.GetBy(x => x.MovieId.Equals(movieId));
+            var sessions = _sessionRepository.GetBy(x => x.MovieId.Equals(movieId))
+                .Where(x => x.StartDate >= DateTime.Today);
+            var movie = await _movieRepository.FindByIdAsync(movieId);
 
-            if (sessions == null || !sessions.Any())
+            if (!sessions.Any())
             {
-                return new SessionServiceGetAllResult()
+                return new GetSessionsResult()
                 {
                     Success = false,
                     Errors = new[]
@@ -111,11 +113,13 @@ namespace CinemaTicketReservationSystem.BLL.Services
             }
 
             var sessionsModel = _mapper.Map<IEnumerable<SessionModel>>(await sessions.ToListAsync());
+            var movieModel = _mapper.Map<MovieModel>(movie);
 
-            return new SessionServiceGetAllResult()
+            return new GetSessionsResult()
             {
                 Success = true,
-                Sessions = sessionsModel
+                Sessions = sessionsModel,
+                Movie = movieModel
             };
         }
 
