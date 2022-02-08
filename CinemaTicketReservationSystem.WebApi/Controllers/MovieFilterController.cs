@@ -6,7 +6,6 @@ using CinemaTicketReservationSystem.WebApi.Models.Filters;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Response.MovieFilter;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Search;
-using CinemaTicketReservationSystem.WebApi.Models.Response.Session;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Movie;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -44,11 +43,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         {
             var sessionsResult = await _movieFilterService.GetSessionsForMovie(movieRequestWrapper.Id);
             var response = _mapper.Map<GetSessionsResponse>(sessionsResult);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);
