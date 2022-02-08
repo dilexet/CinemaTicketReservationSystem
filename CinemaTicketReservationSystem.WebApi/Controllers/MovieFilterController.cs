@@ -4,6 +4,7 @@ using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Models.FilterModel;
 using CinemaTicketReservationSystem.WebApi.Models.Filters;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;
+using CinemaTicketReservationSystem.WebApi.Models.Response.MovieFilter;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Search;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Session;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Movie;
@@ -42,7 +43,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         public async Task<IActionResult> GetSessionsForMovie([FromRoute] MovieRequestWrapper movieRequestWrapper)
         {
             var sessionsResult = await _movieFilterService.GetSessionsForMovie(movieRequestWrapper.Id);
-            var response = _mapper.Map<SessionResponse>(sessionsResult);
+            var response = _mapper.Map<GetSessionsResponse>(sessionsResult);
             if (!response.Success)
             {
                 response.Code = StatusCodes.Status404NotFound;

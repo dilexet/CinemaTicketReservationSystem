@@ -8,8 +8,8 @@ using CinemaTicketReservationSystem.BLL.Models.Domain.MovieModels;
 using CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels;
 using CinemaTicketReservationSystem.BLL.Models.FilterModel;
 using CinemaTicketReservationSystem.BLL.Models.Results.Movie;
+using CinemaTicketReservationSystem.BLL.Models.Results.MovieFilter;
 using CinemaTicketReservationSystem.BLL.Models.Results.Search;
-using CinemaTicketReservationSystem.BLL.Models.Results.Session;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
@@ -45,43 +45,44 @@ namespace CinemaTicketReservationSystem.BLL.Services
             MovieFilterParametersModel movieFilterParametersModel)
         {
             var movies = _movieRepository.GetBy();
-            if (movieFilterParametersModel.MovieName != null)
+            if (!string.IsNullOrEmpty(movieFilterParametersModel.MovieName))
             {
                 movies =
                     movies.Where(movie =>
                         movie.Name.Contains(movieFilterParametersModel.MovieName));
             }
 
-            if (movieFilterParametersModel.CinemaName != null)
+            if (!string.IsNullOrEmpty(movieFilterParametersModel.CinemaName))
             {
                 movies =
                     movies.Where(movie =>
-                        movie.Sessions.Where(x =>
-                            x.Hall.Cinema.Name.Contains(movieFilterParametersModel.CinemaName)) != null);
+                        movie.Sessions.Any(x =>
+                            x.Hall.Cinema.Name.Contains(movieFilterParametersModel.CinemaName)));
             }
 
-            if (movieFilterParametersModel.CityName != null)
+            if (!string.IsNullOrEmpty(movieFilterParametersModel.CityName))
             {
                 movies =
                     movies.Where(movie =>
-                        movie.Sessions.Where(x =>
-                            x.Hall.Cinema.Address.CityName.Contains(movieFilterParametersModel.CityName)) != null);
+                        movie.Sessions.Any(x =>
+                            x.Hall.Cinema.Address.CityName.Contains(movieFilterParametersModel.CityName)));
             }
 
             if (movieFilterParametersModel.StartDate != null)
             {
                 movies =
                     movies.Where(movie =>
-                        movie.StartDate >= movieFilterParametersModel.StartDate);
+                        movie.Sessions.Any(x => x.StartDate.Date == movieFilterParametersModel.StartDate.Value.Date));
             }
 
-            if (movieFilterParametersModel.NumberAvailableSeats != 0)
+            if (movieFilterParametersModel.NumberAvailableSeats != null &&
+                movieFilterParametersModel.NumberAvailableSeats != 0)
             {
                 movies =
                     movies.Where(movie =>
-                        movie.Sessions.Where(x =>
+                        movie.Sessions.Any(x =>
                             x.SessionSeats.Count(sessionSeat => sessionSeat.TicketState == TicketState.Free) >=
-                            movieFilterParametersModel.NumberAvailableSeats) != null);
+                            movieFilterParametersModel.NumberAvailableSeats));
             }
 
             var moviesModel = _mapper.Map<IEnumerable<MovieModel>>(await movies.ToListAsync());
@@ -93,13 +94,15 @@ namespace CinemaTicketReservationSystem.BLL.Services
             };
         }
 
-        public async Task<SessionServiceGetAllResult> GetSessionsForMovie(Guid movieId)
+        public async Task<GetSessionsResult> GetSessionsForMovie(Guid movieId)
         {
-            var sessions = _sessionRepository.GetBy(x => x.MovieId.Equals(movieId));
+            var sessions = _sessionRepository.GetBy(x => x.MovieId.Equals(movieId))
+                .Where(x => x.StartDate >= DateTime.Today);
+            var movie = await _movieRepository.FindByIdAsync(movieId);
 
-            if (sessions == null || !sessions.Any())
+            if (!sessions.Any())
             {
-                return new SessionServiceGetAllResult()
+                return new GetSessionsResult()
                 {
                     Success = false,
                     Errors = new[]
@@ -110,17 +113,21 @@ namespace CinemaTicketReservationSystem.BLL.Services
             }
 
             var sessionsModel = _mapper.Map<IEnumerable<SessionModel>>(await sessions.ToListAsync());
+            var movieModel = _mapper.Map<MovieModel>(movie);
 
-            return new SessionServiceGetAllResult()
+            return new GetSessionsResult()
             {
                 Success = true,
-                Sessions = sessionsModel
+                Sessions = sessionsModel,
+                Movie = movieModel
             };
         }
 
         public async Task<SearchSuggestionResult> GetListOfMovieTitles(string movieTitleSearchQuery)
         {
-            var movies = _movieRepository.GetBy(x => x.Name.Contains(movieTitleSearchQuery));
+            IQueryable<Movie> movies = string.IsNullOrEmpty(movieTitleSearchQuery)
+                ? _movieRepository.GetBy()
+                : _movieRepository.GetBy(x => x.Name.Contains(movieTitleSearchQuery));
 
             var moviesTitle = await movies.Select(x => x.Name).ToListAsync();
             return new SearchSuggestionResult()
@@ -132,7 +139,9 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<SearchSuggestionResult> GetListOfCinemaNames(string cinemaNameSearchQuery)
         {
-            var cinemas = _cinemaRepository.GetBy(x => x.Name.Contains(cinemaNameSearchQuery));
+            IQueryable<Cinema> cinemas = string.IsNullOrEmpty(cinemaNameSearchQuery)
+                ? _cinemaRepository.GetBy()
+                : _cinemaRepository.GetBy(x => x.Name.Contains(cinemaNameSearchQuery));
 
             var cinemasName = await cinemas.Select(x => x.Name).ToListAsync();
             return new SearchSuggestionResult()
@@ -144,9 +153,11 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<SearchSuggestionResult> GetListOfCityNames(string cityNameSearchQuery)
         {
-            var cities = _addressRepository.GetBy(x => x.CityName.Contains(cityNameSearchQuery));
+            IQueryable<Address> addresses = string.IsNullOrEmpty(cityNameSearchQuery)
+                ? _addressRepository.GetBy()
+                : _addressRepository.GetBy(x => x.CityName.Contains(cityNameSearchQuery));
 
-            var cityNames = await cities.Select(x => x.CityName).ToListAsync();
+            var cityNames = await addresses.Select(x => x.CityName).ToListAsync();
             return new SearchSuggestionResult()
             {
                 Success = true,

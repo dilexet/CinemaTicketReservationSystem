@@ -2,8 +2,10 @@
 using System.Linq;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
+using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Session;
+using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Session;
 using FluentValidation;
 
 namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
@@ -22,6 +24,26 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
                 })
                 .WithName("Session")
                 .WithMessage("Session is not exists");
+            return options;
+        }
+
+        public static IRuleBuilderOptions<T, SessionRequest> StartSessionDateMustBeAfterMovieRelease<T>(
+            this IRuleBuilder<T, SessionRequest> ruleBuilder, IRepository<Movie> repository)
+        {
+            var options = ruleBuilder
+                .NotEmpty()
+                .MustAsync(async (sessionRequest, _) =>
+                {
+                    var movieExist = await repository.FindByIdAsync(sessionRequest.MovieId);
+                    if (movieExist.StartDate > sessionRequest.StartDate)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                })
+                .WithName("SessionRequest.StartDate")
+                .WithMessage("Session start date must be after movie release start date");
             return options;
         }
 

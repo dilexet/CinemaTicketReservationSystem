@@ -12,6 +12,6 @@ namespace CinemaTicketReservationSystem.BLL.Models.FilterModel
 
         public DateTime? StartDate { get; set; }
 
-        public uint NumberAvailableSeats { get; set; }
+        public uint? NumberAvailableSeats { get; set; }
     }
 }
