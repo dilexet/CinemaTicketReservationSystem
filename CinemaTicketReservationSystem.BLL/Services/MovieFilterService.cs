@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
+using CinemaTicketReservationSystem.BLL.Models.Domain.CinemaModels;
+using CinemaTicketReservationSystem.BLL.Models.Domain.MovieFilter;
 using CinemaTicketReservationSystem.BLL.Models.Domain.MovieModels;
 using CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels;
 using CinemaTicketReservationSystem.BLL.Models.FilterModel;
@@ -97,28 +99,42 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<GetSessionsResult> GetSessionsForMovie(Guid movieId)
         {
             var sessions = _sessionRepository.GetBy(x => x.MovieId.Equals(movieId))
-                .Where(x => x.StartDate >= DateTime.Today);
+                .Where(x => x.StartDate >= DateTime.Today).OrderBy(x => x.StartDate);
+
             var movie = await _movieRepository.FindByIdAsync(movieId);
 
-            if (!sessions.Any())
+            var sessionsModel = _mapper.Map<IEnumerable<SessionModel>>(await sessions.ToListAsync()).ToList();
+
+            for (int i = 0; i < sessionsModel.Count(); i++)
             {
-                return new GetSessionsResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "No sessions found"
-                    }
-                };
+                double numberFreeSeats = sessionsModel[i].SessionSeats
+                    .Count(x => x.TicketState == TicketState.Free.ToString());
+                double numberSeats = sessionsModel[i].SessionSeats.Count();
+
+                double hallWorkload = numberFreeSeats / numberSeats * 100.0;
+                sessionsModel[i].HallWorkload = hallWorkload;
             }
 
-            var sessionsModel = _mapper.Map<IEnumerable<SessionModel>>(await sessions.ToListAsync());
+            var sessionDictionary = sessionsModel.GroupBy(x => x.Hall.CinemaId)
+                .ToDictionary(x => x.Key, v => v.AsEnumerable());
+
+            List<SessionsForMovieModel> sessionsForMovieModels = new List<SessionsForMovieModel>();
+            foreach (var session in sessionDictionary)
+            {
+                var cinema = await _cinemaRepository.FindByIdAsync(session.Key);
+                sessionsForMovieModels.Add(new SessionsForMovieModel()
+                {
+                    Cinema = _mapper.Map<CinemaModel>(cinema),
+                    Sessions = session.Value.ToList()
+                });
+            }
+
             var movieModel = _mapper.Map<MovieModel>(movie);
 
             return new GetSessionsResult()
             {
                 Success = true,
-                Sessions = sessionsModel,
+                Sessions = sessionsForMovieModels,
                 Movie = movieModel
             };
         }
