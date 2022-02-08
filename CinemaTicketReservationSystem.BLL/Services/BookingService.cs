@@ -143,6 +143,19 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<SessionServiceResult> GetSessionById(Guid id)
         {
             var session = await _sessionRepository.FindByIdAsync(id);
+
+            if (session.StartDate <= DateTime.Now)
+            {
+                return new SessionServiceResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "Session ended"
+                    }
+                };
+            }
+
             foreach (var seat in session.SessionSeats)
             {
                 var seatId = _memoryCache.Get(seat.SeatId);
