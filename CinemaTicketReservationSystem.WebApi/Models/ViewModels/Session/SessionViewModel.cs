@@ -11,6 +11,8 @@ namespace CinemaTicketReservationSystem.WebApi.Models.ViewModels.Session
 
         public DateTime StartDate { get; set; }
 
+        public double HallWorkload { get; set; }
+
         public MovieViewModel Movie { get; set; }
 
         public HallViewModel Hall { get; set; }
