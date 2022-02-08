@@ -559,7 +559,7 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
 
             CreateMap<BookingServiceResult, BookTicketsResponse>()
                 .ForMember(
-                    dest => dest.BookedOrderViewModel,
+                    dest => dest.BookedOrder,
                     source =>
                         source.MapFrom(res => res.BookedOrder));
 

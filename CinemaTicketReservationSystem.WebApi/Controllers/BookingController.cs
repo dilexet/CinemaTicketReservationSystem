@@ -49,7 +49,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
 
             await _hubContext.Clients.All.SendAsync(
                 "setBookingSeat",
-                response.BookedOrderViewModel.ReservedSessionSeats.Select(x => x.Id));
+                response.BookedOrder.ReservedSessionSeats.Select(x => x.Id));
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);
@@ -70,6 +70,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             return Ok(response);
         }
 
+        // TODO: Do I need it?
         [HttpGet]
         public async Task<IActionResult> GetAvailableSessions()
         {
