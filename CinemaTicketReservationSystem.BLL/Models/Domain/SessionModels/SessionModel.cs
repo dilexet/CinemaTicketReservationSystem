@@ -11,6 +11,8 @@ namespace CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels
 
         public DateTime StartDate { get; set; }
 
+        public double HallWorkload { get; set; }
+
         public MovieModel Movie { get; set; }
 
         public HallModel Hall { get; set; }
