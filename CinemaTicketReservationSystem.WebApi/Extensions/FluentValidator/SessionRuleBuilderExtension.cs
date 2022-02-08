@@ -5,7 +5,6 @@ using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 using CinemaTicketReservationSystem.WebApi.Models.Requests.Session;
-using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Session;
 using FluentValidation;
 
 namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
