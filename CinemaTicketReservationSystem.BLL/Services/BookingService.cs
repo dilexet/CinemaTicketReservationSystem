@@ -115,31 +115,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
             };
         }
 
-        public async Task<SessionServiceGetAllResult> GetAvailableSessions()
-        {
-            IQueryable<Session> sessions = _sessionRepository.GetBy(x => x.StartDate >= DateTime.Now);
-
-            if (sessions == null || !sessions.Any())
-            {
-                return new SessionServiceGetAllResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "No sessions found"
-                    }
-                };
-            }
-
-            var sessionsModel = _mapper.Map<IEnumerable<SessionModel>>(await sessions.ToListAsync());
-
-            return new SessionServiceGetAllResult()
-            {
-                Success = true,
-                Sessions = sessionsModel
-            };
-        }
-
         public async Task<SessionServiceResult> GetSessionById(Guid id)
         {
             var session = await _sessionRepository.FindByIdAsync(id);
@@ -171,6 +146,31 @@ namespace CinemaTicketReservationSystem.BLL.Services
             {
                 Success = true,
                 Session = sessionModel
+            };
+        }
+
+        public async Task<SessionServiceGetAllResult> GetAvailableSessions()
+        {
+            IQueryable<Session> sessions = _sessionRepository.GetBy(x => x.StartDate >= DateTime.Now);
+
+            if (sessions == null || !sessions.Any())
+            {
+                return new SessionServiceGetAllResult()
+                {
+                    Success = false,
+                    Errors = new[]
+                    {
+                        "No sessions found"
+                    }
+                };
+            }
+
+            var sessionsModel = _mapper.Map<IEnumerable<SessionModel>>(await sessions.ToListAsync());
+
+            return new SessionServiceGetAllResult()
+            {
+                Success = true,
+                Sessions = sessionsModel
             };
         }
     }
