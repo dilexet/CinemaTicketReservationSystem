@@ -104,9 +104,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             }
 
             var bookedOrderModel = _mapper.Map<BookedOrderModel>(bookedOrder);
-            bookedOrderModel.CinemaName = sessionExist.Hall.Cinema.Name;
-            bookedOrderModel.HallName = sessionExist.Hall.Name;
-            bookedOrderModel.MovieName = sessionExist.Movie.Name;
+            bookedOrderModel.Session = _mapper.Map<SessionModel>(sessionExist);
 
             return new BookingServiceResult()
             {
