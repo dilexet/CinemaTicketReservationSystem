@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Models.Domain.AdditionalServiceModels;
 using CinemaTicketReservationSystem.BLL.Models.Domain.AuthModels;
@@ -517,60 +518,6 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
 
             CreateMap<SessionServiceRemoveResult, SessionRemoveResponse>();
 
-            CreateMap<UserProfileModel, UserProfile>();
-
-            CreateMap<UserProfile, UserProfileModel>();
-
-            CreateMap<UserProfileUpdateRequest, UserProfileModel>();
-
-            CreateMap<UserProfileModel, UserProfileViewModel>()
-                .ForMember(
-                    dest => dest.Tickets,
-                    source =>
-                        source.MapFrom(res => res.Tickets));
-
-            CreateMap<UserProfileResult, UserProfileResponse>()
-                .ForMember(
-                    dest => dest.UserProfileViewModel,
-                    source =>
-                        source.MapFrom(res => res.UserProfile));
-
-            CreateMap<BookTicketsRequest, BookingModel>();
-
-            CreateMap<BookedOrder, BookedOrderModel>()
-                .ForMember(
-                    dest => dest.UserProfile,
-                    source =>
-                        source.MapFrom(res => res.UserProfile))
-                .ForMember(
-                    dest => dest.ReservedSessionSeats,
-                    source =>
-                        source.MapFrom(res => res.ReservedSessionSeats))
-                .ForMember(
-                    dest => dest.SelectedSessionAdditionalServices,
-                    source =>
-                        source.MapFrom(res => res.SelectedSessionAdditionalServices));
-
-            CreateMap<BookedOrderModel, BookedOrderViewModel>()
-                .ForMember(
-                    dest => dest.UserProfile,
-                    source =>
-                        source.MapFrom(res => res.UserProfile))
-                .ForMember(
-                    dest => dest.ReservedSessionSeats,
-                    source =>
-                        source.MapFrom(res => res.ReservedSessionSeats))
-                .ForMember(
-                    dest => dest.SelectedSessionAdditionalServices,
-                    source =>
-                        source.MapFrom(res => res.SelectedSessionAdditionalServices));
-
-            CreateMap<BookingServiceResult, BookTicketsResponse>()
-                .ForMember(
-                    dest => dest.BookedOrder,
-                    source =>
-                        source.MapFrom(res => res.BookedOrder));
-
             CreateMap<SearchSuggestionResult, SearchSuggestionResponse>();
             CreateMap<MovieFilterParametersRequest, MovieFilterParametersModel>();
 
@@ -593,6 +540,56 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                     dest => dest.Movie,
                     source =>
                         source.MapFrom(res => res.Movie));
+
+            CreateMap<BookedOrder, BookedOrderModel>()
+                .ForMember(
+                    dest => dest.Session,
+                    source =>
+                        source.MapFrom(res => res.ReservedSessionSeats.FirstOrDefault().Session))
+                .ForMember(
+                    dest => dest.ReservedSessionSeats,
+                    source =>
+                        source.MapFrom(res => res.ReservedSessionSeats))
+                .ForMember(
+                    dest => dest.SelectedSessionAdditionalServices,
+                    source =>
+                        source.MapFrom(res => res.SelectedSessionAdditionalServices));
+
+            CreateMap<UserProfile, UserProfileModel>();
+
+            CreateMap<UserProfileModel, UserProfile>();
+
+            CreateMap<UserProfileUpdateRequest, UserProfileModel>();
+
+            CreateMap<UserProfileModel, UserProfileViewModel>()
+                .ForMember(
+                    dest => dest.Tickets,
+                    source =>
+                        source.MapFrom(res => res.TicketsModel));
+
+            CreateMap<UserProfileResult, UserProfileResponse>()
+                .ForMember(
+                    dest => dest.UserProfile,
+                    source =>
+                        source.MapFrom(res => res.UserProfile));
+
+            CreateMap<BookTicketsRequest, BookingModel>();
+
+            CreateMap<BookedOrderModel, BookedOrderViewModel>()
+                .ForMember(
+                    dest => dest.ReservedSessionSeats,
+                    source =>
+                        source.MapFrom(res => res.ReservedSessionSeats))
+                .ForMember(
+                    dest => dest.SelectedSessionAdditionalServices,
+                    source =>
+                        source.MapFrom(res => res.SelectedSessionAdditionalServices));
+
+            CreateMap<BookingServiceResult, BookTicketsResponse>()
+                .ForMember(
+                    dest => dest.BookedOrder,
+                    source =>
+                        source.MapFrom(res => res.BookedOrder));
         }
     }
 }
