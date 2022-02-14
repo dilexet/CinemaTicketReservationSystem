@@ -13,6 +13,10 @@ namespace CinemaTicketReservationSystem.BLL.Models.Domain.HallModels
 
         public string CinemaName { get; set; }
 
+        public string CityName { get; set; }
+
+        public string Street { get; set; }
+
         public uint NumberOfRows { get; set; }
 
         public IEnumerable<string> SeatTypes { get; set; }

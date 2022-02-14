@@ -12,6 +12,6 @@ namespace CinemaTicketReservationSystem.BLL.Models.Domain.UserModels
 
         public string Surname { get; set; }
 
-        public IEnumerable<BookedOrderModel> Tickets { get; set; }
+        public IEnumerable<BookedOrderModel> TicketsModel { get; set; }
     }
 }

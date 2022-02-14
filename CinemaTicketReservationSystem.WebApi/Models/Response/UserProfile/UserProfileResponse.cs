@@ -4,6 +4,6 @@ namespace CinemaTicketReservationSystem.WebApi.Models.Response.UserProfile
 {
     public class UserProfileResponse : Response
     {
-        public UserProfileViewModel UserProfileViewModel { get; set; }
+        public UserProfileViewModel UserProfile { get; set; }
     }
 }

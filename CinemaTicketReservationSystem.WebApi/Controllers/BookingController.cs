@@ -49,7 +49,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
 
             await _hubContext.Clients.All.SendAsync(
                 "setBookingSeat",
-                response.BookedOrderViewModel.ReservedSessionSeats.Select(x => x.Id));
+                response.BookedOrder.ReservedSessionSeats.Select(x => x.Id));
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);
@@ -60,21 +60,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         {
             var sessionResult = await _bookingService.GetSessionById(sessionRequestWrapper.Id);
             var response = _mapper.Map<SessionResponse>(sessionResult);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
-            }
-
-            response.Code = StatusCodes.Status200OK;
-            return Ok(response);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAvailableSessions()
-        {
-            var availableSessions = await _bookingService.GetAvailableSessions();
-            var response = _mapper.Map<SessionGetAllResponse>(availableSessions);
             if (!response.Success)
             {
                 response.Code = StatusCodes.Status404NotFound;

@@ -4,6 +4,6 @@ namespace CinemaTicketReservationSystem.WebApi.Models.Response.Booking
 {
     public class BookTicketsResponse : Response
     {
-        public BookedOrderViewModel BookedOrderViewModel { get; set; }
+        public BookedOrderViewModel BookedOrder { get; set; }
     }
 }

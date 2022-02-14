@@ -13,7 +13,6 @@ using CinemaTicketReservationSystem.DAL.Entity.BookingEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 using CinemaTicketReservationSystem.DAL.Enums;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace CinemaTicketReservationSystem.BLL.Services
@@ -104,9 +103,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             }
 
             var bookedOrderModel = _mapper.Map<BookedOrderModel>(bookedOrder);
-            bookedOrderModel.CinemaName = sessionExist.Hall.Cinema.Name;
-            bookedOrderModel.HallName = sessionExist.Hall.Name;
-            bookedOrderModel.MovieName = sessionExist.Movie.Name;
+            bookedOrderModel.Session = _mapper.Map<SessionModel>(sessionExist);
 
             return new BookingServiceResult()
             {
@@ -115,34 +112,22 @@ namespace CinemaTicketReservationSystem.BLL.Services
             };
         }
 
-        public async Task<SessionServiceGetAllResult> GetAvailableSessions()
+        public async Task<SessionServiceResult> GetSessionById(Guid id)
         {
-            IQueryable<Session> sessions = _sessionRepository.GetBy(x => x.StartDate >= DateTime.Now);
+            var session = await _sessionRepository.FindByIdAsync(id);
 
-            if (sessions == null || !sessions.Any())
+            if (session.StartDate <= DateTime.Now)
             {
-                return new SessionServiceGetAllResult()
+                return new SessionServiceResult()
                 {
                     Success = false,
                     Errors = new[]
                     {
-                        "No sessions found"
+                        "Session ended"
                     }
                 };
             }
 
-            var sessionsModel = _mapper.Map<IEnumerable<SessionModel>>(await sessions.ToListAsync());
-
-            return new SessionServiceGetAllResult()
-            {
-                Success = true,
-                Sessions = sessionsModel
-            };
-        }
-
-        public async Task<SessionServiceResult> GetSessionById(Guid id)
-        {
-            var session = await _sessionRepository.FindByIdAsync(id);
             foreach (var seat in session.SessionSeats)
             {
                 var seatId = _memoryCache.Get(seat.SeatId);

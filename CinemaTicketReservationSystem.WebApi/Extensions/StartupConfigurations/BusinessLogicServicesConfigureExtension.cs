@@ -6,11 +6,13 @@ using CinemaTicketReservationSystem.BLL.Services;
 using CinemaTicketReservationSystem.BLL.Utils;
 using CinemaTicketReservationSystem.DAL.Abstract;
 using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
+using CinemaTicketReservationSystem.DAL.Entity.BookingEntity;
 using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
 using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -89,6 +91,7 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
             services.AddScoped<IUserProfileService>(provider =>
                 new UserProfileService(
                     provider.GetService<IRepository<UserProfile>>(),
+                    provider.GetService<IRepository<BookedOrder>>(),
                     provider.GetService<IMapper>()));
 
             services.AddScoped<IMovieFilterService>(provider =>
@@ -98,6 +101,16 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
                     provider.GetService<IRepository<Movie>>(),
                     provider.GetService<IRepository<Cinema>>(),
                     provider.GetService<IRepository<Address>>()));
+
+            services.AddScoped<IBookingService>(provider =>
+                new BookingService(
+                    provider.GetService<IRepository<Session>>(),
+                    provider.GetService<IRepository<SessionAdditionalService>>(),
+                    provider.GetService<IRepository<SessionSeat>>(),
+                    provider.GetService<IMapper>(),
+                    provider.GetService<IRepository<UserProfile>>(),
+                    provider.GetService<IRepository<BookedOrder>>(),
+                    provider.GetService<IMemoryCache>()));
         }
     }
 }

@@ -8,18 +8,25 @@ using CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels;
 using CinemaTicketReservationSystem.BLL.Models.Domain.UserModels;
 using CinemaTicketReservationSystem.BLL.Models.Results.UserProfile;
 using CinemaTicketReservationSystem.DAL.Abstract;
+using CinemaTicketReservationSystem.DAL.Entity.BookingEntity;
 using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CinemaTicketReservationSystem.BLL.Services
 {
     public class UserProfileService : IUserProfileService
     {
         private readonly IRepository<UserProfile> _userProfileRepository;
+        private readonly IRepository<BookedOrder> _bookedOrderRepository;
         private readonly IMapper _mapper;
 
-        public UserProfileService(IRepository<UserProfile> userProfileRepository, IMapper mapper)
+        public UserProfileService(
+            IRepository<UserProfile> userProfileRepository,
+            IRepository<BookedOrder> bookedOrderRepository,
+            IMapper mapper)
         {
             _userProfileRepository = userProfileRepository;
+            _bookedOrderRepository = bookedOrderRepository;
             _mapper = mapper;
         }
 
@@ -55,12 +62,16 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             var user = await _userProfileRepository.FindByIdAsync(id);
 
-            var tickets = showPastTickets
-                ? user.Tickets.Where(x => x.ReservedSessionSeats.Last().Session.StartDate < DateTime.Now)
-                : user.Tickets.Where(x => x.ReservedSessionSeats.Last().Session.StartDate > DateTime.Now);
+            var tickets = _bookedOrderRepository.GetBy(x => x.UserProfileId == user.Id);
+
+            tickets = showPastTickets
+                ? tickets
+                    .Where(x => x.ReservedSessionSeats.FirstOrDefault().Session.StartDate < DateTime.Now)
+                : tickets
+                    .Where(x => x.ReservedSessionSeats.FirstOrDefault().Session.StartDate > DateTime.Now);
 
             UserProfileModel userModel = _mapper.Map<UserProfileModel>(user);
-            userModel.Tickets = _mapper.Map<IEnumerable<BookedOrderModel>>(tickets);
+            userModel.TicketsModel = _mapper.Map<IEnumerable<BookedOrderModel>>(await tickets.ToListAsync());
 
             return new UserProfileResult()
             {

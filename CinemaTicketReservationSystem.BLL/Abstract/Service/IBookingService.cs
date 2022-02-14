@@ -10,8 +10,6 @@ namespace CinemaTicketReservationSystem.BLL.Abstract.Service
     {
         Task<BookingServiceResult> BookTickets(Guid id, BookingModel bookingModel);
 
-        Task<SessionServiceGetAllResult> GetAvailableSessions();
-
         Task<SessionServiceResult> GetSessionById(Guid id);
     }
 }

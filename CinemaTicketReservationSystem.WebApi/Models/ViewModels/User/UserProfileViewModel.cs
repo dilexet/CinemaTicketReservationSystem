@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CinemaTicketReservationSystem.WebApi.Models.ViewModels.Session;
+using CinemaTicketReservationSystem.WebApi.Models.ViewModels.Booking;
 
 namespace CinemaTicketReservationSystem.WebApi.Models.ViewModels.User
 {
@@ -12,6 +12,6 @@ namespace CinemaTicketReservationSystem.WebApi.Models.ViewModels.User
 
         public string Surname { get; set; }
 
-        public IEnumerable<SessionSeatViewModel> Tickets { get; set; }
+        public IEnumerable<BookedOrderViewModel> Tickets { get; set; }
     }
 }
