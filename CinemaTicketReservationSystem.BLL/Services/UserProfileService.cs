@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Models.Domain.BookingModels;
-using CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels;
 using CinemaTicketReservationSystem.BLL.Models.Domain.UserModels;
 using CinemaTicketReservationSystem.BLL.Models.Results.UserProfile;
 using CinemaTicketReservationSystem.DAL.Abstract;
