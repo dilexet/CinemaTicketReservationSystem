@@ -13,7 +13,6 @@ using CinemaTicketReservationSystem.DAL.Entity.BookingEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 using CinemaTicketReservationSystem.DAL.Enums;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace CinemaTicketReservationSystem.BLL.Services
@@ -144,31 +143,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
             {
                 Success = true,
                 Session = sessionModel
-            };
-        }
-
-        public async Task<SessionServiceGetAllResult> GetAvailableSessions()
-        {
-            IQueryable<Session> sessions = _sessionRepository.GetBy(x => x.StartDate >= DateTime.Now);
-
-            if (sessions == null || !sessions.Any())
-            {
-                return new SessionServiceGetAllResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "No sessions found"
-                    }
-                };
-            }
-
-            var sessionsModel = _mapper.Map<IEnumerable<SessionModel>>(await sessions.ToListAsync());
-
-            return new SessionServiceGetAllResult()
-            {
-                Success = true,
-                Sessions = sessionsModel
             };
         }
     }

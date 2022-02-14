@@ -69,21 +69,5 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             response.Code = StatusCodes.Status200OK;
             return Ok(response);
         }
-
-        // TODO: Do I need it?
-        [HttpGet]
-        public async Task<IActionResult> GetAvailableSessions()
-        {
-            var availableSessions = await _bookingService.GetAvailableSessions();
-            var response = _mapper.Map<SessionGetAllResponse>(availableSessions);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
-            }
-
-            response.Code = StatusCodes.Status200OK;
-            return Ok(response);
-        }
     }
 }
