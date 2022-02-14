@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels;
 using CinemaTicketReservationSystem.BLL.Models.Domain.UserModels;
 
-namespace CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels
+namespace CinemaTicketReservationSystem.BLL.Models.Domain.BookingModels
 {
     public class BookedOrderModel
     {
@@ -16,6 +17,6 @@ namespace CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels
 
         public IEnumerable<SessionSeatModel> ReservedSessionSeats { get; set; }
 
-        public IEnumerable<SessionAdditionalServiceModel> SelectedSessionAdditionalServices { get; set; }
+        public IEnumerable<BookedServiceModel> SelectedSessionAdditionalServices { get; set; }
     }
 }

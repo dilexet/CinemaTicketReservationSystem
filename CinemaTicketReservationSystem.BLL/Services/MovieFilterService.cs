@@ -46,7 +46,8 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<MovieServiceGetMoviesResult> GetMoviesByFilter(
             MovieFilterParametersModel movieFilterParametersModel)
         {
-            var movies = _movieRepository.GetBy();
+            var movies =
+                _movieRepository.GetBy(movie => movie.Sessions.Any(session => session.StartDate >= DateTime.Today));
             if (!string.IsNullOrEmpty(movieFilterParametersModel.MovieName))
             {
                 movies =
