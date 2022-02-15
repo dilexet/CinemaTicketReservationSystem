@@ -67,7 +67,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             var user = _mapper.Map<User>(userModel);
             user.PasswordHash = _userRepository.HashPassword(userModel.Password);
-            var role = await _roleRepository.FirstOrDefaultAsync(role => role.Name == userModel.RoleModel.Name);
+            var role = await _roleRepository.FindByIdAsync(userModel.RoleModel.Id);
             user.Role = role;
 
             user.UserProfile = new UserProfile
@@ -99,7 +99,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<UserServiceResult> UpdateUser(Guid id, UserModel userModel)
         {
             var userExist = await _userRepository.FindByIdAsync(id);
-            var roleExist = await _roleRepository.FirstOrDefaultAsync(role => role.Name == userModel.RoleModel.Name);
+            var roleExist = await _roleRepository.FindByIdAsync(userModel.RoleModel.Id);
 
             userExist.Name = userModel.Name;
             userExist.Email = userModel.Email;
