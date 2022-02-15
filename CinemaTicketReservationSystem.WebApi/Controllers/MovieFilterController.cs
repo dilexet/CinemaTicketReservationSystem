@@ -7,14 +7,12 @@ using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Response.MovieFilter;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Search;
 using CinemaTicketReservationSystem.WebApi.Models.Wrappers.Movie;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Policy = "UserRole")]
     [ApiController]
     public class MovieFilterController : ControllerBase
     {
