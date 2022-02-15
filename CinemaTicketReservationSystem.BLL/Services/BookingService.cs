@@ -49,13 +49,20 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             var sessionExist = await _sessionRepository.FindByIdAsync(id);
 
-            List<SessionAdditionalService> sessionAdditionalServices = new List<SessionAdditionalService>();
+            List<BookedService> sessionAdditionalServices = new List<BookedService>();
             double totalPrice = 0;
-            foreach (var serviceId in bookingModel.SessionAdditionalServicesId)
+            var selectedServices = bookingModel.SessionAdditionalServicesId.Distinct();
+            foreach (var serviceId in selectedServices)
             {
                 var service = await _sessionAdditionalServiceRepository.FindByIdAsync(serviceId);
-                totalPrice += service.Price;
-                sessionAdditionalServices.Add(service);
+                var numberOfServices = bookingModel.SessionAdditionalServicesId.Count(x => x.Equals(serviceId));
+                totalPrice += service.Price * numberOfServices;
+
+                sessionAdditionalServices.Add(new BookedService()
+                {
+                    NumberOfServices = (uint)numberOfServices,
+                    SelectedSessionAdditionalService = service
+                });
             }
 
             List<SessionSeat> sessionSeats = new List<SessionSeat>();
@@ -73,7 +80,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 TotalPrice = totalPrice,
                 UserProfile = userExist,
                 ReservedSessionSeats = sessionSeats,
-                SelectedSessionAdditionalServices = sessionAdditionalServices
+                SelectedAdditionalServices = sessionAdditionalServices
             };
 
             if (!await _bookedOrderRepository.CreateAsync(bookedOrder))

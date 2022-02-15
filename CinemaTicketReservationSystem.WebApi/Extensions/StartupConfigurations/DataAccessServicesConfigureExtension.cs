@@ -10,7 +10,6 @@ using CinemaTicketReservationSystem.DAL.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
 {
@@ -25,75 +24,26 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(sqlConnectionString));
 
-            services.AddScoped<IUserRepository>(provider =>
-                new UserRepository(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<UserRepository>>()));
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRepository<Role>, BaseRepository<Role>>();
+            services.AddScoped<IRepository<RefreshToken>, BaseRepository<RefreshToken>>();
 
-            services.AddScoped<IRepository<Role>>(provider =>
-                new BaseRepository<Role>(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<BaseRepository<Role>>>()));
+            services.AddScoped<IRepository<BookedOrder>, BaseRepository<BookedOrder>>();
+            services.AddScoped<IRepository<BookedService>, BaseRepository<BookedService>>();
 
-            services.AddScoped<IRepository<RefreshToken>>(provider =>
-                new BaseRepository<RefreshToken>(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<BaseRepository<RefreshToken>>>()));
+            services.AddScoped<IRepository<AdditionalService>, BaseRepository<AdditionalService>>();
+            services.AddScoped<IRepository<Address>, BaseRepository<Address>>();
+            services.AddScoped<IRepository<Cinema>, BaseRepository<Cinema>>();
+            services.AddScoped<IRepository<Hall>, BaseRepository<Hall>>();
 
-            services.AddScoped<IRepository<Cinema>>(provider =>
-                new BaseRepository<Cinema>(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<BaseRepository<Cinema>>>()));
+            services.AddScoped<IRepository<Movie>, BaseRepository<Movie>>();
 
-            services.AddScoped<IRepository<AdditionalService>>(provider =>
-                new BaseRepository<AdditionalService>(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<BaseRepository<AdditionalService>>>()));
+            services.AddScoped<IRepository<Session>, BaseRepository<Session>>();
+            services.AddScoped<IRepository<SessionAdditionalService>, BaseRepository<SessionAdditionalService>>();
+            services.AddScoped<IRepository<SessionSeat>, BaseRepository<SessionSeat>>();
+            services.AddScoped<IRepository<SessionSeatType>, BaseRepository<SessionSeatType>>();
 
-            services.AddScoped<IRepository<Hall>>(provider =>
-                new BaseRepository<Hall>(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<BaseRepository<Hall>>>()));
-
-            services.AddScoped<IRepository<Movie>>(provider =>
-                new BaseRepository<Movie>(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<BaseRepository<Movie>>>()));
-
-            services.AddScoped<IRepository<Session>>(provider =>
-                new BaseRepository<Session>(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<BaseRepository<Session>>>()));
-
-            services.AddScoped<IRepository<SessionAdditionalService>>(provider =>
-                new BaseRepository<SessionAdditionalService>(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<BaseRepository<SessionAdditionalService>>>()));
-
-            services.AddScoped<IRepository<SessionSeatType>>(provider =>
-                new BaseRepository<SessionSeatType>(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<BaseRepository<SessionSeatType>>>()));
-
-            services.AddScoped<IRepository<SessionSeat>>(provider =>
-                new BaseRepository<SessionSeat>(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<BaseRepository<SessionSeat>>>()));
-
-            services.AddScoped<IRepository<UserProfile>>(provider =>
-                new BaseRepository<UserProfile>(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<BaseRepository<UserProfile>>>()));
-
-            services.AddScoped<IRepository<BookedOrder>>(provider =>
-                new BaseRepository<BookedOrder>(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<BaseRepository<BookedOrder>>>()));
-
-            services.AddScoped<IRepository<Address>>(provider =>
-                new BaseRepository<Address>(
-                    provider.GetService<ApplicationDbContext>(),
-                    provider.GetService<ILogger<BaseRepository<Address>>>()));
+            services.AddScoped<IRepository<UserProfile>, BaseRepository<UserProfile>>();
         }
     }
 }

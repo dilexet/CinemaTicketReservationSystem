@@ -1,4 +1,4 @@
-﻿using CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels;
+﻿using CinemaTicketReservationSystem.BLL.Models.Domain.BookingModels;
 
 namespace CinemaTicketReservationSystem.BLL.Models.Results.Booking
 {

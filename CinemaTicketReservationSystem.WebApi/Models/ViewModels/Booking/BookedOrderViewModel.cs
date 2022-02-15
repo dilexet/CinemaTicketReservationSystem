@@ -14,6 +14,6 @@ namespace CinemaTicketReservationSystem.WebApi.Models.ViewModels.Booking
 
         public IEnumerable<SessionSeatViewModel> ReservedSessionSeats { get; set; }
 
-        public IEnumerable<SessionAdditionalServiceViewModel> SelectedSessionAdditionalServices { get; set; }
+        public IEnumerable<BookedServiceViewModel> SelectedSessionAdditionalServices { get; set; }
     }
 }

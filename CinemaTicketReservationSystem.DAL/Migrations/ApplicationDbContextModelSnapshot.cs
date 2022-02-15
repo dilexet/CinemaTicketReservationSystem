@@ -19,21 +19,6 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("BookedOrderSessionAdditionalService", b =>
-                {
-                    b.Property<Guid>("BookedOrdersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SelectedSessionAdditionalServicesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("BookedOrdersId", "SelectedSessionAdditionalServicesId");
-
-                    b.HasIndex("SelectedSessionAdditionalServicesId");
-
-                    b.ToTable("BookedOrderSessionAdditionalService");
-                });
-
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
@@ -90,19 +75,19 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("364d2057-a77b-491d-8d14-93488b345471"),
+                            Id = new Guid("e48a7dbf-4ac2-4e27-9b83-30ef866c17ee"),
                             Deleted = false,
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("2057b984-0b8d-4e16-8b33-08ae2fae192f"),
+                            Id = new Guid("d37393c0-3336-42ac-8890-eb1bdb5355f5"),
                             Deleted = false,
                             Name = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("ba16ae0e-b72a-4f60-b6f4-5231262a31b2"),
+                            Id = new Guid("21218007-5606-43d7-9541-5e79e21c1784"),
                             Deleted = false,
                             Name = "User"
                         });
@@ -156,6 +141,33 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasIndex("UserProfileId");
 
                     b.ToTable("BookedOrders");
+                });
+
+            modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.BookingEntity.BookedService", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BookedOrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("NumberOfServices")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("SessionAdditionalServiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookedOrderId");
+
+                    b.HasIndex("SessionAdditionalServiceId");
+
+                    b.ToTable("BookedService");
                 });
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.CinemaEntity.AdditionalService", b =>
@@ -503,21 +515,6 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.ToTable("UserProfiles");
                 });
 
-            modelBuilder.Entity("BookedOrderSessionAdditionalService", b =>
-                {
-                    b.HasOne("CinemaTicketReservationSystem.DAL.Entity.BookingEntity.BookedOrder", null)
-                        .WithMany()
-                        .HasForeignKey("BookedOrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CinemaTicketReservationSystem.DAL.Entity.SessionEntity.SessionAdditionalService", null)
-                        .WithMany()
-                        .HasForeignKey("SelectedSessionAdditionalServicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity.RefreshToken", b =>
                 {
                     b.HasOne("CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity.User", "User")
@@ -549,6 +546,25 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("UserProfile");
+                });
+
+            modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.BookingEntity.BookedService", b =>
+                {
+                    b.HasOne("CinemaTicketReservationSystem.DAL.Entity.BookingEntity.BookedOrder", "BookedOrder")
+                        .WithMany("SelectedAdditionalServices")
+                        .HasForeignKey("BookedOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CinemaTicketReservationSystem.DAL.Entity.SessionEntity.SessionAdditionalService", "SelectedSessionAdditionalService")
+                        .WithMany("BookedServices")
+                        .HasForeignKey("SessionAdditionalServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BookedOrder");
+
+                    b.Navigation("SelectedSessionAdditionalService");
                 });
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.CinemaEntity.AdditionalService", b =>
@@ -725,6 +741,8 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.BookingEntity.BookedOrder", b =>
                 {
                     b.Navigation("ReservedSessionSeats");
+
+                    b.Navigation("SelectedAdditionalServices");
                 });
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.CinemaEntity.AdditionalService", b =>
@@ -772,6 +790,11 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Navigation("SessionSeats");
 
                     b.Navigation("SessionSeatType");
+                });
+
+            modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.SessionEntity.SessionAdditionalService", b =>
+                {
+                    b.Navigation("BookedServices");
                 });
 
             modelBuilder.Entity("CinemaTicketReservationSystem.DAL.Entity.SessionEntity.SessionSeatType", b =>

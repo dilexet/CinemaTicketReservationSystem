@@ -21,8 +21,9 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.SessionConfigura
                 .HasForeignKey(x => x.AdditionalServiceId);
 
             builder
-                .HasMany(x => x.BookedOrders)
-                .WithMany(x => x.SelectedSessionAdditionalServices);
+                .HasMany(x => x.BookedServices)
+                .WithOne(x => x.SelectedSessionAdditionalService)
+                .HasForeignKey(x => x.SessionAdditionalServiceId);
         }
     }
 }

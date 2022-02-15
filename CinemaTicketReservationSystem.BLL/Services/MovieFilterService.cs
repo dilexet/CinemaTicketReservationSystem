@@ -18,6 +18,7 @@ using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
 using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
 using CinemaTicketReservationSystem.DAL.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CinemaTicketReservationSystem.BLL.Services
 {
@@ -28,25 +29,29 @@ namespace CinemaTicketReservationSystem.BLL.Services
         private readonly IRepository<Movie> _movieRepository;
         private readonly IRepository<Cinema> _cinemaRepository;
         private readonly IRepository<Address> _addressRepository;
+        private readonly IMemoryCache _memoryCache;
 
         public MovieFilterService(
             IMapper mapper,
             IRepository<Session> sessionRepository,
             IRepository<Movie> movieRepository,
             IRepository<Cinema> cinemaRepository,
-            IRepository<Address> addressRepository)
+            IRepository<Address> addressRepository,
+            IMemoryCache memoryCache)
         {
             _mapper = mapper;
             _sessionRepository = sessionRepository;
             _movieRepository = movieRepository;
             _cinemaRepository = cinemaRepository;
             _addressRepository = addressRepository;
+            _memoryCache = memoryCache;
         }
 
         public async Task<MovieServiceGetMoviesResult> GetMoviesByFilter(
             MovieFilterParametersModel movieFilterParametersModel)
         {
-            var movies = _movieRepository.GetBy();
+            var movies =
+                _movieRepository.GetBy(movie => movie.Sessions.Any(session => session.StartDate >= DateTime.Today));
             if (!string.IsNullOrEmpty(movieFilterParametersModel.MovieName))
             {
                 movies =
@@ -105,10 +110,12 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var sessionsModel = _mapper.Map<IEnumerable<SessionModel>>(await sessions.ToListAsync()).ToList();
 
-            for (int i = 0; i < sessionsModel.Count(); i++)
+            for (int i = 0; i < sessionsModel.Count; i++)
             {
                 double numberFreeSeats = sessionsModel[i].SessionSeats
-                    .Count(x => x.TicketState == TicketState.Free.ToString());
+                    .Count(x => x.TicketState == TicketState.Free.ToString() &&
+                                _memoryCache.Get(x.Seat.Id) == null);
+
                 double numberSeats = sessionsModel[i].SessionSeats.Count();
 
                 double hallWorkload = numberFreeSeats / numberSeats * 100.0;
