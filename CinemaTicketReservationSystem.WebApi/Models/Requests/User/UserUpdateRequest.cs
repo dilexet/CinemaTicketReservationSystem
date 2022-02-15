@@ -1,4 +1,6 @@
-﻿namespace CinemaTicketReservationSystem.WebApi.Models.Requests.User
+﻿using System;
+
+namespace CinemaTicketReservationSystem.WebApi.Models.Requests.User
 {
     public class UserUpdateRequest
     {
@@ -6,6 +8,6 @@
 
         public string Email { get; set; }
 
-        public string RoleName { get; set; }
+        public Guid RoleId { get; set; }
     }
 }

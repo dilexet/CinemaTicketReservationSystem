@@ -10,6 +10,6 @@ namespace CinemaTicketReservationSystem.WebApi.Models.ViewModels.User
 
         public string Email { get; set; }
 
-        public string RoleName { get; set; }
+        public RoleViewModel Role { get; set; }
     }
 }
