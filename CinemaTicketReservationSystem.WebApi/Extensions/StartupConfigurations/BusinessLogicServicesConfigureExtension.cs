@@ -69,6 +69,9 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
                     provider.GetService<IRepository<Cinema>>(),
                     provider.GetService<IMapper>()));
 
+            services.AddScoped<IRoleService, RoleService>();
+
+            services.AddScoped<ISeatTypeService, SeatTypeService>();
             services.AddScoped<IHallService>(provider =>
                 new HallService(
                     provider.GetService<IRepository<Hall>>(),
