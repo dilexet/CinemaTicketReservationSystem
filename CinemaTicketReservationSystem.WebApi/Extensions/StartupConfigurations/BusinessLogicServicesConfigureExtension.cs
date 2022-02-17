@@ -1,21 +1,10 @@
-﻿using AutoMapper;
-using CinemaTicketReservationSystem.BLL.Abstract.Service;
+﻿using CinemaTicketReservationSystem.BLL.Abstract.Service;
 using CinemaTicketReservationSystem.BLL.Abstract.Utils;
 using CinemaTicketReservationSystem.BLL.Models.Domain.TokenModels;
 using CinemaTicketReservationSystem.BLL.Services;
 using CinemaTicketReservationSystem.BLL.Utils;
-using CinemaTicketReservationSystem.DAL.Abstract;
-using CinemaTicketReservationSystem.DAL.Entity.AuthorizeEntity;
-using CinemaTicketReservationSystem.DAL.Entity.BookingEntity;
-using CinemaTicketReservationSystem.DAL.Entity.CinemaEntity;
-using CinemaTicketReservationSystem.DAL.Entity.MovieEntity;
-using CinemaTicketReservationSystem.DAL.Entity.SessionEntity;
-using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
 {
@@ -28,92 +17,35 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
             services.Configure<JwtOptions>(configuration.GetSection("JwtOptions"));
             services.Configure<RefreshTokenOptions>(configuration.GetSection("RefreshTokenOptions"));
 
-            services.AddScoped<IJwtService>(provider => new JwtService(provider.GetService<IOptions<JwtOptions>>()));
+            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+            services.AddScoped<ITokenService, TokenService>();
 
-            services.AddScoped<IRefreshTokenService>(provider =>
-                new RefreshTokenService(provider.GetService<IOptions<RefreshTokenOptions>>()));
+            services.AddScoped<IAdditionalServiceManagement, AdditionalServiceManagement>();
 
-            services.AddScoped<ITokenService>(provider => new TokenService(
-                provider.GetService<IJwtService>(),
-                provider.GetService<IRefreshTokenService>(),
-                provider.GetService<IRepository<RefreshToken>>()));
+            services.AddScoped<IAuthorizeService, AuthorizeService>();
 
-            services.AddScoped<IAuthorizeService>(provider =>
-                new AuthorizeService(
-                    provider.GetService<IUserRepository>(),
-                    provider.GetService<IRepository<Role>>(),
-                    provider.GetService<ITokenService>(),
-                    provider.GetService<IMapper>()));
+            services.AddScoped<IBookingService, BookingService>();
 
-            services.AddScoped<IUserManagementService>(provider =>
-                new UserManagementService(
-                    provider.GetService<IUserRepository>(),
-                    provider.GetService<IRepository<Role>>(),
-                    provider.GetService<IMapper>()));
+            services.AddScoped<ICinemaService, CinemaService>();
 
-            services.AddScoped<IMovieService>(provider =>
-                new MovieService(
-                    provider.GetService<IRepository<Movie>>(),
-                    provider.GetService<IMapper>()));
+            services.AddScoped<IFileService, FileService>();
 
-            services.AddScoped<ICinemaService>(provider =>
-                new CinemaService(
-                    provider.GetService<IRepository<Cinema>>(),
-                    provider.GetService<IMapper>()));
+            services.AddScoped<IHallService, HallService>();
 
-            services.AddScoped<ISeatTypeService, SeatTypeService>();
-
-            services.AddScoped<IAdditionalServiceManagement>(provider =>
-                new AdditionalServiceManagement(
-                    provider.GetService<IRepository<AdditionalService>>(),
-                    provider.GetService<IRepository<Cinema>>(),
-                    provider.GetService<IMapper>()));
+            services.AddScoped<IMovieFilterService, MovieFilterService>();
 
             services.AddScoped<IRoleService, RoleService>();
 
+            services.AddScoped<IMovieService, MovieService>();
+
             services.AddScoped<ISeatTypeService, SeatTypeService>();
-            services.AddScoped<IHallService>(provider =>
-                new HallService(
-                    provider.GetService<IRepository<Hall>>(),
-                    provider.GetService<IRepository<Cinema>>(),
-                    provider.GetService<IMapper>()));
 
-            services.AddScoped<ISessionService>(provider =>
-                new SessionService(
-                    provider.GetService<IRepository<Session>>(),
-                    provider.GetService<IRepository<Movie>>(),
-                    provider.GetService<IRepository<Cinema>>(),
-                    provider.GetService<IMapper>(),
-                    provider.GetService<IRepository<SessionAdditionalService>>(),
-                    provider.GetService<IRepository<SessionSeatType>>()));
+            services.AddScoped<ISessionService, SessionService>();
 
-            services.AddScoped<IFileService>(provider =>
-                new FileService(
-                    provider.GetService<IWebHostEnvironment>()));
+            services.AddScoped<IUserManagementService, UserManagementService>();
 
-            services.AddScoped<IUserProfileService>(provider =>
-                new UserProfileService(
-                    provider.GetService<IRepository<UserProfile>>(),
-                    provider.GetService<IRepository<BookedOrder>>(),
-                    provider.GetService<IMapper>()));
-
-            services.AddScoped<IMovieFilterService>(provider =>
-                new MovieFilterService(
-                    provider.GetService<IMapper>(),
-                    provider.GetService<IRepository<Session>>(),
-                    provider.GetService<IRepository<Movie>>(),
-                    provider.GetService<IRepository<Cinema>>(),
-                    provider.GetService<IRepository<Address>>()));
-
-            services.AddScoped<IBookingService>(provider =>
-                new BookingService(
-                    provider.GetService<IRepository<Session>>(),
-                    provider.GetService<IRepository<SessionAdditionalService>>(),
-                    provider.GetService<IRepository<SessionSeat>>(),
-                    provider.GetService<IMapper>(),
-                    provider.GetService<IRepository<UserProfile>>(),
-                    provider.GetService<IRepository<BookedOrder>>(),
-                    provider.GetService<IMemoryCache>()));
+            services.AddScoped<IUserProfileService, UserProfileService>();
         }
     }
 }

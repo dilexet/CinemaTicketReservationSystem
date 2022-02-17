@@ -340,24 +340,27 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BookedOrderSessionAdditionalService",
+                name: "BookedService",
                 columns: table => new
                 {
-                    BookedOrdersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SelectedSessionAdditionalServicesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    NumberOfServices = table.Column<long>(type: "bigint", nullable: false),
+                    BookedOrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SessionAdditionalServiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Deleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BookedOrderSessionAdditionalService", x => new { x.BookedOrdersId, x.SelectedSessionAdditionalServicesId });
+                    table.PrimaryKey("PK_BookedService", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BookedOrderSessionAdditionalService_BookedOrders_BookedOrdersId",
-                        column: x => x.BookedOrdersId,
+                        name: "FK_BookedService_BookedOrders_BookedOrderId",
+                        column: x => x.BookedOrderId,
                         principalTable: "BookedOrders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BookedOrderSessionAdditionalService_SessionAdditionalServices_SelectedSessionAdditionalServicesId",
-                        column: x => x.SelectedSessionAdditionalServicesId,
+                        name: "FK_BookedService_SessionAdditionalServices_SessionAdditionalServiceId",
+                        column: x => x.SessionAdditionalServiceId,
                         principalTable: "SessionAdditionalServices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -405,17 +408,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Deleted", "Name" },
-                values: new object[] { new Guid("364d2057-a77b-491d-8d14-93488b345471"), false, "Admin" });
+                values: new object[] { new Guid("e48a7dbf-4ac2-4e27-9b83-30ef866c17ee"), false, "Admin" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Deleted", "Name" },
-                values: new object[] { new Guid("2057b984-0b8d-4e16-8b33-08ae2fae192f"), false, "Manager" });
+                values: new object[] { new Guid("d37393c0-3336-42ac-8890-eb1bdb5355f5"), false, "Manager" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Deleted", "Name" },
-                values: new object[] { new Guid("ba16ae0e-b72a-4f60-b6f4-5231262a31b2"), false, "User" });
+                values: new object[] { new Guid("21218007-5606-43d7-9541-5e79e21c1784"), false, "User" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdditionalServices_CinemaId",
@@ -434,9 +437,14 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 column: "UserProfileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookedOrderSessionAdditionalService_SelectedSessionAdditionalServicesId",
-                table: "BookedOrderSessionAdditionalService",
-                column: "SelectedSessionAdditionalServicesId");
+                name: "IX_BookedService_BookedOrderId",
+                table: "BookedService",
+                column: "BookedOrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookedService_SessionAdditionalServiceId",
+                table: "BookedService",
+                column: "SessionAdditionalServiceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Halls_CinemaId",
@@ -527,7 +535,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "Addresses");
 
             migrationBuilder.DropTable(
-                name: "BookedOrderSessionAdditionalService");
+                name: "BookedService");
 
             migrationBuilder.DropTable(
                 name: "MovieDescriptions");

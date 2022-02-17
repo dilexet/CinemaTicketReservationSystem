@@ -17,6 +17,6 @@ namespace CinemaTicketReservationSystem.DAL.Entity.SessionEntity
 
         public virtual Session Session { get; set; }
 
-        public virtual IEnumerable<BookedOrder> BookedOrders { get; set; }
+        public virtual IEnumerable<BookedService> BookedServices { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CinemaTicketReservationSystem.BLL.Models.Domain.SessionModels;
+using CinemaTicketReservationSystem.BLL.Models.Domain.BookingModels;
 
 namespace CinemaTicketReservationSystem.BLL.Models.Domain.UserModels
 {

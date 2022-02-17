@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.SignalR;
 namespace CinemaTicketReservationSystem.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Policy = "UserRole")]
     [ApiController]
     public class BookingController : ControllerBase
     {
@@ -35,6 +34,7 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "UserRole")]
         public async Task<IActionResult> BookTickets([FromRoute] BookTicketsRequestWrapper bookTicketsRequestWrapper)
         {
             var bookingResult = await _bookingService.BookTickets(

@@ -570,6 +570,18 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                     source =>
                         source.MapFrom(res => res.Movie));
 
+            CreateMap<BookedService, BookedServiceModel>()
+                .ForMember(
+                    dest => dest.SelectedSessionAdditionalService,
+                    source =>
+                        source.MapFrom(res => res.SelectedSessionAdditionalService));
+
+            CreateMap<BookedServiceModel, BookedServiceViewModel>()
+                .ForMember(
+                    dest => dest.SelectedSessionAdditionalService,
+                    source =>
+                        source.MapFrom(res => res.SelectedSessionAdditionalService));
+
             CreateMap<BookedOrder, BookedOrderModel>()
                 .ForMember(
                     dest => dest.Session,
@@ -582,7 +594,7 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                 .ForMember(
                     dest => dest.SelectedSessionAdditionalServices,
                     source =>
-                        source.MapFrom(res => res.SelectedSessionAdditionalServices));
+                        source.MapFrom(res => res.SelectedAdditionalServices));
 
             CreateMap<UserProfile, UserProfileModel>();
 

@@ -15,6 +15,6 @@ namespace CinemaTicketReservationSystem.DAL.Entity.BookingEntity
 
         public virtual IEnumerable<SessionSeat> ReservedSessionSeats { get; set; }
 
-        public virtual IEnumerable<SessionAdditionalService> SelectedSessionAdditionalServices { get; set; }
+        public virtual IEnumerable<BookedService> SelectedAdditionalServices { get; set; }
     }
 }
