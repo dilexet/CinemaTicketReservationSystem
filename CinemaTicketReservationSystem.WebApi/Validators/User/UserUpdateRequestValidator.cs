@@ -16,7 +16,7 @@ namespace CinemaTicketReservationSystem.WebApi.Validators.User
             RuleFor(x => x.Email).EmailAddress()
                 .WithMessage("The Email field is not a valid e-mail address");
 
-            RuleFor(x => x.RoleName).NotNull().NotEmpty().WithMessage("Please enter the role name");
+            RuleFor(x => x.RoleId).NotNull().NotEmpty().WithMessage("Please enter the role");
         }
     }
 }

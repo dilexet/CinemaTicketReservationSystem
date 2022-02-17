@@ -16,7 +16,7 @@ namespace CinemaTicketReservationSystem.WebApi.Validators.User
             RuleFor(x => x.Id).UserMustExistAsync(userRepository);
 
             RuleFor(x => x).UserMustNotExistForUpdateAsync(userRepository);
-            RuleFor(x => x.UserUpdateRequest.RoleName).RoleMustExistAsync(roleRepository);
+            RuleFor(x => x.UserUpdateRequest.RoleId).RoleMustExistAsync(roleRepository);
         }
     }
 }

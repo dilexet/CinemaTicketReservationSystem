@@ -35,6 +35,8 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
 
             services.AddScoped<IMovieFilterService, MovieFilterService>();
 
+            services.AddScoped<IRoleService, RoleService>();
+
             services.AddScoped<IMovieService, MovieService>();
 
             services.AddScoped<ISeatTypeService, SeatTypeService>();

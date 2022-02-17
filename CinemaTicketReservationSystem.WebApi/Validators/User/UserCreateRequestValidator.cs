@@ -13,7 +13,7 @@ namespace CinemaTicketReservationSystem.WebApi.Validators.User
             RuleFor(x => x.Email).NotEmpty().WithMessage("Please enter the email");
             RuleFor(x => x.Email).EmailAddress().WithMessage("The Email field is not a valid e-mail address");
 
-            RuleFor(x => x.RoleName).NotEmpty().WithMessage("Please enter the role name");
+            RuleFor(x => x.RoleId).NotEmpty().WithMessage("Please enter the role");
 
             RuleFor(x => x.Password).NotEmpty().WithMessage("Please enter the password");
             RuleFor(x => x.Password).Length(4, 25).WithMessage("Password must be between 4 and 25 characters");

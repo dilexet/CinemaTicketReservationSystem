@@ -8,13 +8,13 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
 {
     public static class UserManagementRuleBuilderExtension
     {
-        public static IRuleBuilderOptions<T, string> RoleMustExistAsync<T>(
-            this IRuleBuilder<T, string> ruleBuilder, IRepository<Role> repository)
+        public static IRuleBuilderOptions<T, Guid> RoleMustExistAsync<T>(
+            this IRuleBuilder<T, Guid> ruleBuilder, IRepository<Role> repository)
         {
             var options = ruleBuilder
                 .NotEmpty()
-                .MustAsync(async (roleName, _) =>
-                    await repository.FirstOrDefaultAsync(x => x.Name.Equals(roleName)) != null)
+                .MustAsync(async (roleId, _) =>
+                    await repository.FindByIdAsync(roleId) != null)
                 .WithName("Role")
                 .WithMessage("Role is not exists");
             return options;

@@ -20,6 +20,7 @@ using CinemaTicketReservationSystem.BLL.Models.Results.File;
 using CinemaTicketReservationSystem.BLL.Models.Results.Hall;
 using CinemaTicketReservationSystem.BLL.Models.Results.Movie;
 using CinemaTicketReservationSystem.BLL.Models.Results.MovieFilter;
+using CinemaTicketReservationSystem.BLL.Models.Results.Role;
 using CinemaTicketReservationSystem.BLL.Models.Results.Search;
 using CinemaTicketReservationSystem.BLL.Models.Results.SeatType;
 using CinemaTicketReservationSystem.BLL.Models.Results.Session;
@@ -46,6 +47,7 @@ using CinemaTicketReservationSystem.WebApi.Models.Response.File;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Hall;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Movie;
 using CinemaTicketReservationSystem.WebApi.Models.Response.MovieFilter;
+using CinemaTicketReservationSystem.WebApi.Models.Response.Role;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Search;
 using CinemaTicketReservationSystem.WebApi.Models.Response.Session;
 using CinemaTicketReservationSystem.WebApi.Models.Response.UserManagement;
@@ -79,31 +81,46 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
 
             CreateMap<AuthorizeResult, AuthorizeResponse>();
 
-            CreateMap<UserModel, UserViewModel>().ForMember(
-                dest => dest.RoleName,
-                source => source.MapFrom(res => res.RoleModel.Name));
+            CreateMap<Role, RoleModel>();
+            CreateMap<RoleModel, RoleViewModel>();
 
-            CreateMap<UserCreateRequest, UserModel>().ForMember(
-                dest => dest.RoleModel,
-                source => source.MapFrom(res => new RoleModel()
-                {
-                    Name = res.RoleName
-                }));
+            CreateMap<User, UserModel>()
+                .ForMember(
+                    dest => dest.RoleModel,
+                    source =>
+                        source.MapFrom(res => res.Role));
 
-            CreateMap<UserUpdateRequest, UserModel>().ForMember(
-                dest => dest.RoleModel,
-                source => source.MapFrom(res => new RoleModel()
-                {
-                    Name = res.RoleName
-                }));
+            CreateMap<UserModel, UserViewModel>()
+                .ForMember(
+                    dest => dest.Role,
+                    source =>
+                        source.MapFrom(res => res.RoleModel));
+
+            CreateMap<UserCreateRequest, UserModel>()
+                .ForMember(
+                    dest => dest.RoleModel,
+                    source =>
+                        source.MapFrom(res => new RoleModel()
+                        {
+                            Id = res.RoleId
+                        }));
+
+            CreateMap<UserUpdateRequest, UserModel>()
+                .ForMember(
+                    dest => dest.RoleModel,
+                    source =>
+                        source.MapFrom(res => new RoleModel()
+                        {
+                            Id = res.RoleId
+                        }));
 
             CreateMap<UserModel, User>();
-            CreateMap<User, UserModel>().ForMember(
-                dest => dest.RoleModel,
-                source => source.MapFrom(res => new RoleModel()
-                {
-                    Name = res.Role.Name
-                }));
+
+            CreateMap<RoleServiceGetRolesResult, RoleManagementGetRolesResponse>()
+                .ForMember(
+                    dest => dest.Roles,
+                    source =>
+                        source.MapFrom(res => res.RoleModels));
 
             CreateMap<UserServiceGetUsersResult, UserManagementGetUsersResponse>().ForMember(
                 dest => dest.Users,
@@ -120,18 +137,20 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
             CreateMap<MovieRequest, MovieModel>()
                 .ForMember(
                     dest => dest.MovieDescriptionModel,
-                    source => source.MapFrom(res =>
-                        new MovieDescriptionModel()
-                        {
-                            ReleaseDate = res.ReleaseDate,
-                            Description = res.Description,
-                            Countries = res.Countries,
-                            Genres = res.Genres,
-                        }))
+                    source =>
+                        source.MapFrom(res =>
+                            new MovieDescriptionModel()
+                            {
+                                ReleaseDate = res.ReleaseDate,
+                                Description = res.Description,
+                                Countries = res.Countries,
+                                Genres = res.Genres,
+                            }))
                 .ForMember(
                     dest => dest.PosterUrl,
-                    source => source.MapFrom(res =>
-                        new Uri(res.PosterUrl)));
+                    source =>
+                        source.MapFrom(res =>
+                            new Uri(res.PosterUrl)));
 
             CreateMap<MovieDescription, MovieDescriptionModel>();
             CreateMap<MovieDescriptionModel, MovieDescription>();
@@ -143,7 +162,8 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                         source.MapFrom(res => res.MovieDescriptionModel))
                 .ForMember(
                     dest => dest.PosterUrl,
-                    source => source.MapFrom(res => res.PosterUrl));
+                    source =>
+                        source.MapFrom(res => res.PosterUrl));
 
             CreateMap<Movie, MovieModel>().ForMember(
                 dest => dest.MovieDescriptionModel,
@@ -155,14 +175,17 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
             CreateMap<MovieModel, MovieViewModel>()
                 .ForMember(
                     dest => dest.MovieDescription,
-                    source => source.MapFrom(res => res.MovieDescriptionModel))
+                    source =>
+                        source.MapFrom(res => res.MovieDescriptionModel))
                 .ForMember(
                     dest => dest.PosterUrl,
-                    source => source.MapFrom(res => res.PosterUrl.OriginalString));
+                    source =>
+                        source.MapFrom(res => res.PosterUrl.OriginalString));
 
             CreateMap<MovieServiceResult, MovieResponse>().ForMember(
                 dest => dest.Movie,
-                source => source.MapFrom(res => res.MovieModel));
+                source =>
+                    source.MapFrom(res => res.MovieModel));
 
             CreateMap<MovieServiceRemoveResult, MovieRemoveResponse>();
             CreateMap<MovieServiceGetMoviesResult, MovieGetAllResponse>()
@@ -178,36 +201,42 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
             CreateMap<SeatRequest, SeatModel>()
                 .ForMember(
                     dest => dest.SeatType,
-                    source => source.MapFrom(res => res.SeatType));
+                    source =>
+                        source.MapFrom(res => res.SeatType));
 
             CreateMap<RowRequest, RowModel>()
                 .ForMember(
                     dest => dest.Seats,
-                    source => source.MapFrom(res => res.Seats));
+                    source =>
+                        source.MapFrom(res => res.Seats));
 
             CreateMap<HallRequest, HallModel>()
                 .ForMember(
                     dest => dest.Rows,
-                    source => source.MapFrom(res => res.Rows));
+                    source =>
+                        source.MapFrom(res => res.Rows));
 
             CreateMap<CinemaRequest, CinemaModel>()
                 .ForMember(
                     dest => dest.AddressModel,
-                    source => source.MapFrom(res => new AddressModel()
-                    {
-                        CityName = res.CityName,
-                        Street = res.Street
-                    }));
+                    source =>
+                        source.MapFrom(res => new AddressModel()
+                        {
+                            CityName = res.CityName,
+                            Street = res.Street
+                        }));
 
             CreateMap<SeatModel, SeatViewModel>()
                 .ForMember(
                     dest => dest.SeatType,
-                    source => source.MapFrom(res => res.SeatType));
+                    source =>
+                        source.MapFrom(res => res.SeatType));
 
             CreateMap<RowModel, RowViewModel>()
                 .ForMember(
                     dest => dest.Seats,
-                    source => source.MapFrom(res => res.Seats));
+                    source =>
+                        source.MapFrom(res => res.Seats));
 
             CreateMap<HallModel, HallViewModel>()
                 .ForMember(
