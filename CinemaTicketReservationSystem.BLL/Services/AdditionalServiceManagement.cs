@@ -112,18 +112,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             IQueryable<AdditionalService> additionalServices = _additionalServiceRepository.GetBy();
 
-            if (additionalServices == null || !additionalServices.Any())
-            {
-                return new AdditionalServiceGetAllResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "No additional service found"
-                    }
-                };
-            }
-
             var additionalServicesModel =
                 _mapper.Map<IEnumerable<AdditionalServiceModel>>(await additionalServices.ToListAsync());
 
@@ -151,18 +139,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             IQueryable<AdditionalService> additionalServices =
                 _additionalServiceRepository.GetBy().Where(x => x.CinemaId.Equals(cinemaId));
-
-            if (!additionalServices.Any())
-            {
-                return new AdditionalServiceGetAllResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "No services found"
-                    }
-                };
-            }
 
             var additionalServiceModels =
                 _mapper.Map<IEnumerable<AdditionalServiceModel>>(await additionalServices.ToListAsync());

@@ -104,18 +104,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             IQueryable<Cinema> cinemas = _cinemaRepository.GetBy();
 
-            if (cinemas == null || !cinemas.Any())
-            {
-                return new CinemaServiceGetAllResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "No cinemas found"
-                    }
-                };
-            }
-
             var cinemasModel = _mapper.Map<IEnumerable<CinemaModel>>(await cinemas.ToListAsync());
 
             return new CinemaServiceGetAllResult()

@@ -186,19 +186,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
         public async Task<SessionServiceGetAllResult> GetSessions()
         {
-            IQueryable<Session> sessions = _sessionRepository.GetBy(x => x.Deleted == false);
-
-            if (sessions == null || !sessions.Any())
-            {
-                return new SessionServiceGetAllResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "No sessions found"
-                    }
-                };
-            }
+            IQueryable<Session> sessions = _sessionRepository.GetBy();
 
             var sessionsModel = _mapper.Map<IEnumerable<SessionModel>>(await sessions.ToListAsync());
 
@@ -212,17 +200,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<SessionServiceResult> GetSessionById(Guid id)
         {
             var session = await _sessionRepository.FindByIdAsync(id);
-            if (session.Deleted)
-            {
-                return new SessionServiceResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "No session found"
-                    }
-                };
-            }
 
             var sessionModel = _mapper.Map<SessionModel>(session);
 

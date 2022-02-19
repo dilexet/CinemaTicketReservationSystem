@@ -26,18 +26,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             var roles = _roleRepository.GetBy();
 
-            if (roles == null || !roles.Any())
-            {
-                return new RoleServiceGetRolesResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "No users found"
-                    }
-                };
-            }
-
             var roleModels = _mapper.Map<IEnumerable<RoleModel>>(await roles.ToListAsync());
 
             return new RoleServiceGetRolesResult()

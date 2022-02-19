@@ -130,18 +130,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 movies = movies.Where(movie => movie.EndDate >= now);
             }
 
-            if (movies == null || !movies.Any())
-            {
-                return new MovieServiceGetMoviesResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "No movies found"
-                    }
-                };
-            }
-
             var moviesModel = _mapper.Map<IEnumerable<MovieModel>>(await movies.ToListAsync());
 
             return new MovieServiceGetMoviesResult()
