@@ -91,8 +91,8 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<AdditionalServiceResponse>(additionalServiceResult);
             if (!response.Success)
             {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
+                response.Code = StatusCodes.Status400BadRequest;
+                return BadRequest(response);
             }
 
             response.Code = StatusCodes.Status200OK;
@@ -106,8 +106,8 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<AdditionalServiceGetAllResponse>(additionalServicesResult);
             if (!response.Success)
             {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
+                response.Code = StatusCodes.Status400BadRequest;
+                return BadRequest(response);
             }
 
             response.Code = StatusCodes.Status200OK;
@@ -123,8 +123,8 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<AdditionalServiceGetAllResponse>(servicesResult);
             if (!response.Success)
             {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
+                response.Code = StatusCodes.Status400BadRequest;
+                return BadRequest(response);
             }
 
             response.Code = StatusCodes.Status200OK;
