@@ -80,11 +80,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         {
             var usersResult = await _userManagementService.GetUsers();
             var response = _mapper.Map<UserManagementGetUsersResponse>(usersResult);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status400BadRequest;
-                return BadRequest(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);
@@ -95,11 +90,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         {
             var usersResult = await _userManagementService.GetById(userRequestWrapper.Id);
             var response = _mapper.Map<UserManagementResponse>(usersResult);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status400BadRequest;
-                return BadRequest(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);

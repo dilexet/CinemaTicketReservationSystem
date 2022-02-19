@@ -29,11 +29,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         {
             var rolesResult = await _roleServiceService.GetRoles();
             var response = _mapper.Map<RoleManagementGetRolesResponse>(rolesResult);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status400BadRequest;
-                return BadRequest(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);

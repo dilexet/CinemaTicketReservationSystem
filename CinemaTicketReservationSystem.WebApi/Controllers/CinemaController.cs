@@ -78,11 +78,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         {
             var cinemaResult = await _cinemaService.GetCinemaById(cinemaRequestWrapper.Id);
             var response = _mapper.Map<CinemaResponse>(cinemaResult);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status400BadRequest;
-                return BadRequest(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);
@@ -93,11 +88,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         {
             var cinemaResult = await _cinemaService.GetCinemas();
             var response = _mapper.Map<CinemaGetAllResponse>(cinemaResult);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status400BadRequest;
-                return BadRequest(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);
