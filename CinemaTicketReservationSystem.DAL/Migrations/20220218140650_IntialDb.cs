@@ -74,8 +74,11 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CityName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CinemaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Deleted = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -408,17 +411,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Deleted", "Name" },
-                values: new object[] { new Guid("e48a7dbf-4ac2-4e27-9b83-30ef866c17ee"), false, "Admin" });
+                values: new object[] { new Guid("6cac603f-c091-40c7-a4c6-43924d59fc4e"), false, "Admin" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Deleted", "Name" },
-                values: new object[] { new Guid("d37393c0-3336-42ac-8890-eb1bdb5355f5"), false, "Manager" });
+                values: new object[] { new Guid("624f28f8-f2fa-4141-8041-2d61480c330b"), false, "Manager" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Deleted", "Name" },
-                values: new object[] { new Guid("21218007-5606-43d7-9541-5e79e21c1784"), false, "User" });
+                values: new object[] { new Guid("72d25f28-75cd-4a96-81a2-b07a54a69e94"), false, "User" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdditionalServices_CinemaId",
