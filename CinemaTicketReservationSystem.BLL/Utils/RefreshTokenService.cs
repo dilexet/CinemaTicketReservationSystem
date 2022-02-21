@@ -49,8 +49,6 @@ namespace CinemaTicketReservationSystem.BLL.Utils
             return refreshToken;
         }
 
-        // TODO: added validation checks (jti)
-        // TODO: remove refresh tokens that have expired
         public bool Validate(RefreshToken refreshToken)
         {
             if (DateTime.Compare(refreshToken.ExpiryDate, DateTime.Now) <= 0)
