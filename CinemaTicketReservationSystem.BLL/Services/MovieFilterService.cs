@@ -72,7 +72,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 movies =
                     movies.Where(movie =>
                         movie.Sessions.Any(x =>
-                            x.Hall.Cinema.Address.CityName.Contains(movieFilterParametersModel.CityName)));
+                            x.Hall.Cinema.Address.City.Contains(movieFilterParametersModel.CityName)));
             }
 
             if (movieFilterParametersModel.StartDate != null)
@@ -178,9 +178,9 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             IQueryable<Address> addresses = string.IsNullOrEmpty(cityNameSearchQuery)
                 ? _addressRepository.GetBy()
-                : _addressRepository.GetBy(x => x.CityName.Contains(cityNameSearchQuery));
+                : _addressRepository.GetBy(x => x.City.Contains(cityNameSearchQuery));
 
-            var cityNames = await addresses.Select(x => x.CityName).ToListAsync();
+            var cityNames = await addresses.Select(x => x.City).ToListAsync();
             return new SearchSuggestionResult()
             {
                 Success = true,

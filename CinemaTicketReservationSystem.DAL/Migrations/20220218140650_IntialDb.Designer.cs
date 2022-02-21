@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaTicketReservationSystem.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220214085032_IntialDb")]
+    [Migration("20220218140650_IntialDb")]
     partial class IntialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,19 +77,19 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e48a7dbf-4ac2-4e27-9b83-30ef866c17ee"),
+                            Id = new Guid("6cac603f-c091-40c7-a4c6-43924d59fc4e"),
                             Deleted = false,
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("d37393c0-3336-42ac-8890-eb1bdb5355f5"),
+                            Id = new Guid("624f28f8-f2fa-4141-8041-2d61480c330b"),
                             Deleted = false,
                             Name = "Manager"
                         },
                         new
                         {
-                            Id = new Guid("21218007-5606-43d7-9541-5e79e21c1784"),
+                            Id = new Guid("72d25f28-75cd-4a96-81a2-b07a54a69e94"),
                             Deleted = false,
                             Name = "User"
                         });
@@ -203,11 +203,20 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                     b.Property<Guid>("CinemaId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CityName")
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Latitude")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
                         .HasColumnType("nvarchar(max)");

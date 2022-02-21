@@ -54,7 +54,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             cinemaExist.Name = cinemaModel.Name;
             cinemaExist.Address.Street = cinemaModel.AddressModel.Street;
-            cinemaExist.Address.CityName = cinemaModel.AddressModel.CityName;
+            cinemaExist.Address.City = cinemaModel.AddressModel.City;
+            cinemaExist.Address.Country = cinemaModel.AddressModel.Country;
+            cinemaExist.Address.Latitude = cinemaModel.AddressModel.Latitude;
+            cinemaExist.Address.Longitude = cinemaModel.AddressModel.Longitude;
 
             if (!await _cinemaRepository.UpdateAsync(cinemaExist))
             {

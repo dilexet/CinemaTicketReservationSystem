@@ -222,8 +222,11 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                     source =>
                         source.MapFrom(res => new AddressModel()
                         {
-                            CityName = res.CityName,
-                            Street = res.Street
+                            Country = res.Country,
+                            City = res.City,
+                            Street = res.Street,
+                            Latitude = res.Latitude,
+                            Longitude = res.Longitude
                         }));
 
             CreateMap<SeatModel, SeatViewModel>()
@@ -248,13 +251,25 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
 
             CreateMap<CinemaModel, CinemaViewModel>()
                 .ForMember(
+                    dest => dest.Country,
+                    source =>
+                        source.MapFrom(res => res.AddressModel.Country))
+                .ForMember(
                     dest => dest.CityName,
                     source =>
-                        source.MapFrom(res => res.AddressModel.CityName))
+                        source.MapFrom(res => res.AddressModel.City))
                 .ForMember(
                     dest => dest.Street,
                     source =>
-                        source.MapFrom(res => res.AddressModel.Street));
+                        source.MapFrom(res => res.AddressModel.Street))
+                .ForMember(
+                    dest => dest.Latitude,
+                    source =>
+                        source.MapFrom(res => res.AddressModel.Latitude))
+                .ForMember(
+                    dest => dest.Longitude,
+                    source =>
+                        source.MapFrom(res => res.AddressModel.Longitude));
 
             CreateMap<Seat, SeatModel>()
                 .ForMember(
@@ -288,7 +303,7 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                 .ForMember(
                     dest => dest.CityName,
                     source =>
-                        source.MapFrom(res => res.Cinema.Address.CityName))
+                        source.MapFrom(res => res.Cinema.Address.City))
                 .ForMember(
                     dest => dest.Street,
                     source =>
