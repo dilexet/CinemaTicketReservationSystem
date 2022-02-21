@@ -146,18 +146,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         {
             IQueryable<Hall> halls = _hallRepository.GetBy();
 
-            if (halls == null || !halls.Any())
-            {
-                return new HallServiceGetAllResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "No halls found"
-                    }
-                };
-            }
-
             var hallsModel = _mapper.Map<IEnumerable<HallModel>>(await halls.ToListAsync());
 
             return new HallServiceGetAllResult()
@@ -183,18 +171,6 @@ namespace CinemaTicketReservationSystem.BLL.Services
         public async Task<HallServiceGetAllResult> GetHallsByCinemaId(Guid cinemaId)
         {
             IQueryable<Hall> halls = _hallRepository.GetBy().Where(x => x.CinemaId.Equals(cinemaId));
-
-            if (!halls.Any())
-            {
-                return new HallServiceGetAllResult()
-                {
-                    Success = false,
-                    Errors = new[]
-                    {
-                        "No halls found"
-                    }
-                };
-            }
 
             var hallsModel = _mapper.Map<IEnumerable<HallModel>>(await halls.ToListAsync());
 

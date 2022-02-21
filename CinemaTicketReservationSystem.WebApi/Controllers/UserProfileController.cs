@@ -53,11 +53,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
                     userProfileGetRequestWrapper.Id,
                     userProfileGetRequestWrapper.ShowPastTicket);
             var response = _mapper.Map<UserProfileResponse>(usersResult);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);

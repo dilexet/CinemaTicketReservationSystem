@@ -81,11 +81,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         {
             var hallResult = await _hallService.GetHallById(hallRequestWrapper.Id);
             var response = _mapper.Map<HallResponse>(hallResult);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);
@@ -96,11 +91,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         {
             var hallResult = await _hallService.GetHalls();
             var response = _mapper.Map<HallGetAllResponse>(hallResult);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);
@@ -111,11 +101,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         {
             var hallResult = await _hallService.GetHallsByCinemaId(cinemaRequestWrapper.Id);
             var response = _mapper.Map<HallGetAllResponse>(hallResult);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);

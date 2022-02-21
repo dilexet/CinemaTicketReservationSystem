@@ -26,11 +26,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         {
             var seatTypesResult = _seatTypeService.GetSeatTypes();
             var response = _mapper.Map<SeatTypeGetAllResponse>(seatTypesResult);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);

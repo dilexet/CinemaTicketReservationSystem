@@ -80,11 +80,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         {
             var movieResult = await _movieService.GetMovieById(movieRequestWrapper.Id);
             var response = _mapper.Map<MovieResponse>(movieResult);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);
@@ -95,11 +90,6 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
         {
             var movieResult = await _movieService.GetMovies(_mapper.Map<FilterParametersModel>(filter));
             var response = _mapper.Map<MovieGetAllResponse>(movieResult);
-            if (!response.Success)
-            {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
-            }
 
             response.Code = StatusCodes.Status200OK;
             return Ok(response);

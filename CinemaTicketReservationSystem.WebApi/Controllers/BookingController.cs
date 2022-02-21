@@ -62,8 +62,8 @@ namespace CinemaTicketReservationSystem.WebApi.Controllers
             var response = _mapper.Map<SessionResponse>(sessionResult);
             if (!response.Success)
             {
-                response.Code = StatusCodes.Status404NotFound;
-                return NotFound(response);
+                response.Code = StatusCodes.Status400BadRequest;
+                return BadRequest(response);
             }
 
             response.Code = StatusCodes.Status200OK;
