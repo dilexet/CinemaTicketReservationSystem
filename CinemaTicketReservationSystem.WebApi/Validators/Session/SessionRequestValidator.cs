@@ -25,6 +25,7 @@ namespace CinemaTicketReservationSystem.WebApi.Validators.Session
                 .SeatTypesMustExistAsync(hallRepository);
 
             RuleFor(x => x.StartDate).NotNull().NotEmpty().WithMessage("Session start date can't be empty");
+            RuleFor(x => x).HallMustBeFree(hallRepository);
             RuleFor(x => x).StartSessionDateMustBeAfterMovieRelease(movieRepository);
             RuleFor(x => x.MovieId).NotEmpty().WithMessage("Movie name can't be empty");
 

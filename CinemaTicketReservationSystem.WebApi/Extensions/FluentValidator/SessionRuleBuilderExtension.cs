@@ -46,6 +46,31 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
             return options;
         }
 
+        public static IRuleBuilderOptions<T, SessionRequest> HallMustBeFree<T>(
+            this IRuleBuilder<T, SessionRequest> ruleBuilder, IRepository<Hall> repository)
+        {
+            var options = ruleBuilder
+                .NotEmpty()
+                .MustAsync(async (sessionRequest, _) =>
+                {
+                    var hallExist = await repository.FindByIdAsync(sessionRequest.HallId);
+                    if (hallExist.Sessions.Any(x =>
+                        {
+                            var startDate = x.StartDate - TimeSpan.FromHours(2);
+                            var endDate = x.StartDate + TimeSpan.FromHours(2);
+                            return sessionRequest.StartDate > startDate && sessionRequest.StartDate < endDate;
+                        }))
+                    {
+                        return false;
+                    }
+
+                    return true;
+                })
+                .WithName("SessionRequest.StartDate")
+                .WithMessage("Hall will be busy in this time");
+            return options;
+        }
+
         public static IRuleBuilderOptions<T, SessionRequest> HallMustExistAsync<T>(
             this IRuleBuilder<T, SessionRequest> ruleBuilder, IRepository<Cinema> repository)
         {
