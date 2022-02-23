@@ -100,7 +100,7 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                 .ForMember(
                     dest => dest.RoleModel,
                     source =>
-                        source.MapFrom(res => new RoleModel()
+                        source.MapFrom(res => new RoleModel
                         {
                             Id = res.RoleId
                         }));
@@ -109,7 +109,7 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                 .ForMember(
                     dest => dest.RoleModel,
                     source =>
-                        source.MapFrom(res => new RoleModel()
+                        source.MapFrom(res => new RoleModel
                         {
                             Id = res.RoleId
                         }));
@@ -139,7 +139,7 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                     dest => dest.MovieDescriptionModel,
                     source =>
                         source.MapFrom(res =>
-                            new MovieDescriptionModel()
+                            new MovieDescriptionModel
                             {
                                 ReleaseDate = res.ReleaseDate,
                                 Description = res.Description,
@@ -220,7 +220,7 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                 .ForMember(
                     dest => dest.AddressModel,
                     source =>
-                        source.MapFrom(res => new AddressModel()
+                        source.MapFrom(res => new AddressModel
                         {
                             Country = res.Country,
                             City = res.City,
@@ -407,7 +407,7 @@ namespace CinemaTicketReservationSystem.WebApi.Configuration
                 .ForMember(
                     dest => dest.AdditionalService,
                     source =>
-                        source.MapFrom(res => new AdditionalService()
+                        source.MapFrom(res => new AdditionalService
                         {
                             Name = res.Name
                         }));

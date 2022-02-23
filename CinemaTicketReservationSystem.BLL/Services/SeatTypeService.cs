@@ -18,13 +18,13 @@ namespace CinemaTicketReservationSystem.BLL.Services
             foreach (var seatTypeName in Enum.GetValues(typeof(SeatTypes)).Cast<SeatTypes>()
                          .Select(seatType => seatType.GetDisplayName()).ToList())
             {
-                seatTypesList.Add(new SeatTypeModel()
+                seatTypesList.Add(new SeatTypeModel
                 {
                     Name = seatTypeName
                 });
             }
 
-            return new SeatTypeServiceGetAllResult()
+            return new SeatTypeServiceGetAllResult
             {
                 Success = true,
                 SeatTypesList = seatTypesList

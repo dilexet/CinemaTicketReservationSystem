@@ -39,7 +39,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _userProfileRepository.UpdateAsync(userProfile))
             {
-                return new UserProfileResult()
+                return new UserProfileResult
                 {
                     Success = false,
                     Errors = new[]
@@ -51,7 +51,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             UserProfileModel newUserProfileModel = _mapper.Map<UserProfileModel>(userProfile);
 
-            return new UserProfileResult()
+            return new UserProfileResult
             {
                 Success = true,
                 UserProfile = newUserProfileModel
@@ -73,7 +73,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             UserProfileModel userModel = _mapper.Map<UserProfileModel>(user);
             userModel.TicketsModel = _mapper.Map<IEnumerable<BookedOrderModel>>(await tickets.ToListAsync());
 
-            return new UserProfileResult()
+            return new UserProfileResult
             {
                 Success = true,
                 UserProfile = userModel

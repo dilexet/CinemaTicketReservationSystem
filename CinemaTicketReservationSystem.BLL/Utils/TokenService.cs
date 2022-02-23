@@ -33,7 +33,7 @@ namespace CinemaTicketReservationSystem.BLL.Utils
             }
             catch (Exception e)
             {
-                return new TokenResult()
+                return new TokenResult
                 {
                     Success = false,
                     Errors = new[]
@@ -46,7 +46,7 @@ namespace CinemaTicketReservationSystem.BLL.Utils
             var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
             if (!await _repository.CreateAsync(refreshToken))
             {
-                return new TokenResult()
+                return new TokenResult
                 {
                     Success = false,
                     Errors = new[]
@@ -56,7 +56,7 @@ namespace CinemaTicketReservationSystem.BLL.Utils
                 };
             }
 
-            return new TokenResult()
+            return new TokenResult
             {
                 JwtToken = jwtToken,
                 RefreshToken = refreshToken,
@@ -69,7 +69,7 @@ namespace CinemaTicketReservationSystem.BLL.Utils
             if (!_refreshTokenService.Validate(refreshToken))
             {
                 await _repository.RemoveAndSaveAsync(refreshToken);
-                return new TokenResult()
+                return new TokenResult
                 {
                     Success = false,
                     Errors = new[]
@@ -86,7 +86,7 @@ namespace CinemaTicketReservationSystem.BLL.Utils
             }
             catch (Exception e)
             {
-                return new TokenResult()
+                return new TokenResult
                 {
                     Success = false,
                     Errors = new[]
@@ -101,7 +101,7 @@ namespace CinemaTicketReservationSystem.BLL.Utils
 
             if (!await _repository.UpdateAsync(refreshToken))
             {
-                return new TokenResult()
+                return new TokenResult
                 {
                     Success = false,
                     Errors = new[]
@@ -111,7 +111,7 @@ namespace CinemaTicketReservationSystem.BLL.Utils
                 };
             }
 
-            return new TokenResult()
+            return new TokenResult
             {
                 JwtToken = jwtToken,
                 RefreshToken = refreshToken,

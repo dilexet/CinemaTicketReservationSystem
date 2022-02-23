@@ -46,7 +46,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _hallRepository.CreateAsync(hall))
             {
-                return new HallServiceResult()
+                return new HallServiceResult
                 {
                     Success = false,
                     Errors = new[]
@@ -58,7 +58,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             HallModel newHallModel = _mapper.Map<HallModel>(hall);
 
-            return new HallServiceResult()
+            return new HallServiceResult
             {
                 Success = true,
                 HallModel = newHallModel
@@ -71,7 +71,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _hallRepository.RemoveAndSaveAsync(hallExist))
             {
-                return new HallServiceResult()
+                return new HallServiceResult
                 {
                     Success = false,
                     Errors = new[]
@@ -100,7 +100,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _hallRepository.CreateAsync(newHall))
             {
-                return new HallServiceResult()
+                return new HallServiceResult
                 {
                     Success = false,
                     Errors = new[]
@@ -112,7 +112,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             HallModel newHallModel = _mapper.Map<HallModel>(newHall);
 
-            return new HallServiceResult()
+            return new HallServiceResult
             {
                 Success = true,
                 HallModel = newHallModel
@@ -125,7 +125,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _hallRepository.RemoveAndSaveAsync(hallExist))
             {
-                return new HallServiceRemoveResult()
+                return new HallServiceRemoveResult
                 {
                     Success = false,
                     Errors = new[]
@@ -135,7 +135,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            return new HallServiceRemoveResult()
+            return new HallServiceRemoveResult
             {
                 Success = true,
                 Id = id
@@ -148,7 +148,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var hallsModel = _mapper.Map<IEnumerable<HallModel>>(await halls.ToListAsync());
 
-            return new HallServiceGetAllResult()
+            return new HallServiceGetAllResult
             {
                 Success = true,
                 HallModels = hallsModel
@@ -161,7 +161,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var hallModel = _mapper.Map<HallModel>(hall);
 
-            return new HallServiceResult()
+            return new HallServiceResult
             {
                 Success = true,
                 HallModel = hallModel
@@ -174,7 +174,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var hallsModel = _mapper.Map<IEnumerable<HallModel>>(await halls.ToListAsync());
 
-            return new HallServiceGetAllResult()
+            return new HallServiceGetAllResult
             {
                 Success = true,
                 HallModels = hallsModel

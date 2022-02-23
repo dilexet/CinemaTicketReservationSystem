@@ -94,7 +94,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var moviesModel = _mapper.Map<IEnumerable<MovieModel>>(await movies.ToListAsync());
 
-            return new MovieServiceGetMoviesResult()
+            return new MovieServiceGetMoviesResult
             {
                 Success = true,
                 MovieModels = moviesModel
@@ -129,7 +129,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             foreach (var session in sessionDictionary)
             {
                 var cinema = await _cinemaRepository.FindByIdAsync(session.Key);
-                sessionsForMovieModels.Add(new SessionsForMovieModel()
+                sessionsForMovieModels.Add(new SessionsForMovieModel
                 {
                     Cinema = _mapper.Map<CinemaModel>(cinema),
                     Sessions = session.Value.ToList()
@@ -138,7 +138,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var movieModel = _mapper.Map<MovieModel>(movie);
 
-            return new GetSessionsResult()
+            return new GetSessionsResult
             {
                 Success = true,
                 Sessions = sessionsForMovieModels,
@@ -153,7 +153,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 : _movieRepository.GetBy(x => x.Name.Contains(movieTitleSearchQuery));
 
             var moviesTitle = await movies.Select(x => x.Name).ToListAsync();
-            return new SearchSuggestionResult()
+            return new SearchSuggestionResult
             {
                 Success = true,
                 ListOfTitles = moviesTitle
@@ -167,7 +167,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 : _cinemaRepository.GetBy(x => x.Name.Contains(cinemaNameSearchQuery));
 
             var cinemasName = await cinemas.Select(x => x.Name).ToListAsync();
-            return new SearchSuggestionResult()
+            return new SearchSuggestionResult
             {
                 Success = true,
                 ListOfTitles = cinemasName
@@ -181,7 +181,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 : _addressRepository.GetBy(x => x.City.Contains(cityNameSearchQuery));
 
             var cityNames = await addresses.Select(x => x.City).ToListAsync();
-            return new SearchSuggestionResult()
+            return new SearchSuggestionResult
             {
                 Success = true,
                 ListOfTitles = cityNames

@@ -57,7 +57,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             {
                 var additionalServiceExist = cinemaExist.AdditionalServices.FirstOrDefault(service =>
                     service.Name.Equals(sessionAdditionalService.AdditionalService.Name));
-                sessionAdditionalServices.Add(new SessionAdditionalService()
+                sessionAdditionalServices.Add(new SessionAdditionalService
                 {
                     AdditionalService = additionalServiceExist,
                     Price = sessionAdditionalService.Price
@@ -73,7 +73,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 foreach (var seat in row.Seats)
                 {
                     var sessionSeatTypeExist = sessionSeatTypes.FirstOrDefault(x => x.SeatType.Equals(seat.SeatType));
-                    sessionSeats.Add(new SessionSeat()
+                    sessionSeats.Add(new SessionSeat
                     {
                         TicketState = TicketState.Free,
                         Seat = seat,
@@ -94,7 +94,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _sessionRepository.CreateAsync(session))
             {
-                return new SessionServiceResult()
+                return new SessionServiceResult
                 {
                     Success = false,
                     Errors = new[]
@@ -106,7 +106,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             SessionModel newSessionModel = _mapper.Map<SessionModel>(session);
 
-            return new SessionServiceResult()
+            return new SessionServiceResult
             {
                 Success = true,
                 Session = newSessionModel
@@ -142,7 +142,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _sessionRepository.UpdateAsync(sessionExist))
             {
-                return new SessionServiceResult()
+                return new SessionServiceResult
                 {
                     Success = false,
                     Errors = new[]
@@ -154,7 +154,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             SessionModel newSessionModel = _mapper.Map<SessionModel>(sessionExist);
 
-            return new SessionServiceResult()
+            return new SessionServiceResult
             {
                 Success = true,
                 Session = newSessionModel
@@ -167,7 +167,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _sessionRepository.RemoveAndSaveAsync(sessionExist))
             {
-                return new SessionServiceRemoveResult()
+                return new SessionServiceRemoveResult
                 {
                     Success = false,
                     Errors = new[]
@@ -177,7 +177,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            return new SessionServiceRemoveResult()
+            return new SessionServiceRemoveResult
             {
                 Success = true,
                 Id = id
@@ -190,7 +190,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var sessionsModel = _mapper.Map<IEnumerable<SessionModel>>(await sessions.ToListAsync());
 
-            return new SessionServiceGetAllResult()
+            return new SessionServiceGetAllResult
             {
                 Success = true,
                 Sessions = sessionsModel
@@ -203,7 +203,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var sessionModel = _mapper.Map<SessionModel>(session);
 
-            return new SessionServiceResult()
+            return new SessionServiceResult
             {
                 Success = true,
                 Session = sessionModel

@@ -20,7 +20,7 @@ namespace CinemaTicketReservationSystem.WebApi.CustomFilters
                     errors.Add(modelState.Key, modelState.Value.Errors.Select(modelError => modelError.ErrorMessage));
                 }
 
-                context.Result = new BadRequestObjectResult(new ModelValidationResponse()
+                context.Result = new BadRequestObjectResult(new ModelValidationResponse
                 {
                     Code = StatusCodes.Status400BadRequest,
                     Success = false,

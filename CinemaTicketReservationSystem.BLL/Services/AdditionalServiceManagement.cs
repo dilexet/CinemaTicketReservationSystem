@@ -37,7 +37,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             additionalService.Cinema = cinemaExist;
             if (!await _additionalServiceRepository.CreateAsync(additionalService))
             {
-                return new AdditionalServiceResult()
+                return new AdditionalServiceResult
                 {
                     Success = false,
                     Errors = new[]
@@ -49,7 +49,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             AdditionalServiceModel newAdditionalServiceModel = _mapper.Map<AdditionalServiceModel>(additionalService);
 
-            return new AdditionalServiceResult()
+            return new AdditionalServiceResult
             {
                 Success = true,
                 AdditionalServiceModel = newAdditionalServiceModel
@@ -66,7 +66,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _additionalServiceRepository.UpdateAsync(additionalServicesExist))
             {
-                return new AdditionalServiceResult()
+                return new AdditionalServiceResult
                 {
                     Success = false,
                     Errors = new[]
@@ -78,7 +78,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             AdditionalServiceModel newAdditionalService = _mapper.Map<AdditionalServiceModel>(additionalServicesExist);
 
-            return new AdditionalServiceResult()
+            return new AdditionalServiceResult
             {
                 Success = true,
                 AdditionalServiceModel = newAdditionalService
@@ -91,7 +91,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _additionalServiceRepository.RemoveAndSaveAsync(additionalServiceExist))
             {
-                return new AdditionalServiceRemoveResult()
+                return new AdditionalServiceRemoveResult
                 {
                     Success = false,
                     Errors = new[]
@@ -101,7 +101,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            return new AdditionalServiceRemoveResult()
+            return new AdditionalServiceRemoveResult
             {
                 Success = true,
                 Id = id
@@ -115,7 +115,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var additionalServicesModel =
                 _mapper.Map<IEnumerable<AdditionalServiceModel>>(await additionalServices.ToListAsync());
 
-            return new AdditionalServiceGetAllResult()
+            return new AdditionalServiceGetAllResult
             {
                 Success = true,
                 AdditionalServices = additionalServicesModel
@@ -128,7 +128,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var additionalServiceModel = _mapper.Map<AdditionalServiceModel>(additionalService);
 
-            return new AdditionalServiceResult()
+            return new AdditionalServiceResult
             {
                 Success = true,
                 AdditionalServiceModel = additionalServiceModel
@@ -143,7 +143,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var additionalServiceModels =
                 _mapper.Map<IEnumerable<AdditionalServiceModel>>(await additionalServices.ToListAsync());
 
-            return new AdditionalServiceGetAllResult()
+            return new AdditionalServiceGetAllResult
             {
                 Success = true,
                 AdditionalServices = additionalServiceModels

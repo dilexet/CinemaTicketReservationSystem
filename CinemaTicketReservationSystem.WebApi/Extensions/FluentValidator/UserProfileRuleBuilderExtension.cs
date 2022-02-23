@@ -1,5 +1,6 @@
 ﻿using System;
 using CinemaTicketReservationSystem.DAL.Abstract;
+using CinemaTicketReservationSystem.DAL.Entity.UserEntity;
 using FluentValidation;
 
 namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
@@ -7,7 +8,7 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.FluentValidator
     public static class UserProfileRuleBuilderExtension
     {
         public static IRuleBuilderOptions<T, Guid> UserProfileMustExistAsync<T>(
-            this IRuleBuilder<T, Guid> ruleBuilder, IRepository<DAL.Entity.UserEntity.UserProfile> repository)
+            this IRuleBuilder<T, Guid> ruleBuilder, IRepository<UserProfile> repository)
         {
             var options = ruleBuilder
                 .NotEmpty()

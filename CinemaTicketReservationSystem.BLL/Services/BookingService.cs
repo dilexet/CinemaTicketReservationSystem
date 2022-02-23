@@ -58,7 +58,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 var numberOfServices = bookingModel.SessionAdditionalServicesId.Count(x => x.Equals(serviceId));
                 totalPrice += service.Price * numberOfServices;
 
-                sessionAdditionalServices.Add(new BookedService()
+                sessionAdditionalServices.Add(new BookedService
                 {
                     NumberOfServices = (uint)numberOfServices,
                     SelectedSessionAdditionalService = service
@@ -75,7 +75,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             }
 
             var userExist = await _userProfileRepository.FindByIdAsync(bookingModel.UserProfileId);
-            var bookedOrder = new BookedOrder()
+            var bookedOrder = new BookedOrder
             {
                 TotalPrice = totalPrice,
                 UserProfile = userExist,
@@ -85,7 +85,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _bookedOrderRepository.CreateAsync(bookedOrder))
             {
-                return new BookingServiceResult()
+                return new BookingServiceResult
                 {
                     Success = false,
                     Errors = new[]
@@ -99,7 +99,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _userProfileRepository.UpdateAsync(userExist))
             {
-                return new BookingServiceResult()
+                return new BookingServiceResult
                 {
                     Success = false,
                     Errors = new[]
@@ -112,7 +112,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var bookedOrderModel = _mapper.Map<BookedOrderModel>(bookedOrder);
             bookedOrderModel.Session = _mapper.Map<SessionModel>(sessionExist);
 
-            return new BookingServiceResult()
+            return new BookingServiceResult
             {
                 Success = true,
                 BookedOrder = bookedOrderModel
@@ -125,7 +125,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (session.StartDate <= DateTime.Now)
             {
-                return new SessionServiceResult()
+                return new SessionServiceResult
                 {
                     Success = false,
                     Errors = new[]
@@ -146,7 +146,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var sessionModel = _mapper.Map<SessionModel>(session);
 
-            return new SessionServiceResult()
+            return new SessionServiceResult
             {
                 Success = true,
                 Session = sessionModel

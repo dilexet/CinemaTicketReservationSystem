@@ -31,7 +31,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var usersModel = _mapper.Map<IEnumerable<UserModel>>(await users.ToListAsync());
 
-            return new UserServiceGetUsersResult()
+            return new UserServiceGetUsersResult
             {
                 Success = true,
                 UserModels = usersModel
@@ -43,7 +43,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var user = await _userRepository.FindByIdAsync(id);
             UserModel userModel = _mapper.Map<UserModel>(user);
 
-            return new UserServiceResult()
+            return new UserServiceResult
             {
                 Success = true,
                 UserModel = userModel
@@ -64,7 +64,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _userRepository.CreateAsync(user))
             {
-                return new UserServiceResult()
+                return new UserServiceResult
                 {
                     Success = false,
                     Errors = new[]
@@ -76,7 +76,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             UserModel newUserModel = _mapper.Map<UserModel>(user);
 
-            return new UserServiceResult()
+            return new UserServiceResult
             {
                 Success = true,
                 UserModel = newUserModel
@@ -94,7 +94,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _userRepository.UpdateAsync(userExist))
             {
-                return new UserServiceResult()
+                return new UserServiceResult
                 {
                     Success = false,
                     Errors = new[]
@@ -106,7 +106,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             UserModel newUserModel = _mapper.Map<UserModel>(userExist);
 
-            return new UserServiceResult()
+            return new UserServiceResult
             {
                 Success = true,
                 UserModel = newUserModel
@@ -119,7 +119,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _userRepository.RemoveAndSaveAsync(userExist))
             {
-                return new UserServiceRemoveResult()
+                return new UserServiceRemoveResult
                 {
                     Success = false,
                     Errors = new[]
@@ -129,7 +129,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            return new UserServiceRemoveResult()
+            return new UserServiceRemoveResult
             {
                 Success = true,
                 Id = id

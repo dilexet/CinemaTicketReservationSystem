@@ -16,7 +16,7 @@ namespace CinemaTicketReservationSystem.WebApi.Hubs
 
         public async Task SetBlockedSeat(Guid seatsId)
         {
-            _memoryCache.Set(seatsId, seatsId, new MemoryCacheEntryOptions()
+            _memoryCache.Set(seatsId, seatsId, new MemoryCacheEntryOptions
             {
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(15)
             });

@@ -27,7 +27,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var roleModels = _mapper.Map<IEnumerable<RoleModel>>(await roles.ToListAsync());
 
-            return new RoleServiceGetRolesResult()
+            return new RoleServiceGetRolesResult
             {
                 Success = true,
                 RoleModels = roleModels

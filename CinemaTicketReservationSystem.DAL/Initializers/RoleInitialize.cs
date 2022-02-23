@@ -17,17 +17,17 @@ namespace CinemaTicketReservationSystem.DAL.Initializers
             if (!context.Roles.Any())
             {
                 context.Roles.AddRange(
-                    new Role()
+                    new Role
                     {
                         Deleted = false,
                         Name = RoleTypes.Admin.ToString(),
                     },
-                    new Role()
+                    new Role
                     {
                         Deleted = false,
                         Name = RoleTypes.Manager.ToString(),
                     },
-                    new Role()
+                    new Role
                     {
                         Deleted = false,
                         Name = RoleTypes.User.ToString(),
@@ -39,7 +39,7 @@ namespace CinemaTicketReservationSystem.DAL.Initializers
             {
                 if (context.Roles.FirstOrDefault(x => x.Name.Equals(RoleTypes.Admin.ToString())) == null)
                 {
-                    context.Roles.Add(new Role()
+                    context.Roles.Add(new Role
                     {
                         Deleted = false,
                         Name = RoleTypes.Admin.ToString()
@@ -48,7 +48,7 @@ namespace CinemaTicketReservationSystem.DAL.Initializers
 
                 if (context.Roles.FirstOrDefault(x => x.Name.Equals(RoleTypes.Manager.ToString())) == null)
                 {
-                    context.Roles.Add(new Role()
+                    context.Roles.Add(new Role
                     {
                         Deleted = false,
                         Name = RoleTypes.Manager.ToString()
@@ -57,7 +57,7 @@ namespace CinemaTicketReservationSystem.DAL.Initializers
 
                 if (context.Roles.FirstOrDefault(x => x.Name.Equals(RoleTypes.User.ToString())) == null)
                 {
-                    context.Roles.Add(new Role()
+                    context.Roles.Add(new Role
                     {
                         Deleted = false,
                         Name = RoleTypes.User.ToString()

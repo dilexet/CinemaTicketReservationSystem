@@ -41,7 +41,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var tokenResult = await _tokenService.GenerateTokens(_mapper.Map<TokenUserModel>(userExisting));
             if (!tokenResult.Success)
             {
-                return new AuthorizeResult()
+                return new AuthorizeResult
                 {
                     Success = false,
                     Errors = tokenResult.Errors
@@ -51,7 +51,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             userExisting.RefreshTokens.ToList().Add(tokenResult.RefreshToken);
             if (!await _userRepository.UpdateAsync(userExisting))
             {
-                return new AuthorizeResult()
+                return new AuthorizeResult
                 {
                     Success = false,
                     Errors = new[]
@@ -61,7 +61,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            return new AuthorizeResult()
+            return new AuthorizeResult
             {
                 Success = true,
                 JwtToken = tokenResult.JwtToken,
@@ -89,7 +89,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _userRepository.CreateAsync(user))
             {
-                return new AuthorizeResult()
+                return new AuthorizeResult
                 {
                     Success = false,
                     Errors = new[]
@@ -102,7 +102,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var tokenResult = await _tokenService.GenerateTokens(_mapper.Map<TokenUserModel>(user));
             if (!tokenResult.Success)
             {
-                return new AuthorizeResult()
+                return new AuthorizeResult
                 {
                     Success = false,
                     Errors = tokenResult.Errors
@@ -113,7 +113,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _userRepository.UpdateAsync(user))
             {
-                return new AuthorizeResult()
+                return new AuthorizeResult
                 {
                     Success = false,
                     Errors = new[]
@@ -123,7 +123,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            return new AuthorizeResult()
+            return new AuthorizeResult
             {
                 Success = true,
                 JwtToken = tokenResult.JwtToken,
@@ -142,14 +142,14 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!refreshTokenResult.Success)
             {
-                return new AuthorizeResult()
+                return new AuthorizeResult
                 {
                     Success = false,
                     Errors = refreshTokenResult.Errors
                 };
             }
 
-            return new AuthorizeResult()
+            return new AuthorizeResult
             {
                 Success = true,
                 JwtToken = refreshTokenResult.JwtToken,

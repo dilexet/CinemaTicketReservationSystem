@@ -18,7 +18,7 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
                         Title = "CinemaTicketReservationSystem.WebApi", Version = "v1"
                     });
                 swagger.OperationFilter<CustomSwaggerFileOperationFilter>();
-                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,

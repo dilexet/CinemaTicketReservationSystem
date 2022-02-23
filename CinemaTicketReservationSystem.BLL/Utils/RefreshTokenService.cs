@@ -36,7 +36,7 @@ namespace CinemaTicketReservationSystem.BLL.Utils
             }
 
             var now = DateTime.Now;
-            var refreshToken = new RefreshToken()
+            var refreshToken = new RefreshToken
             {
                 JwtId = tokenId,
                 IsUsed = false,

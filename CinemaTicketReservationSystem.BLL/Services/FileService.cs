@@ -35,7 +35,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                     await using FileStream fileStream = new FileStream(_environment.WebRootPath + path, FileMode.Create);
                     await file.CopyToAsync(fileStream);
                     fileStream.Flush();
-                    return new FileServiceResult()
+                    return new FileServiceResult
                     {
                         Success = true,
                         PosterPath = path
@@ -44,7 +44,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             }
             catch (IOException e)
             {
-                return new FileServiceResult()
+                return new FileServiceResult
                 {
                     Success = false,
                     Errors = new[]
@@ -54,7 +54,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            return new FileServiceResult()
+            return new FileServiceResult
             {
                 Success = false,
                 Errors = new[]

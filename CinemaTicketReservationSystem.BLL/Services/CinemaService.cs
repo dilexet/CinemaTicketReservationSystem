@@ -29,7 +29,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _cinemaRepository.CreateAsync(cinema))
             {
-                return new CinemaServiceResult()
+                return new CinemaServiceResult
                 {
                     Success = false,
                     Errors = new[]
@@ -41,7 +41,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             CinemaModel newCinemaModel = _mapper.Map<CinemaModel>(cinema);
 
-            return new CinemaServiceResult()
+            return new CinemaServiceResult
             {
                 Success = true,
                 CinemaModel = newCinemaModel
@@ -61,7 +61,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _cinemaRepository.UpdateAsync(cinemaExist))
             {
-                return new CinemaServiceResult()
+                return new CinemaServiceResult
                 {
                     Success = false,
                     Errors = new[]
@@ -73,7 +73,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             CinemaModel newCinemaModel = _mapper.Map<CinemaModel>(cinemaExist);
 
-            return new CinemaServiceResult()
+            return new CinemaServiceResult
             {
                 Success = true,
                 CinemaModel = newCinemaModel
@@ -86,7 +86,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             if (!await _cinemaRepository.RemoveAndSaveAsync(cinemaExist))
             {
-                return new CinemaServiceRemoveResult()
+                return new CinemaServiceRemoveResult
                 {
                     Success = false,
                     Errors = new[]
@@ -96,7 +96,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 };
             }
 
-            return new CinemaServiceRemoveResult()
+            return new CinemaServiceRemoveResult
             {
                 Success = true,
                 Id = id
@@ -109,7 +109,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             var cinemasModel = _mapper.Map<IEnumerable<CinemaModel>>(await cinemas.ToListAsync());
 
-            return new CinemaServiceGetAllResult()
+            return new CinemaServiceGetAllResult
             {
                 Success = true,
                 CinemaModels = cinemasModel
@@ -121,7 +121,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             var cinema = await _cinemaRepository.FindByIdAsync(id);
             var cinemaModel = _mapper.Map<CinemaModel>(cinema);
 
-            return new CinemaServiceResult()
+            return new CinemaServiceResult
             {
                 Success = true,
                 CinemaModel = cinemaModel
