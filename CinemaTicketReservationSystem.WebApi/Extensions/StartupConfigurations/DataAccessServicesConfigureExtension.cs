@@ -19,10 +19,10 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            var sqlConnectionString = configuration.GetConnectionString("DataAccessMSSqlProvider");
+            var sqlConnectionString = configuration.GetConnectionString("Postgres");
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(sqlConnectionString));
+                options.UseNpgsql(sqlConnectionString));
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRepository<Role>, BaseRepository<Role>>();
@@ -37,6 +37,8 @@ namespace CinemaTicketReservationSystem.WebApi.Extensions.StartupConfigurations
             services.AddScoped<IRepository<Hall>, BaseRepository<Hall>>();
 
             services.AddScoped<IRepository<Movie>, BaseRepository<Movie>>();
+            services.AddScoped<IRepository<Genre>, BaseRepository<Genre>>();
+            services.AddScoped<IRepository<Country>, BaseRepository<Country>>();
 
             services.AddScoped<IRepository<Session>, BaseRepository<Session>>();
             services.AddScoped<IRepository<SessionAdditionalService>, BaseRepository<SessionAdditionalService>>();

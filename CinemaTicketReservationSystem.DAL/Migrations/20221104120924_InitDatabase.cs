@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CinemaTicketReservationSystem.DAL.Migrations
 {
-    public partial class IntialDb : Migration
+    public partial class InitDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,9 +11,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "Cinemas",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -21,15 +21,41 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Countries",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Countries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Genres",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Genres", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Movies",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PosterUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    PosterUrl = table.Column<string>(type: "text", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,9 +66,9 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,10 +79,10 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "AdditionalServices",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CinemaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    CinemaId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,14 +99,14 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "Addresses",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CinemaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Country = table.Column<string>(type: "text", nullable: true),
+                    City = table.Column<string>(type: "text", nullable: true),
+                    Street = table.Column<string>(type: "text", nullable: true),
+                    Latitude = table.Column<string>(type: "text", nullable: true),
+                    Longitude = table.Column<string>(type: "text", nullable: true),
+                    CinemaId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,12 +123,11 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "Halls",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumberOfRows = table.Column<long>(type: "bigint", nullable: false),
-                    SeatTypesString = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CinemaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    SeatTypesString = table.Column<string>(type: "text", nullable: true),
+                    CinemaId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -119,13 +144,11 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "MovieDescriptions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Countries = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Genres = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ReleaseDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    MovieId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -142,12 +165,12 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -164,11 +187,10 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "Rows",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     NumberRow = table.Column<long>(type: "bigint", nullable: false),
-                    NumberOfSeats = table.Column<long>(type: "bigint", nullable: false),
-                    HallId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    HallId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -185,11 +207,11 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "Sessions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MovieId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    HallId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    MovieId = table.Column<Guid>(type: "uuid", nullable: false),
+                    HallId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -209,18 +231,66 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CountryMovieDescription",
+                columns: table => new
+                {
+                    CountriesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    MovieDescriptionsId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CountryMovieDescription", x => new { x.CountriesId, x.MovieDescriptionsId });
+                    table.ForeignKey(
+                        name: "FK_CountryMovieDescription_Countries_CountriesId",
+                        column: x => x.CountriesId,
+                        principalTable: "Countries",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CountryMovieDescription_MovieDescriptions_MovieDescriptions~",
+                        column: x => x.MovieDescriptionsId,
+                        principalTable: "MovieDescriptions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GenreMovieDescription",
+                columns: table => new
+                {
+                    GenresId = table.Column<Guid>(type: "uuid", nullable: false),
+                    MovieDescriptionsId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GenreMovieDescription", x => new { x.GenresId, x.MovieDescriptionsId });
+                    table.ForeignKey(
+                        name: "FK_GenreMovieDescription_Genres_GenresId",
+                        column: x => x.GenresId,
+                        principalTable: "Genres",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GenreMovieDescription_MovieDescriptions_MovieDescriptionsId",
+                        column: x => x.MovieDescriptionsId,
+                        principalTable: "MovieDescriptions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RefreshTokens",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    JwtId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsUsed = table.Column<bool>(type: "bit", nullable: false),
-                    IsRevoked = table.Column<bool>(type: "bit", nullable: false),
-                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Token = table.Column<string>(type: "text", nullable: true),
+                    JwtId = table.Column<string>(type: "text", nullable: true),
+                    IsUsed = table.Column<bool>(type: "boolean", nullable: false),
+                    IsRevoked = table.Column<bool>(type: "boolean", nullable: false),
+                    AddedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ExpiryDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -237,11 +307,11 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "UserProfiles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Surname = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -258,11 +328,11 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "Seats",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     NumberSeat = table.Column<long>(type: "bigint", nullable: false),
-                    SeatType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RowId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    SeatType = table.Column<string>(type: "text", nullable: true),
+                    RowId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -279,17 +349,17 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "SessionAdditionalServices",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    AdditionalServiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SessionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Price = table.Column<double>(type: "double precision", nullable: false),
+                    AdditionalServiceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SessionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SessionAdditionalServices", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SessionAdditionalServices_AdditionalServices_AdditionalServiceId",
+                        name: "FK_SessionAdditionalServices_AdditionalServices_AdditionalServ~",
                         column: x => x.AdditionalServiceId,
                         principalTable: "AdditionalServices",
                         principalColumn: "Id",
@@ -305,11 +375,11 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "SessionSeatTypes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    SeatType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SessionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Price = table.Column<double>(type: "double precision", nullable: false),
+                    SeatTypeName = table.Column<string>(type: "text", nullable: true),
+                    SessionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -326,10 +396,10 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "BookedOrders",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TotalPrice = table.Column<double>(type: "float", nullable: false),
-                    UserProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TotalPrice = table.Column<double>(type: "double precision", nullable: false),
+                    UserProfileId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -346,11 +416,11 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "BookedService",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     NumberOfServices = table.Column<long>(type: "bigint", nullable: false),
-                    BookedOrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SessionAdditionalServiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    BookedOrderId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SessionAdditionalServiceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -362,7 +432,7 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BookedService_SessionAdditionalServices_SessionAdditionalServiceId",
+                        name: "FK_BookedService_SessionAdditionalServices_SessionAdditionalSe~",
                         column: x => x.SessionAdditionalServiceId,
                         principalTable: "SessionAdditionalServices",
                         principalColumn: "Id",
@@ -373,13 +443,13 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "SessionSeats",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TicketState = table.Column<int>(type: "int", nullable: false),
-                    SessionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SeatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SessionSeatTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BookedOrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    TicketState = table.Column<int>(type: "integer", nullable: false),
+                    SessionId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SeatId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SessionSeatTypeId = table.Column<Guid>(type: "uuid", nullable: false),
+                    BookedOrderId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -411,17 +481,12 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Deleted", "Name" },
-                values: new object[] { new Guid("6cac603f-c091-40c7-a4c6-43924d59fc4e"), false, "Admin" });
-
-            migrationBuilder.InsertData(
-                table: "Roles",
-                columns: new[] { "Id", "Deleted", "Name" },
-                values: new object[] { new Guid("624f28f8-f2fa-4141-8041-2d61480c330b"), false, "Manager" });
-
-            migrationBuilder.InsertData(
-                table: "Roles",
-                columns: new[] { "Id", "Deleted", "Name" },
-                values: new object[] { new Guid("72d25f28-75cd-4a96-81a2-b07a54a69e94"), false, "User" });
+                values: new object[,]
+                {
+                    { new Guid("67c40faf-c703-49e4-9837-a335e2c93fb2"), false, "Admin" },
+                    { new Guid("31868844-3d20-474f-a59a-8a072334f5cc"), false, "Manager" },
+                    { new Guid("f926108f-bba8-415f-aba4-afb1d1c1eceb"), false, "User" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdditionalServices_CinemaId",
@@ -448,6 +513,22 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "IX_BookedService_SessionAdditionalServiceId",
                 table: "BookedService",
                 column: "SessionAdditionalServiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cinemas_Name",
+                table: "Cinemas",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CountryMovieDescription_MovieDescriptionsId",
+                table: "CountryMovieDescription",
+                column: "MovieDescriptionsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GenreMovieDescription_MovieDescriptionsId",
+                table: "GenreMovieDescription",
+                column: "MovieDescriptionsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Halls_CinemaId",
@@ -541,7 +622,10 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
                 name: "BookedService");
 
             migrationBuilder.DropTable(
-                name: "MovieDescriptions");
+                name: "CountryMovieDescription");
+
+            migrationBuilder.DropTable(
+                name: "GenreMovieDescription");
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");
@@ -551,6 +635,15 @@ namespace CinemaTicketReservationSystem.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "SessionAdditionalServices");
+
+            migrationBuilder.DropTable(
+                name: "Countries");
+
+            migrationBuilder.DropTable(
+                name: "Genres");
+
+            migrationBuilder.DropTable(
+                name: "MovieDescriptions");
 
             migrationBuilder.DropTable(
                 name: "BookedOrders");

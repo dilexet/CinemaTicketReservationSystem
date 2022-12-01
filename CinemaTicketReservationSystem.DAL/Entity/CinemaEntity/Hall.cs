@@ -9,8 +9,6 @@ namespace CinemaTicketReservationSystem.DAL.Entity.CinemaEntity
     {
         public string Name { get; set; }
 
-        public uint NumberOfRows { get; set; }
-
         public string SeatTypesString { get; set; }
 
         public Guid CinemaId { get; set; }

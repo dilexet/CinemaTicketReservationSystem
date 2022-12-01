@@ -72,7 +72,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
             {
                 foreach (var seat in row.Seats)
                 {
-                    var sessionSeatTypeExist = sessionSeatTypes.FirstOrDefault(x => x.SeatType.Equals(seat.SeatType));
+                    var sessionSeatTypeExist = sessionSeatTypes.FirstOrDefault(x => x.SeatTypeName.Equals(seat.SeatType));
                     sessionSeats.Add(new SessionSeat
                     {
                         TicketState = TicketState.Free,
@@ -130,7 +130,7 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             foreach (var seatType in sessionModel.SessionSeatTypes)
             {
-                var seatTypeExist = sessionExist.SessionSeatType.FirstOrDefault(x => x.SeatType == seatType.SeatType);
+                var seatTypeExist = sessionExist.SessionSeatType.FirstOrDefault(x => x.SeatTypeName == seatType.SeatType);
                 if (seatTypeExist != null)
                 {
                     seatTypeExist.Price = seatType.Price;

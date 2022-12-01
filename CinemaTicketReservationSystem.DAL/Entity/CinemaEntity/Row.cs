@@ -7,8 +7,6 @@ namespace CinemaTicketReservationSystem.DAL.Entity.CinemaEntity
     {
         public uint NumberRow { get; set; }
 
-        public uint NumberOfSeats { get; set; }
-
         public Guid HallId { get; set; }
 
         public virtual Hall Hall { get; set; }

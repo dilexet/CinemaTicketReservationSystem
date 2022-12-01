@@ -16,17 +16,31 @@ namespace CinemaTicketReservationSystem.BLL.Services
     public class MovieService : IMovieService
     {
         private readonly IRepository<Movie> _movieRepository;
+        private readonly IRepository<Country> _countryRepository;
+        private readonly IRepository<Genre> _genreRepository;
         private readonly IMapper _mapper;
 
-        public MovieService(IRepository<Movie> movieRepository, IMapper mapper)
+        public MovieService(
+            IRepository<Movie> movieRepository,
+            IMapper mapper,
+            IRepository<Genre> genreRepository,
+            IRepository<Country> countryRepository)
         {
             _movieRepository = movieRepository;
             _mapper = mapper;
+            _genreRepository = genreRepository;
+            _countryRepository = countryRepository;
         }
 
         public async Task<MovieServiceResult> AddMovie(MovieModel movieModel)
         {
             var movie = _mapper.Map<Movie>(movieModel);
+
+            var newGenres = await CreateGenres(movieModel.MovieDescriptionModel.Genres.ToList());
+            var newCountries = await CreateCountries(movieModel.MovieDescriptionModel.Countries.ToList());
+
+            movie.MovieDescription.Countries = newCountries.ToList();
+            movie.MovieDescription.Genres = newGenres.ToList();
 
             if (!await _movieRepository.CreateAsync(movie))
             {
@@ -61,8 +75,10 @@ namespace CinemaTicketReservationSystem.BLL.Services
 
             movieExist.MovieDescription.ReleaseDate = movieModel.MovieDescriptionModel.ReleaseDate;
             movieExist.MovieDescription.Description = movieModel.MovieDescriptionModel.Description;
-            movieExist.MovieDescription.Countries = movieModel.MovieDescriptionModel.Countries;
-            movieExist.MovieDescription.Genres = movieModel.MovieDescriptionModel.Genres;
+            movieExist.MovieDescription.Countries =
+                _mapper.Map<IEnumerable<Country>>(movieModel.MovieDescriptionModel.Countries);
+            movieExist.MovieDescription.Genres =
+                _mapper.Map<IEnumerable<Genre>>(movieModel.MovieDescriptionModel.Genres);
 
             if (!await _movieRepository.UpdateAsync(movieExist))
             {
@@ -150,6 +166,40 @@ namespace CinemaTicketReservationSystem.BLL.Services
                 Success = true,
                 MovieModel = movieModel
             };
+        }
+
+        private async Task<IEnumerable<Genre>> CreateGenres(IList<string> genres)
+        {
+            var newGenres =
+                genres.Except(_genreRepository.GetBy().Select(x => x.Name));
+
+            foreach (var newGenre in newGenres)
+            {
+                if (!await _genreRepository.CreateAsync(new Genre { Name = newGenre.ToLower() }))
+                {
+                    throw new Exception("Create genres error");
+                }
+            }
+
+            return _genreRepository.GetBy().ToList()
+                .Where(genre => genres.Contains(genre.Name, StringComparer.OrdinalIgnoreCase));
+        }
+
+        private async Task<IEnumerable<Country>> CreateCountries(IList<string> countries)
+        {
+            var newCountries =
+                countries.Except(_countryRepository.GetBy().Select(x => x.Name));
+
+            foreach (var newCountry in newCountries)
+            {
+                if (!await _countryRepository.CreateAsync(new Country { Name = newCountry.ToLower() }))
+                {
+                    throw new Exception("Create countries error");
+                }
+            }
+
+            return _countryRepository.GetBy().ToList()
+                .Where(country => countries.Contains(country.Name, StringComparer.OrdinalIgnoreCase));
         }
     }
 }

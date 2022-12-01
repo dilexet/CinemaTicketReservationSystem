@@ -14,20 +14,8 @@ namespace CinemaTicketReservationSystem.DAL.Entity.MovieEntity
 
         public virtual Movie Movie { get; set; }
 
-        public string CountriesString { get; set; }
+        public virtual IEnumerable<Genre> Genres { get; set; }
 
-        public string GenresString { get; set; }
-
-        public IEnumerable<string> Countries
-        {
-            get => CountriesString.Split(',').ToList();
-            set => CountriesString = string.Join(",", value);
-        }
-
-        public IEnumerable<string> Genres
-        {
-            get => GenresString.Split(',').ToList();
-            set => GenresString = string.Join(",", value);
-        }
+        public virtual IEnumerable<Country> Countries { get; set; }
     }
 }

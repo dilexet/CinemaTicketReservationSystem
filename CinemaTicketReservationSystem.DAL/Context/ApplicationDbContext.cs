@@ -32,6 +32,10 @@ namespace CinemaTicketReservationSystem.DAL.Context
 
         public DbSet<MovieDescription> MovieDescriptions { get; set; }
 
+        public DbSet<Genre> Genres { get; set; }
+
+        public DbSet<Country> Countries { get; set; }
+
         public DbSet<Session> Sessions { get; set; }
 
         public DbSet<SessionAdditionalService> SessionAdditionalServices { get; set; }

@@ -10,6 +10,8 @@ namespace CinemaTicketReservationSystem.DAL.EntityConfiguration.CinemaConfigurat
         {
             builder.HasKey(x => x.Id);
 
+            builder.HasIndex(x => x.Name).IsUnique();
+
             builder
                 .HasOne(x => x.Address)
                 .WithOne(x => x.Cinema)
